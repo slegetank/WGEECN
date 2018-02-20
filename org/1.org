@@ -1,4 +1,5 @@
 #+TITLE: 自定义Emacs
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./resource/org.css" />
 #+OPTIONS: \n:\n ^:nil
 
 * 在本章：

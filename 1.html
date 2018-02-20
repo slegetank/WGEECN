@@ -1,0 +1,819 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-02-20 Tue 15:45 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>自定义Emacs</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Shuai Zhao" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="./resource/org.css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">自定义Emacs</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org4a69998">1. 在本章：</a></li>
+<li><a href="#org84f1afb">2. Backspace 和 Delete</a></li>
+<li><a href="#org10dcea4">3. Lisp</a></li>
+<li><a href="#orgd4f6ff8">4. 按键和字符串</a>
+<ul>
+<li><a href="#orga8f95c1">4.1. META键</a></li>
+<li><a href="#org0b7478d">4.2. 将按键绑定到命令上</a></li>
+<li><a href="#org9e97824">4.3. 字符串表示按键</a></li>
+</ul>
+</li>
+<li><a href="#orgc4b5d30">5. C-h绑定到什么</a></li>
+<li><a href="#org74053d2">6. C-h应该绑定到什么？</a></li>
+<li><a href="#org30f01a7">7. 执行Lisp表达式</a></li>
+<li><a href="#org348d5b8">8. Apropos</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org4a69998" class="outline-2">
+<h2 id="org4a69998"><span class="section-number-2">1</span> 在本章：</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<b>Backspace和Delete</b><br />
+<b>Lisp</b><br />
+<b>按键和字符串</b><br />
+<b>C-h绑定到什么</b><br />
+<b>C-h应该绑定到什么</b><br />
+<b>执行Lisp表达式</b><br />
+<b>Apropos</b><br />
+</p>
+
+<p>
+本章将介绍基本的Emacs定制化，并且在这一过程中教给你一些Emacs Lisp。最简单、最常见的定制之一就是将一个按键的命令复制到另一个按键上。可能你不喜欢Emacs的两次按键（C-x C-s）来保存文件，因为其他的编辑器通常都只是简单的C-s。或者你可能只是想按C-x，却不小心按成C-x C-c，也就是退出Emacs，而你希望按下C-x C-c不要造成这么酷炫的效果。或者也可能，就像下面的例子所展示的，你可能希望对Emacs提供给你的键位做出一些自己的修改。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org84f1afb" class="outline-2">
+<h2 id="org84f1afb"><span class="section-number-2">2</span> Backspace 和 Delete</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+想象你想要输入“Lisp”但却输成了“List”。要改正你的拼写，你是按下BACKSPACE键呢还是DELETE键？<br />
+</p>
+
+<p>
+这当然由你的键盘而定，但是我要问的并不仅仅是一个按键上标记了什么的问题。有时按键上标记的是“Backspace”，有时它又被标记为“Delete”，有时又是“Erase”，有时是一个向左的箭头或是别的什么图案。对于Emacs来说，按键上标记着什么并不重要，它在乎的是按下这个键时所触发的数字代码。“向左移动并且删掉前面的字符”可能会产生一个ASCII的“backspace”编码（十进制8，通常表示为BS）或者一个ASCII的“delete”编码（十进制127，通常表示为DEL）。<br />
+</p>
+
+<p>
+在Emacs的默认配置中，认为只有DEL表示“向左移动并且删掉前面的字符”。如果你的BACKSPACE/DELETE/ERASE键产生了一个BS，那么它将不会按照你所希望的那样执行。<br />
+</p>
+
+<p>
+更糟的是当你按下BACKSPACE/DELETE/ERASE键，它却产生了一个BS时。Emacs认为既然BS并不用来左移并删除前面的字符，那么它就可以用来触发另一个方法。结果是，BS现在触发的方法和按下C-h时触发的一样。如果你们那里并不需要C-h来执行左移并删除前面的字符，那么C-h更好的选择是作为一个Help键，而这也是Emacs的选择。不幸的是，这意味着如果你的BACKSPACE/DELETE/ERASE触发BS的话，那么按下它将不会触发backspace,delete或者erase；它将触发Emacs的在线帮助。<br />
+</p>
+
+<p>
+当Emacs的初学者想要修正一个拼写错误时，他们不止一次的被Emacs做出了热烈的欢迎。突然一个新的Emacs窗口&#x2013;帮助窗口&#x2013;弹了出来，提示不幸的用户来选择一些帮助命令。帮助的内容如此的冗长使得用户更加的瞠目结舌。用户恐慌的按下一大堆的C-g（终止当前的操作），伴随着一大堆的终端错误铃声提示。怪不得许多聪明善良的用户选择继续使用安全无害的vi，而不是成为Emacs的疯狂传道者。我每当想起这件事就很伤心，特别是这一情形很容易被修复。Emacs启动时，它将读取并且执行你的根目录下的.emacs文件。它使用Emacs Lisp作为语言，而读完本书你会发现，只要编写一些Emacs Lisp放到.emacs里，Emacs几乎没有什么是你不能改变的。我们要关注的第一件事就是向.emacs中添加一些代码来把BS和DEL都指定为“向前退格并且删掉一个字符”，而将帮助命令移动到其他键上去。首先我们需要看一下.emacs文件所使用的语言，Lisp。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org10dcea4" class="outline-2">
+<h2 id="org10dcea4"><span class="section-number-2">3</span> Lisp</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+自从1950年以来已经产生了很多种不同形式的Lisp。最初它应用于人工智能，它很胜任这份工作，因为它允许符号运算，可以将代码作为数据处理，可以简化复杂数据结构的构建。但是Lisp可以做的要比一门AI语言多得多。它应用于非常广的问题处理上，这经常被计算机科学家忽视，而Emacs用户却知道的很清楚。Lisp不同于其他编程语言的特性有：<br />
+</p>
+<ul class="org-ul">
+<li><p>
+括号前缀表示法<br />
+Lisp中的所有表达式和方法都由括号括起来[<a href="#org12112aa">1</a>]，方法名通常在参数之前。所以在其他语言中你通常会这么写：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">x + y
+</pre>
+</div>
+
+<p>
+而在Lisp中，你会这么写：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>+ x y<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+<p>
+“前缀表示法”表示运算符在运算对象的前面。当运算符在运算对象中间时，这称为“中缀表示法”。<br />
+</p>
+
+<p>
+虽然与通常的习惯不同，但前缀表示法相对于中缀有一些好处。在中缀语言中，要将5个变量加起来需要4个加号：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">a + b + c + d + e
+</pre>
+</div>
+
+<p>
+Lisp更简洁：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>+ a b c d e<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+而且，不会产生运算符的优先级问题。例如，<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">3 + 4 * 5
+</pre>
+</div>
+<p>
+的结果是35还是23？这需要知道*是否比+具有更高的优先级。而在Lisp中，就不会有这种疑惑：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>+ 3 <span style="color: #66D9EF;">(</span>* 4 5<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">&#32467;&#26524;&#26159;23</span>
+<span style="color: #AE81FF;">(</span>* <span style="color: #66D9EF;">(</span>+ 3 4<span style="color: #66D9EF;">)</span> 5<span style="color: #AE81FF;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">&#32467;&#26524;&#26159;35</span>
+</pre>
+</div>
+<p>
+（Lisp中的注释使用分号，作用到行尾。）最后，中缀语言需要在方法中使用逗号分隔参数：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">foo<span style="color: #AE81FF;">(</span>3 + 4, 5 + 6<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+Lisp不需要额外的语法：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>foo <span style="color: #66D9EF;">(</span>+ 3 4<span style="color: #66D9EF;">)</span> <span style="color: #66D9EF;">(</span>+ 5 6<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div></li>
+
+<li><p>
+List数据类型<br />
+Lisp有一种内建的数据类型称为表（list）。表是一种用括号括起来的，不包含或者包含着其他Lisp对象的Lisp对象。下面是一些表：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>hello there<span style="color: #AE81FF;">)</span> <span style="color: #75715E;">;</span><span style="color: #75715E;">&#21253;&#21547;&#30528;&#20004;&#20010;&#8220;&#31526;&#21495;&#8221;&#30340;&#34920;</span>
+<span style="color: #AE81FF;">(</span>1 2 <span style="color: #E6DB74;">"xyz"</span><span style="color: #AE81FF;">)</span> <span style="color: #75715E;">;</span><span style="color: #75715E;">&#20004;&#20010;&#25968;&#23383;&#21644;&#19968;&#20010;&#23383;&#31526;&#20018;</span>
+<span style="color: #AE81FF;">()</span> <span style="color: #75715E;">;</span><span style="color: #75715E;">&#31354;&#34920;</span>
+</pre>
+</div>
+
+<p>
+表可以作为值赋给其他变量，作为参数传递给方法以及作为返回值传递，使用cons和append这种方法来进行组合，使用car和cdr来进行拆分。后面我们将会更详细地叙述这些知识。<br />
+</p></li>
+
+<li><p>
+垃圾回收<br />
+Lisp是一种垃圾回收的语言，这意味着Lisp会自动的回收你的程序里的数据结构所使用的内存。与之相反的，比如C语言，程序员必须显式的使用malloc来分配内存，然后显式的使用free来释放内存。（在非垃圾回收语言里，malloc/free这种语句非常容易出错。过早的释放内存是全世界程序错误中最大的原因之一，而忘记释放内存则会造成内存的泄露。）<br />
+</p>
+
+<p>
+除了所有这些垃圾回收机制所具有的有点，它也有一个缺点：Emacs会不时的停下正在做的所有事情，向用户显示“Garbage collecting&#x2026;”。用户要等到垃圾回收结束才能继续使用Emacs[<a href="#orga36272d">2</a>]。这通常只会持续不到1s，但是却可能非常频繁。后面我们将会学到如何减少垃圾回收发生的实用技巧。<br />
+</p></li>
+</ul>
+
+<p>
+表达式（expression）通常表示Lisp代码中的任何一部分或者任何Lisp数据结构。所有Lisp表达式，不管是代码还是数据，都可以被Emacs中内建的Lisp解释器执行。对一个变量求值的结果就是访问之前储存在变量中的Lisp对象。就像我们下面将要看到的，用来执行Lisp函数的方式就是对一个表求值。<br />
+</p>
+
+<p>
+自从Lisp发明以来已经产生了许多Lisp方言，它们之间各有不同。MacLisp, Scheme和Common Lisp是其中较为有名的。Emacs Lisp和它们都不一样。这本书只关注Emacs Lisp。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd4f6ff8" class="outline-2">
+<h2 id="orgd4f6ff8"><span class="section-number-2">4</span> 按键和字符串</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+本章的目的是使所有触发BS的键同触发DEL的键能一样的工作。当然这将导致C-h不再触发帮助命令。你需要选择其他的键来使用帮助；我自己的方式是使用META-question-mark。<br />
+</p>
+</div>
+<div id="outline-container-orga8f95c1" class="outline-3">
+<h3 id="orga8f95c1"><span class="section-number-3">4.1</span> META键</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+META键的工作方式和CONTROL键以及SHIFT键一样，都是需要在按下其他键的同时按着它。这种键被称为修饰键（modifiers）。虽然不是所有键盘都有META键。有时ALT键起着同样的作用，但是也不是所有键盘都有ALT键。无论如何，你都不是必须使用META或者ALT。单次按键META-x总是可以使用两键序列ESC x来替代。（注意ESC不是修饰键&#x2013;你需要先按下ESC，松开手，再按下x键。）<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0b7478d" class="outline-3">
+<h3 id="org0b7478d"><span class="section-number-3">4.2</span> 将按键绑定到命令上</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+在Emacs里，每个按键都触发一条命令或者是一个触发命令的多键序列的一部分。就像我们将要看到的，命令是一种特殊的Lisp函数。使一个按键触发类似帮助这种命令的行为被称为绑定。我们需要执行一些Lisp代码来将按键绑定到命令上。global-set-key是一个用于做这件事的函数。<br />
+</p>
+
+<p>
+下面介绍如何调用global-set-key。记住在Lisp里函数调用就是简单的一个括起来的表。第一个元素是函数名称，剩下的元素全是参数。函数global-set-key使用两个参数：要绑定的按键序列，以及要绑定的命令。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>global-set-key keysequence command<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+需要注意Emacs Lisp是区分大小写的。<br />
+</p>
+
+<p>
+我们选择的按键序列是META-question-mark。这在Emacs Lisp中如何表示呢？<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9e97824" class="outline-3">
+<h3 id="org9e97824"><span class="section-number-3">4.3</span> 字符串表示按键</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+在Emacs Lisp中有一些不同的方式来表示一个按键序列。最简单的是直接使用字符串。在Lisp中，字符串是一些被引号括起来的字符序列。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #E6DB74;">"xyz"</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">&#19977;&#20010;&#23383;&#27597;&#30340;&#23383;&#31526;&#20018;</span>
+</pre>
+</div>
+
+<p>
+要在字符串中使用双引号，使用反斜杠（\）：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #E6DB74;">"I said, \"Look out!\""</span>
+</pre>
+</div>
+
+<p>
+这表示如下字符串：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-text">I said, "Look out!"
+</pre>
+</div>
+
+<p>
+要在字符串中表示反斜杠需要使用另一个反斜杠对其转义。<br />
+</p>
+
+<p>
+普通的按键使用它所代表的字符来表示它。例如，按键q在Lisp中被字符串“q”所表示。而反斜杠\则写作“\\”。<br />
+</p>
+
+<p>
+像META-question-mark这种特殊字符在字符串里使用特殊的标识符：“\M-?”来表示。虽然字符串里有四个字母，但Emacs会将此字符串读为META question-mark[<a href="#org9721acd">3</a>]。<br />
+</p>
+
+<p>
+在Emacs的术语中，M-x是META-x的简写，“\M-x”是字符串版本。CONTROL-x在Emacs文档中简写为C-x，在字符串中表示为“\C-x”。你也可以组合CONTROL和META键。CONTROL-META-x简写作C-M-x，字符串表示为“\C-\M-x”。顺便，”\C-\M-x”和”\M-\C-x”(META-CONTROL-x)等价。<br />
+</p>
+
+<p>
+（CONTROL-x在文档里有时也表示为^x，那么字符串就表示为”\^x”。）<br />
+</p>
+
+<p>
+现在我们知道了如何填写global-set-key的第一个参数：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\M-?"</span> command<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+(另一种书写”\M-?”的方式是”\e?”。字符串“\e”表示escape，而M-x和Esc x等价。)<br />
+</p>
+
+<p>
+下面我们必须找出command需要填写什么。这个参数应该是我们希望M-?触发的帮助函数的名称，也就是当前C-h所触发的函数。在Lisp中，函数使用符号（symbols）来表示。符号就像其他语言中的函数名或者变量名，虽然Lisp在命名时比大多数语言都允许更宽泛的字符集。例如，合法的符号名包括let*以及up&amp;down-p。<br />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc4b5d30" class="outline-2">
+<h2 id="orgc4b5d30"><span class="section-number-2">5</span> C-h绑定到什么</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+要找到帮助命令的符号，我们可以使用C-h b，这将会触发另一个名为describe-bindings的命令。这是帮助系统众多的命令之一。它会弹出一个列出所有有效键绑定的窗口。查找C-h，我们可以找到这一行：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">C-h help-command
+</pre>
+</div>
+
+<p>
+这告诉了我们help-command是指向帮助命令的符号。我们的Lisp示例即将完成了，但是我们不能只是写下<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>global-set-key &#8220;\M-?&#8221; help-command<span style="color: #AE81FF;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">&#20960;&#20046;&#23545;&#20102;&#65281;</span>
+</pre>
+</div>
+
+<p>
+这是错误的，因为符号只要出现在Lisp表达式里就会马上被解释执行。如果符号出现在表的第一个位置时，那么它将作为函数的名称来执行。否则，它作为变量的值就要被展开。但是当我们运行global-set-key时，我们不需要help-command所包含的值，不管那是什么。我们需要的是help-command这个符号的本身。简而言之，我们希望在传递给global-set-key之前不要对符号进行求值。毕竟就我们所知，help-command并没有作为变量的值存在。<br />
+</p>
+
+<p>
+阻止符号（以及其他任何Lisp表达式）被求值的方法是在它的前面加一个单引号（'）进行引用（quoted）。就像这样：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\M-?"</span> 'help-command<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+我们的Lisp例子现在完成了。如果你把它放到你的.emacs文件中，那么以后当你打开Emacs时M-?将会触发help-command。（马上我们将会学到如何立即触发Lisp表达式。）M-? b将会像C-h b一样触发describe-bindings（这时M-?和C-h都绑定到了help-command）。<br />
+</p>
+
+<p>
+顺便，为了说明引用和非引用的区别，下面两条表达式可以达成同样的效果：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> x 'help-command<span style="color: #AE81FF;">)</span> <span style="color: #75715E;">;  </span><span style="color: #75715E;">setq&#20998;&#37197;&#19968;&#20010;&#21464;&#37327;</span>
+<span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\M-?"</span> x<span style="color: #AE81FF;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">&#20351;&#29992; x &#30340;&#21464;&#37327;&#20540;</span>
+</pre>
+</div>
+
+<p>
+第一行使变量x保存符号help-command。第二行使用x的值&#x2013;符号help-command&#x2013;绑定给M-?。这个例子与上一个的唯一区别是你现在多使用了一个变量x。<br />
+</p>
+
+<p>
+符号并不是唯一可以被单引号前缀的；任何Lisp表达式都能被引用，包括表，数字，字符串，以及其他我们后面将要学到的表达式。'expr是下面的简写：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">quote</span> expr<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这在执行的时候会延缓求值（yield）。你可能已经注意到了符号help-command需要引用而字符串参数“\M-?”却不需要。这是因为在Lisp里，字符串是自解释的，当字符串被执行时，它返回的是它本身。所以对其进行引用是无害而多余的。数字，字符以及向量（vector）是其他自解释的Lisp表达式。<br />
+</p>
+</div>
+</div>
+<div id="outline-container-org74053d2" class="outline-2">
+<h2 id="org74053d2"><span class="section-number-2">6</span> C-h应该绑定到什么？</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+既然我们已经将help-command绑定到M-?，下面我们需要给C-h绑定一些什么。使用前面所描述的同样的流程&#x2013;也就是说，触发命令describe-bindings（使用C-h b或者M-? b）&#x2013;我们发现DEL触发的命令是delete-backward-char。<br />
+</p>
+
+<p>
+所以我们可以这样写：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\C-h"</span> 'delete-backward-char<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+现在DEL和C-h一样了。如果你把下面的命令放到.emacs里：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\M-?"</span> 'help-command<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\C-h"</span> 'delete-backward-char<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+那么以后在Emacs里，BACKSPACE/DELETE/ERASE将会执行正确的事情，不管发出的是BS还是DEL。但是我们如何使他们马上产生效果呢？这需要显式执行（explicit evaluation）这两个表达式。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org30f01a7" class="outline-2">
+<h2 id="org30f01a7"><span class="section-number-2">7</span> 执行Lisp表达式</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+有几种方式来显式执行Lisp表达式。<br />
+</p>
+
+<ol class="org-ol">
+<li>你可以将Lisp表达式放到一个文件里，然后载入这个文件。假设你把表达式放到文件rebind.el里。（Emacs Lisp文件的后缀名是.el）。你可以键入M-x load-file RET rebind.el RET以使Emacs来执行文件的内容。如果你把这些内容放到了.emacs里，你可以使用同样的方法来载入它。但是在你使用了Emacs一段时间后，你的.emacs将会变得越来越大，它的载入将会变得很慢。因此，你不会希望为了一点点改动就重新载入整个文件。因此我们可以使用下一种选择。<br /></li>
+
+<li><p>
+你可以使用命令eval-last-sexp，这绑定到了[<a href="#org346a585">4</a>]C-x C-e上。（sexp[<a href="#org4279ad7">5</a>]是S表达式（S-expression）的简写，也就是符号表达式的简写，也就是Lisp表达式的另一种说法。）这个命令将执行光标左边的Lisp表达式。所以你要做的是将光标放到第一行的末尾：  <br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\M-?"</span> 'help-command<span style="color: #AE81FF;">)</span> |
+<span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\C-h"</span> 'delete-backward-char<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+<p>
+  然后按下C-x C-e；然后移动到第二行尾：  <br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\M-?"</span> 'help-command<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\C-h"</span> 'delete-backward-char<span style="color: #AE81FF;">)</span> |
+</pre>
+</div>
+<p>
+  然后再次按下C-x C-e。执行global-set-key的结果&#x2013;一个特别的符号nil（我们后面将会再次看到）&#x2013;展示在了Emacs屏幕下方的消息区里。<br />
+</p></li>
+
+<li><p>
+你可以使用命令eval-expression，这绑定到了M-:[<a href="#org771a2b3">6</a>]。这个命令在minibuffer（屏幕的底部）中提示你输入一个Lisp表达式，然后执行它并输出结果。Emacs的制作者认为eval-expression是少数一些对于初学者来说尝试使用会造成危险的命令之一。以我来看，这简直是胡说；不论如何，这个命令在初始时是被禁用的，所以当你尝试使用时，Emacs告诉你“You have typed M-:, invoking disabled command eval-expression.”。然后它会显示eval-expression的描述并且如下提示：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">You can now type
+Space to try the command just this once,
+but leave it disabled,
+Y to try it and enable it <span style="color: #AE81FF;">(</span>no questions if you use it again<span style="color: #AE81FF;">)</span>,
+N to do nothing <span style="color: #AE81FF;">(</span>command remains disabled<span style="color: #AE81FF;">)</span>.
+</pre>
+</div>
+
+<p>
+  如果你选择Y，Emacs将会把下面的表达式加入你的.emacs。  <br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>put 'eval-expression 'disabled nil<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+（put函数和属性列表(property list)有关，我们将会在第三章的<a href="3.html#MissingReference">符号属性</a>中看到它）我的建议是你可以在获得这个提示之前就把它手动加入到.emacs里，这样你就不会被“disabled command”警告所困扰了。当然，当你把这条语句放到.emacs里之后，使用前面提到的eval-last-sexp使它马上生效是一个不错的想法。<br />
+</p></li>
+
+<li>你可以使用*scratch* buffer。这个buffer在Emacs启动的时候就会自动创建。它使用了Lisp 交互模式。在这个模式里，按下C-j来执行eval-print-last-sexp，它很像eval-last-sexp，除了它会将结果插入到光标所在的位置。Lisp交互模式的另一个特性是你可以使用M-TAB进行自动补全（触发lisp-complete-symbol）。Lisp交互模式在用来调试太长的Lisp表达式或者数据结构太复杂的时候特别有用。<br /></li>
+</ol>
+
+<p>
+不管你使用哪一种方法，执行global-set-key表达式的结果是产生了新的按键绑定。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org348d5b8" class="outline-2">
+<h2 id="org348d5b8"><span class="section-number-2">8</span> Apropos</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+在结束第一个例子之前，让我们讨论一下Emacs的最重要的在线帮助特性，apropos。假设你同时拥有BS和DEL键，你希望BS删除光标前面的字符而DEL删除后面的。你现在知道了delete-backward-char用来完成前面的目的，但是你不知道什么命令完成后面的。你确信Emacs一定有这么一个命令。但是如何找到它呢？<br />
+</p>
+
+<p>
+答案是使用apropos命令，它允许你使用表达式来搜索所有已知的变量名和函数名。试试这么做[<a href="#org13778c2">7</a>]：<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">M-x apropos RET delete RET
+</pre>
+</div>
+
+<p>
+返回值是一个列出了所有符合“delete”的变量和函数的buffer。如果我们在这个buffer里搜索“character”，然后翻到这一部分<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">backward-delete-char 
+Command: Delete the previous N characters <span style="color: #AE81FF;">(</span>following if N is negative<span style="color: #AE81FF;">)</span>. 
+backward-delete-char-untabify 
+Command: Delete characters backward, changing tabs into spaces. 
+delete-backward-char 
+Command: Delete the previous N characters <span style="color: #AE81FF;">(</span>following if N is negative<span style="color: #AE81FF;">)</span>. 
+delete-char 
+Command: Delete the following N characters <span style="color: #AE81FF;">(</span>previous if N is negative<span style="color: #AE81FF;">)</span>. 
+</pre>
+</div>
+
+<p>
+而函数delete-char正是我们需要的。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\C-?"</span> 'delete-char<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+（由于历史原因，DEL由CONTROL-question-mark来触发。）<br />
+</p>
+
+<p>
+你可以使用前置参数来执行apropos。在Emacs中，在执行命令前按下C-u将会向命令传递额外的参数。通常，C-u后面跟着一个数字；例如C-u 5 C-b表示“将光标向前移动5个字符”。有时额外的参数就是你按下的C-u本身。<br />
+</p>
+
+<p>
+当apropos使用了前置参数时，它不只显示所有符合搜索表达式的函数和变量，它还展示出列表中每个命令绑定的按键（这不是默认的，因为搜索按键绑定很慢）。使用C-u M-x apropos RET delete RET 然后搜索“character”，我们将会得到下面的信息：<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">backward-delete-char <span style="color: #AE81FF;">(</span>not bound to any keys<span style="color: #AE81FF;">)</span> 
+Command: Delete the previous N characters <span style="color: #AE81FF;">(</span>following if N is negative<span style="color: #AE81FF;">)</span>. 
+backward-delete-char-untabify <span style="color: #AE81FF;">(</span>not bound to any keys<span style="color: #AE81FF;">)</span> 
+Command: Delete characters backward, changing tabs into spaces. 
+delete-backward-char C-h, DEL 
+Command: Delete the previous N characters <span style="color: #AE81FF;">(</span>following if N is negative<span style="color: #AE81FF;">)</span>. 
+delete-char C-d 
+Command: Delete the following N characters <span style="color: #AE81FF;">(</span>previous if N is negative<span style="color: #AE81FF;">)</span>. 
+</pre>
+</div>
+
+<p>
+这证实了现在C-h和DEL都会执行delete-backward-char，并且告诉了我们delete-char已经有了一个绑定：C-d。在我们执行<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\C-?"</span> 'delete-char<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+之后，如果我们再次执行apropos，我们将会得到<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">backward-delete-char <span style="color: #AE81FF;">(</span>not bound to any keys<span style="color: #AE81FF;">)</span> 
+Command: Delete the previous N characters <span style="color: #AE81FF;">(</span>following if N is negative<span style="color: #AE81FF;">)</span>. 
+backward-delete-char-untabify <span style="color: #AE81FF;">(</span>not bound to any keys<span style="color: #AE81FF;">)</span> 
+Command: Delete characters backward, changing tabs into spaces. 
+delete-backward-char C-h 
+Command: Delete the previous N characters <span style="color: #AE81FF;">(</span>following if N is negative<span style="color: #AE81FF;">)</span>. 
+delete-char C-d, DEL 
+Command: Delete the following N characters <span style="color: #AE81FF;">(</span>previous if N is negative<span style="color: #AE81FF;">)</span>. 
+</pre>
+</div>
+
+<p>
+如果我们知道我们要搜索的对象是Emacs命令，而不是变量或者函数，我们可以使用command-apropos（M-? a）来缩小搜索范围。命令和其他Lisp函数的区别是命令特别用于交互式的触发，也就是说可以通过按键或者M-x触发。非命令的函数只能被其他Lisp代码调用或者被类似eval-epression和eval-last-sexp这样的命令来执行。我们将会在下一章看到更多的函数和命令的知识。<br />
+</p>
+
+<p>
+<a id="org12112aa"></a>1. 批评者通常认为Lisp的括号是它标志性的缺点。他们认为，Lisp是“Lots of Infernal Stupid Parentheses”的简写（实际上是“List Processing”的简写）。以我来看，这个更简单的符号使得Lisp比其他语言更易读，而我希望你也这么认为。<br />
+</p>
+
+<p>
+<a id="orga36272d"></a>2. Emacs使用了一种标记-清扫的垃圾回收设计，是最简单的垃圾回收实现方式之一。有一些其他的实现方式会更少打扰用户；例如，一种称为“incremental”的方式在执行时不会使Emacs当机。不幸的是，Emacs没有使用这些方式。<br />
+</p>
+
+<p>
+<a id="org9721acd"></a>3. 你可以使用length函数查看字符串的长度来确认这件事。如果你执行(length "\M-?")，结果为1。如何“执行”在本章的后面有介绍。<br />
+</p>
+
+<p>
+<a id="org346a585"></a>4. 技术上说，我们应该说按键被绑定到了命令上，而不是命令绑定到了按键上。（说按键“绑定到”了命令上正确的表示了这个按键序列只能做一件事&#x2013;触发这个命令。说命令“绑定”到了一个按键上则表示只有这个按键序列能够触发这个命令，而这并不是真的。）但是一般来说这种误用的“绑定到”并不会引起什么误会。<br />
+</p>
+
+<p>
+<a id="org4279ad7"></a>5. 遗憾地读作“sex pee.”。<br />
+</p>
+
+<p>
+<a id="org771a2b3"></a>6. 这个按键绑定是19.29新引入的。在之前的版本，eval-expression默认绑定到M-ESC。<br />
+</p>
+
+<p>
+<a id="org13778c2"></a>7. 所有的Emacs命令，不管它们绑定到了哪里（如果有的话），都可以通过M-x command-name RET来执行。自然，M-x自己也是一个绑定到按键上的命令，execute-extend-command，它会提示输入一个要执行的函数名。<br />
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Shuai Zhao</p>
+<p class="date">Created: 2018-02-20 Tue 15:45</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

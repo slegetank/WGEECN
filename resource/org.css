@@ -1,0 +1,575 @@
+html {
+	font-family: sans-serif;
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%
+}
+
+body {
+	margin: 0
+}
+
+article,aside,details,figcaption,figure,footer,header,main,menu,nav,section,summary {
+	display: block
+}
+
+audio,canvas,progress,video {
+	display: inline-block
+}
+
+audio:not([controls]) {
+	display: none;
+	height: 0
+}
+
+progress {
+	vertical-align: baseline
+}[hidden],template {
+	display: none
+}
+
+a {
+	background-color: transparent;
+	-webkit-text-decoration-skip: objects
+}
+
+a:active,a:hover {
+	outline-width: 0
+}
+
+abbr[title] {
+	border-bottom: none;
+	text-decoration: underline;
+	text-decoration: underline dotted
+}
+
+b,strong {
+	font-weight: inherit;
+	font-weight: bolder
+}
+
+dfn {
+	font-style: italic
+}
+
+h1 {
+	font-size: 2em;
+	margin: .67em 0
+}
+
+mark {
+	background-color: #ff0;
+	color: #000
+}
+
+small {
+	font-size: 80%
+}
+
+sub,sup {
+	font-size: 75%;
+	line-height: 0;
+	position: relative;
+	vertical-align: baseline
+}
+
+sub {
+	bottom: -.25em
+}
+
+sup {
+	top: -.5em
+}
+
+img {
+	border-style: none
+}
+
+svg:not(:root) {
+	overflow: hidden
+}
+
+code,kbd,pre,samp {
+	font-family: monospace,monospace;
+	font-size: 1em
+}
+
+figure {
+	margin: 1em 40px
+}
+
+hr {
+	box-sizing: content-box;
+	height: 0;
+	overflow: visible
+}
+
+button,input,select,textarea {
+	font: inherit;
+	margin: 0
+}
+
+optgroup {
+	font-weight: 700
+}
+
+button,input {
+	overflow: visible
+}
+
+button,select {
+	text-transform: none
+}[type=reset],[type=submit],button,html [type=button] {
+	-webkit-appearance: button
+}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner {
+	border-style: none;
+	padding: 0
+}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring {
+	outline: 1px dotted ButtonText
+}
+
+fieldset {
+	border: 1px solid silver;
+	margin: 0 2px;
+	padding: .35em .625em .75em
+}
+
+legend {
+	box-sizing: border-box;
+	color: inherit;
+	display: table;
+	max-width: 100%;
+	padding: 0;
+	white-space: normal
+}
+
+textarea {
+	overflow: auto
+}[type=checkbox],[type=radio] {
+	box-sizing: border-box;
+	padding: 0
+}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button {
+	height: auto
+}[type=search] {
+	-webkit-appearance: textfield;
+	outline-offset: -2px
+}[type=search]::-webkit-search-cancel-button,[type=search]::-webkit-search-decoration {
+	-webkit-appearance: none
+}
+
+::-webkit-input-placeholder {
+	color: inherit;
+	opacity: .54
+}
+
+::-webkit-file-upload-button {
+	-webkit-appearance: button;
+	font: inherit
+}
+
+body {
+	width: 95%;
+	margin: 2%;
+	font: normal normal normal 16px/1.6em Helvetica,sans-serif;
+	color: #333
+}
+
+@media (min-width:769px) {
+	body {
+		width: 100%
+		margin-left: 5vw
+	}
+}
+
+::-moz-selection {
+	background: #d6edff
+}
+
+::selection {
+	background: #d6edff
+}
+
+.title {
+	margin: auto;
+	color: #000
+}
+
+.subtitle,.title {
+	text-align: center
+}
+
+.subtitle {
+	font-size: medium;
+	font-weight: 700
+}
+
+.abstract {
+	margin: auto;
+	width: 80%;
+	font-style: italic
+}
+
+.abstract p:last-of-type:before {
+	content: "    ";
+	white-space: pre
+}
+
+.status {
+	font-size: 90%;
+	margin: 2em auto
+}[class^=section-number-] {
+	margin-right: .5em
+}[id^=orgheadline] {
+	clear: both
+}
+
+#footnotes {
+	font-size: 90%
+}
+
+.footpara {
+	display: inline;
+	margin: .2em auto
+}
+
+.footdef {
+	margin-bottom: 1em
+}
+
+.footdef sup {
+	padding-right: .5em
+}
+
+a {
+	color: #527d9a;
+	text-decoration: none
+}
+
+a:hover {
+	color: #035;
+	border-bottom: 1px dotted
+}
+
+figure {
+	padding: 0;
+	margin: 0;
+	text-align: center
+}
+
+img {
+	max-width: 100%;
+	vertical-align: middle
+}
+
+@media (min-width:769px) {
+	img {
+		max-width: 85vw;
+		margin: auto
+	}
+}
+
+.MathJax_Display {
+	font-size: 90%;
+	margin: 0!important;
+	width: 90%!important
+}
+
+h1,h2,h3,h4,h5,h6 {
+	color: #a5573e;
+	line-height: 1.6em;
+	font-family: Georgia,serif
+}
+
+h4,h5,h6 {
+	font-size: 1em
+}
+
+dt {
+	font-weight: 700
+}
+
+table {
+	margin: auto;
+	border-top: 2px solid;
+	border-collapse: collapse
+}
+
+table,thead {
+	border-bottom: 2px solid
+}
+
+table td+td,table th+th {
+	border-left: 1px solid gray
+}
+
+table tr {
+	border-top: 1px solid #d3d3d3
+}
+
+td,th {
+	padding: 5px 10px;
+	vertical-align: middle
+}
+
+caption.t-above {
+	caption-side: top
+}
+
+caption.t-bottom {
+	caption-side: bottom
+}
+
+th.org-center,th.org-left,th.org-right {
+	text-align: center
+}
+
+td.org-right {
+	text-align: right
+}
+
+td.org-left {
+	text-align: left
+}
+
+td.org-center {
+	text-align: center
+}
+
+code {
+	padding: 2px 5px;
+	margin: auto 1px;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	background-clip: padding-box;
+	color: #333;
+	font-size: 80%
+}
+
+blockquote {
+	margin: 1em 2em;
+	padding-left: 1em;
+	border-left: 3px solid #ccc
+}
+
+kbd {
+	background-color: #f7f7f7;
+	font-size: 80%;
+	margin: 0 .1em;
+	padding: .1em .6em
+}
+
+.todo {
+	background-color: red;
+	padding: 2px
+}
+
+.done,.todo {
+	color: #fff;
+	border-radius: 3px;
+	background-clip: padding-box;
+	font-size: 80%;
+	font-family: Lucida Console,monospace
+}
+
+.done {
+	background-color: green;
+	padding: 3px
+}
+
+.priority {
+	color: orange;
+	font-family: Lucida Console,monospace
+}
+
+#table-of-contents li {
+	clear: both
+}
+
+.tag {
+	font-family: Lucida Console,monospace;
+	font-size: 70%;
+	font-weight: 400
+}
+
+.tag span {
+	padding: 0 5px;
+	float: right;
+	margin-right: 5px;
+	border: 1px solid #bbb;
+	border-radius: 3px;
+	background-clip: padding-box;
+	color: #333;
+	background-color: #eee;
+	line-height: 1.6
+}
+
+.timestamp {
+	color: #bebebe;
+	font-size: 90%
+}
+
+.timestamp-kwd {
+	color: #5f9ea0
+}
+
+.org-right {
+	margin-left: auto;
+	margin-right: 0;
+	text-align: right
+}
+
+.org-left {
+	margin-left: 0;
+	margin-right: auto;
+	text-align: left
+}
+
+.org-center {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center
+}
+
+.underline {
+	text-decoration: underline
+}
+
+#postamble p,#preamble p {
+	font-size: 90%;
+	margin: .2em
+}
+
+p.verse {
+	margin-left: 3%
+}
+
+pre {
+	border: 1px solid #ccc;
+	box-shadow: 3px 3px 3px #eee;
+	font-family: Lucida Console,monospace;
+	margin: 1.2em;
+	padding: 8pt
+}
+
+pre.src {
+	overflow: auto;
+	padding-top: 1.2em;
+	position: relative;
+	font-size: 80%
+}
+
+pre.src:before {
+	display: block;
+	position: absolute;
+	background-color: #ccccd0;
+	top: 0;
+	right: 0;
+	padding: .25em .5em;
+	border-bottom-left-radius: 8px;
+	border: 0;
+	color: #fff;
+	font-size: 80%
+}
+
+pre.src:hover:before {
+	display: inline
+}
+
+pre.src-sh:before {
+	content: 'sh'
+}
+
+pre.src-bash:before {
+	content: 'bash'
+}
+
+pre.src-emacs-lisp:before {
+	content: 'Emacs Lisp'
+}
+
+pre.src-R:before {
+	content: 'R'
+}
+
+pre.src-org:before {
+	content: 'Org'
+}
+
+pre.src-c+:before {
+	content: 'C++'
+}
+
+pre.src-c:before {
+	content: 'C'
+}
+
+pre.src-html:before {
+	content: 'HTML'
+}
+
+.inlinetask {
+	background: #ffc;
+	border: 2px solid gray;
+	margin: 10px;
+	padding: 10px
+}
+
+#org-div-home-and-up {
+	font-size: 70%;
+	text-align: right;
+	white-space: nowrap
+}
+
+.linenr {
+	font-size: 90%
+}
+
+.code-highlighted {
+	background-color: #ff0
+}
+
+#bibliography {
+	font-size: 90%
+}
+
+#bibliography table {
+	width: 100%
+}
+
+.creator {
+	display: block
+}
+
+#nav {
+    overflow:hidden
+}
+#nav ul {
+    padding:0;
+    margin:0;
+    list-style: none;
+}
+#nav li {
+    padding:0;
+    margin:0;
+    list-style: none;
+    float:right;
+}
+#nav li a {
+    display: block;
+    padding: 0 10px;
+}
+
+#nav h2{
+    float:right;
+}
+
+#preamble hr {
+    margin: 10px;
+    float: bottom;
+}
+
+@media (min-width:769px) {
+	.creator {
+		display: inline;
+		float: right
+	}
+}

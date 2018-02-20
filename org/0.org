@@ -1,4 +1,5 @@
 #+TITLE: Writing GNU Emacs Extensions
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./resource/org.css" />
 #+OPTIONS: \n:\n
 
 Bob Glickstein
