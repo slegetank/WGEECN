@@ -621,7 +621,7 @@ switch-to-buffer这样修饰之后，Emacs将不会回应我切换到不存在�
 
 完整起见，你还应该同样修饰函数switch-to-buffer-other-window和switch-to-buffer-other-frame。
 
-* 附录：原始的前置参数
+* 补充：原始的前置参数
 变量current-prefix-arg总是保存着最后的“原始”前置参数，跟你从(interactive "P")中取到的一样。
 
 函数prefix-numeric-value可以应用到一个跟你从(interactive "P")中取得的“原始”前置参数一样类型的值来得到数值。

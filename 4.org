@@ -484,7 +484,7 @@ update-writestamps在save-excursion调用之后的最后一个表达式，是一
 + literal
     我们使用t来表示“按照字面理解new-string”。如果使用nil，那么replace-match将会使用一些特殊的语法规则理解new-string（可以使用describe-function replace-match来具体查看）。
 + base-string
-    我们使用nil来表示“更改当前缓冲区”。如果使用一个字符串，那么replace-match将会在那个字符串里执行替换。
+    我们使用nil来表示“更改当前buffer”。如果使用一个字符串，那么replace-match将会在那个字符串里执行替换。
 + subexpression
     我们使用1表示“替换子匹配项1，而不是整个匹配的字符串”（这将包括前缀和后缀）。
 
@@ -521,9 +521,9 @@ update-writestamps在save-excursion调用之后的最后一个表达式，是一
 在本节，我们将大略的探索两种非常简单的方式来实现修改戳。
 
 ** 简单的方式#1
-Emacs有一个称为first-change-hook的钩子变量。每当缓冲区自保存之后第一次被修改，变量中的函数将会被调用。使用这个钩子来实现修改戳只是把我们之前的update-writestamps函数从local-write-file-hooks变为first-change-hook。当然，我们还要把它的名字改为update-modifystamps，并且引入一些新的变量--modifystamp-format，modifystamp-prefix，以及modifystamp-suffix--而不影响原来记录戳的那些变量。update-modifystamps需要使用这些新的变量。
+Emacs有一个称为first-change-hook的钩子变量。每当buffer自保存之后第一次被修改，变量中的函数将会被调用。使用这个钩子来实现修改戳只是把我们之前的update-writestamps函数从local-write-file-hooks变为first-change-hook。当然，我们还要把它的名字改为update-modifystamps，并且引入一些新的变量--modifystamp-format，modifystamp-prefix，以及modifystamp-suffix--而不影响原来记录戳的那些变量。update-modifystamps需要使用这些新的变量。
 
-在此之前，first-change-hook是一个全局变量，而我们需要一个buffer局部的。如果我们将update-modifystamps添加到first-change-hook而first-change-hook是全局的，那么任何缓冲区保存的时候都会触发这个方法。我们需要将它变为buffer局部的，而其他缓冲区则继续使用默认的全局变量。
+在此之前，first-change-hook是一个全局变量，而我们需要一个buffer局部的。如果我们将update-modifystamps添加到first-change-hook而first-change-hook是全局的，那么任何buffer保存的时候都会触发这个方法。我们需要将它变为buffer局部的，而其他buffer则继续使用默认的全局变量。
 #+BEGIN_SRC emacs-lisp
   (make-local-hook 'first-change-hook)
 #+END_SRC
