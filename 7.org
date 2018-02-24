@@ -1,0 +1,468 @@
+#+TITLE: 子模式
+#+OPTIONS: \n:\n ^:nil
+
+* 在本章：
+*段落填充*
+*模式*
+*定义子模式*
+*Mode Meat*
+
+有时我们希望扩展（extension）只影响某些特定类型的buffer而不是所有的buffer。本章我们将通过思考这个问题来提高我们在Emacs编程中的灵活性。例如，你在Lisp模式下按下C-M-a会跳转到最近的函数定义，但是你不希望在编辑文档的时候也这样。Emacs的“模式（mode）”机制使得C-M-a只会在Lisp模式下才产生效果。
+
+关于Emacs中模式的相关主题是很复杂的。我们将以学习“子模式（minor modes）”来作为一个轻松良好的开始。在buffer中，子模式是可以与主模式共同存在的，它的作用是添加较少的一些特定功能的新行为。每个Emacs用户都对像Lisp、C以及Text这种主模式很熟悉，但是他们可能对于出现在模式栏（mode line）中的例如“Fill”这种表示自动填充的标识并不熟悉。
+
+我们将基于Emacs自身的段落填充功能创建一个子模式。我们的子模式，Refill，将会在你编辑段落的时候进行动态填充。
+
+* 段落填充
+填充一个段落是将段落中所有行的长度变得适当的过程。每行的长度都应该大概相等并且不会越过右边距（right margin）。过长的行应该在词之间的空格处进行拆分。短行应该用后面行的文字进行填充。填充有时还包括左右对齐（justification），也就是通过在每一行添加空格来使得左右边距相等。
+
+大多数现代文字处理软件都会保证段落的填充。每次文字修改时，段落中的文字会“流动”以完成正确的布局。一些Emacs的批评者指出Emacs在填充段落时的表现不如其他软件。Emacs虽然提供了auto-fill-mode，但是这只在当前行生效，而且只有当超过“右边距”并且插入空格时才会触发。在删除字符时并不会触发；除了当前行之外的行都不会被填充；并且在行的左边插入文字而使右边的文字超过右边距时也不会触发。
+
+作为Emacs狂热者，对于像neplus ultra这样的编辑器的支持者们你可以给出下面的三个答复之一：
+1. 像动态段落填充这种华丽的特性只能被用来掩饰这个软件其他不如Emacs的地方（你可以根据所需列出来）。
+2. 你认为内容要比格式更重要，所以不需要自动的段落填充，当你觉得自己需要时，只需要简单的按下M-q来触发fill-paragraph就好了。
+3. 做一点简单的Lisp hacking，Emacs就可以像别的程序那样完成动态段落填充了（然后你也可以问一下他们的编辑器是否也能模仿Emacs的这种行为）。
+
+本章是关于选择3的。
+
+为了确保当前段落一直正确地填充，我们需要在每次执行插入和删除后进行一次检查。这在计算上可能开销很大，所以我们希望能够对其进行开关；由于并不是所有buffer都需要这个功能，因此当它打开时，我们只希望它在当前buffer生效。
+
+* 模式
+Emacs使用模式这个概念来封装一系列编辑行为。换句话说，使用不同的模式，Emacs在buffers里的表现是不同的。举一个小例子，在Text模式中TAB键插入一个ASCII的制表符，而在Emacs Lisp模式中这将会通过插入或者删除空格来将代码缩进到正确的列上。再举一个例子，当你在Emacs Lisp模式的buffer里执行命令indent-for-comment时，你将会得到一个以Lisp注释符“;”开头的空注释。而当你在C模式的buffer里，你得到的是C语言的注释/* */。
+
+每个buffer总是属于一个主模式（major mode）。主模式指定了buffer用于某种特定类型的编辑行为，例如Text、Lisp或者C。名为Fundamental的主模式并不为特定类型的编辑存在，你可以认为它是一种空模式。通常buffer的主模式的选择是根据你访问的文件的名称，或者buffer中的一些设置进行的。你可以通过执行模式的命令来改变主模式，例如text-mode、emacs-lisp-mode、或者c-mode。[[[7-27][27]]]当你这么做之后，buffer就使用新的主模式替换之前的模式了。
+
+与此不同的是，子模式向buffer里添加一系列功能而并不完全改变buffer原本的编辑方式。子模式可以与主模式以及其他子模式单独打开关闭。buffer除了主模式之外还可能在0、1、2、3或者多个子模式之下。举几个子模式的例子：auto-save-mode，使buffer在编辑的时候每隔一段时间就存储到特定名称的文件里（当系统崩溃时这些缓存文件就可以避免编辑的丢失）；font-lock-mode，根据当前buffer的语法以不同颜色显示文本（如果显示器支持）；line-number-mode，在buffer的模式栏里显示当前编辑的行号（在底部）。
+
+通常，如果一个包需要在不同的buffer中分别打开与关闭，那么它就应该被实现为子模式而不是主模式。这与我们上一部分中所描述的段落填充的需求是一致的，因此可以知道我们的段落填充功能应该是一个子模式。我们将在[[file:9.org][第九章]]中再关注主模式的实现。
+
+* 定义子模式
+在定义子模式时需要有下面这些步骤。
+1. 选择一个名字。我们的模式名称为refill。
+2. 定义一个名为name-mode的变量。使其成为buffer局部的。buffer的子模式在这个变量的值为非空的情况下表示打开，否则关闭。
+    #+BEGIN_SRC emacs-lisp
+      (defvar refill-mode nil
+        "Mode variable for refill minor mode.")
+      (make-variable-buffer-local 'refill-mode)
+    #+END_SRC
+3. 定义一个名为name-mode的命令。[[[7-28][28]]]这个命令应该具有一个可选参数。如果不提供参数，它将打开或关闭模式。如果提供参数，且参数的prefix-numeric-value大于0则打开模式，否则关闭模式。也就是说，C-u M-x name-mode RET总是执行打开，而C-u - M-x name-mode RET总是关闭模式（查看[[file:2.org][第2章]]中的[[file:2.org::*补充：原始的前置参数][补充：原始的前置参数]]获得更多信息）。下面是开关Refill模式的命令定义：
+    #+BEGIN_SRC emacs-lisp
+      (defun refill-mode (&optional arg)
+        "Refill minor mode."
+        (interactive "P")
+        (setq refill-mode
+              (if (null arg)
+                  (not refill-mode)
+                (> (prefix-numeric-value arg) 0)))
+        (if refill-mode
+            code for turning on refill-mode
+            code for turning off refill-mode))
+    #+END_SRC
+
+   setq语句看起来有些奇怪，但这在子模式定义中是一种常见的格式。如果arg为nil（没有前置参数），它会将refill-mode设置为(not refill-mode)--也就是refill-mode之前值的相反值，t或者nil。否则，它将refill-mode设置为
+    #+BEGIN_SRC emacs-lisp
+      (> (prefix-numeric-value arg) 0)
+    #+END_SRC
+    
+   的值，当arg的值为大于0的数字时为t，否则为nil。
+4. 向minor-mode-alist中添加一项，它是一个这种形式的assoc list（查看[[file:6.org][第六章]]中[[file:6.org::*其他有用的列表函数][其他有用的列表函数]]章节）：
+    #+BEGIN_SRC emacs-lisp
+      ((model string1)
+       (mode2 string2)
+       ...)
+    #+END_SRC
+    
+   新的项会将name-mode关联到一个将会在buffer的模式栏中使用的短字符串。模式栏（mode line）是每个Emacs窗口底部的信息栏；它会显示每个buffer的主模式名称以及其他处于激活状态的子模式名称，以及其他的一些信息。描述子模式的短字符串应该以空格开头，因为它会追加到信息栏的模式相关部分。下面的例子展示了对于Refill模式该如何做：
+    #+BEGIN_SRC emacs-lisp
+      (if (not (assq 'refill-mode minor-mode-alist))
+          (setq minor-mode-alist
+                (cons '(refill-mode " Refill")
+                      minor-mode-alist)))
+    #+END_SRC
+
+    （最外层的if保证了(refill-mode " Refill")不会二次添加到minor-mode-alist里，例如当两次加载refill.el。）这让使用了refill-mode的buffer的模式栏看起来是这样的：
+    #+BEGIN_SRC emacs-lisp
+      --**-Emacs: foo.txt (Text Refill) --L1--Top---
+    #+END_SRC
+
+    在定义子模式时还有一些其他步骤在这个例子中没涉及。例如，子模式可能有一个keymap，一个与之关联的语法表(syntax table)，或者一个abbrev表，但是因为refill-mode用不到，我们这里暂且忽略。
+
+* Mode Meat
+现在我们有了基本结构，让我们开始定义Refill mode的内容。
+
+我们已经弄清了refill-mode的基本特性：每次插入和删除都必须保证当前段落的正确缩进。当buffer改变时触发代码执行的正确做法，你可以回想一下[[file:4.org][第四章]]，就是当refill-mode激活时向钩子变量after-change-functions添加一个函数(关闭时移除)。我们将会添加一个refill函数(还未定义)来确保当前段落会被正确缩进。
+#+BEGIN_SRC emacs-lisp
+  (defun refill-mode (&optional arg)
+    "Refill minor mode."
+    (interactive "P")
+    (setq refill-mode
+          (if (null arg)
+              (not refill-mode)
+            (> (prefix-numeric-value arg) 0)))
+    (make-local-hook 'after-change-functions)
+    (if refill-mode
+        (add-hook 'after-change-functions 'refill nil t)
+      (remove-hook 'after-change-functions 'refill t)))
+#+END_SRC
+
+add-hook和remove-hook后面的参数保证了我们修改的只是buffer局部的after-change-functions。不管在调用这个函数时refill-mode有没有打开，我们都调用(make-local-hook 'after-change-functions)来使其变为buffer局部的。这是因为在这两种情况--打开refill-mode或关闭--我们都需要对每个buffer单独操作after-change-functions。总是先调用make-local-hook是最简单的方式，而且如果一个钩子变量已经是buffer局部的，再次调用也没有什么副用。
+
+现在剩下的事情就是定义refill函数了。
+
+** Naive的首次尝试
+就像第四章中提到的，钩子变量after-change-functions有些特殊，因为其中的函数需要三个参数(普通的钩子函数通常不需要参数)。三个参数指明了在after-change-functions执行之前，buffer的改变发生的地方。
++ 改变开始处，称为start
++ 改变结束处，称为end
++ 影响的文本长度，称为len
+
+start和end指向buffer改变发生之后的位置。len指向与改变发生之前相比影响的文本长度。在插入发生之后，len为0(因为并不影响之前buffer中的文本)，而新插入的文本在start和end之间。在删除发生之后，len为删除的文本的长度，文本已经被丢掉，而start和end为同一个数字，因为删除文本使它们指向了同一处，也就是删除内容的两端合二为一了。
+
+现在我们知道了refill的参数应该是什么，我们可以做出一个朴素的尝试来对其进行定义：
+#+BEGIN_SRC emacs-lisp
+  (defun refill (start end len)
+    "After a text change, refill the current paragraph."
+    (fill-paragraph nil))
+#+END_SRC
+
+这种实现是非常不严谨的，因为每次按键都调用fill-paragraph代价太大了！它还有一个问题，就是每次向行尾添加一个空格时，fill-paragraph都会把它立即删除--它会在缩进的时候自动把尾部空格删除掉--因此，当你打字的时候，你将会花费最多的时间在行尾，唯一向两个单词间插入空格的方式就是先把两个单词打出来，likethis，然后向其中插入一个空格。但是这个尝试证明了我们的理论，并且给了我们一个可以对其进行改进的起点。[[[7-29][29]]]
+
+** 限制refill
+要优化refill，让我们先对问题进行一下分析。首先，是否每次整个段落都需要重排？
+
+不。当插入和删除文本时，只有被影响的行和下面的行需要重排。前面的行并不需要。如果插入文本，行可能会变得太长，有些文本会挤入下一行(这可能会导致下一行也变得太长，因此这个过程是会重复的)。如果文本被删除，文本可能会变得太短，后续的行需要拿出一些文本来填补(这可能会导致下一行变得太短，因此这个过程也是会重复的)。所以变化并不会影响前面的行。
+
+实际上，有一种情况的变化会影响前面一行。考虑下面这一段：
+#+BEGIN_SRC text
+  Glitzy features like on-the-fly filling of paragraphs are
+  needed only to hide the programs's many inadequacies
+  compared to Emacs
+#+END_SRC
+
+假设我们删除第三行开头处的"compared"：
+#+BEGIN_SRC text
+  Glitzy features like on-the-fly filling of paragraphs are
+  needed only to hide the programs's many inadequacies
+  to Emacs
+#+END_SRC
+
+单词"to"现在可以移动到上一行的末尾处，就像这样：
+#+BEGIN_SRC text
+  Glitzy features like on-the-fly filling of paragraphs are
+  needed only to hide the programs's many inadequacies to 
+  Emacs
+#+END_SRC
+
+前面的例子应该可以告诉你前面的一行也需要重排--并且只有当前的行的第一个词被缩短或者删除的时候才会出现。
+
+所以我们可以将段落重排操作限制为当前行，可能会影响前一行，以及后续的行。我们不使用fill-paragraph，因为它会自己判断段落边界，相反的我们自己选择"段落边界"，然后使用fill-region。
+
+我们为fill-region选择的边界应该包含段落中整个受影响的部分。对于插入，左边界就是简单的start，也就是插入的点，右边界是当前段落的结尾。对于删除，左边界是前一行的开始(也就是，包含start的前一行)，右边界是行末尾。所以下面就是我们新的refill函数的概要：
+#+BEGIN_SRC emacs-lisp
+  (defun refill (start end len)
+    "After a text change, refill the current paragraph."
+    (let ((left (if this is an insertion
+                    start
+                    beginning of previous line))
+          (right end ofparagraph))
+      (fill-region left right ...)))
+#+END_SRC
+
+对于插入，完善这个函数是很简单的。之前说过，调用refill时，len为0则表示插入，非0则表示删除。
+#+BEGIN_SRC emacs-lisp
+  (defun refill (start end len)
+    "After a text change, refill the current paragraph."
+    (let ((left (if (zerop len) ; len是否为0？
+                    start
+                  beginning of previous line))
+          (right end ofparagraph))
+      (fill-region left right ...)))
+#+END_SRC
+
+要计算前一行的开始，我们先要把光标移动到start，然后将光标移动到前一行的末尾(很奇怪，这可以通过(beginning-of-line 0)来得到)，然后使用(point)来得到这个值，所有这些都放在save-excursion里：
+#+BEGIN_SRC emacs-lisp
+  (defun refill (start end len)
+    "After a text change, refill the current paragraph."
+    (let ((left (if (zerop len)
+                    start
+                  (save-excursion
+                    (goto-char start)
+                    (beginning-of-line 0)
+                    (point))))
+                (right end ofparagraph))
+          (fill-region left right ...)))
+#+END_SRC
+
+我们可以对段落的结束采用类似的计算方式，但是我们可以更方便的利用fill-region的特性：它将为我们找到段落结尾。fill-region的第五个参数(有两个必要参数和三个可选参数)，如果非空，将会告诉fill-region一直重排到下一段之前。所以实际上我们并不需要计算right。
+
+我们新版本的refill还没完成。我们必须首先解决fill-region会将光标放置到影响区域的末尾的问题。显然每次输入都把光标移动到段落末尾是不可接受的！将fill-region的调用包装在save-excursion里会解决这个问题。
+#+BEGIN_SRC emacs-lisp
+  (defun refill (start end len)
+    "After a text change, refill the current paragraph."
+    (let ((left (if (zerop len)
+                    start
+                  (save-excursion
+                    (goto-char start)
+                    (beginning-of-line O)
+                    (point))))
+          (save-excursion
+            (fill-region left end nil nil t)))))
+#+END_SRC
+
+(fill-region的第二个参数被忽略了，因为我们使用了它找寻段落结尾的特性。我们传递end只是因为这很方便而且对于读者来说并不是完全无意义的。)
+
+** 小调整
+好的，上面的只是基本的想法，还剩下许多事情要做。例如，当计算left时，如果前一行已经不在这个段落那么就没有必要再计算前一行了。所以我们应该得到行的开始以及前一行的开始，然后使用更大的那个值。
+#+BEGIN_SRC emacs-lisp
+  (defun refill (start end len)
+    "After a text change, refill the current paragraph."
+    (let ((left (if (zerop len)
+                    start
+                  (max (save-excursion
+                         (goto-char start)
+                         (beginning-of-line 0)
+                         (point))
+                       (save-excursion
+                         (goto-char start)
+                         (backward-paragraph 1)
+                         (point))))))
+      (save-excursion
+        (fill-region left end nil nil t))))
+#+END_SRC
+
+(函数max会返回参数里更大的那个。)
+
+现在我们有三个地方调用了save-excursion，而这是个代价有点大的函数。更好的做法是将其中两个合并在一起然后计算两个需要的值。
+#+BEGIN_SRC emacs-lisp
+  (defun refill (start end len)
+    "After a text change, refill the current paragraph."
+    (let ((left (if (zerop len)
+                    start
+                  (save-excursion
+                    (max (progn
+                           (goto-char start)
+                           (beginning-of-line 0)
+                           (point))
+                         (progn
+                           (goto-char start)
+                           (backward-paragraph 1)
+                           (point)))))))
+      (save-excursion
+        (fill-region left end nil nil t))))
+#+END_SRC
+
+下一步，回想我们关于重排前一行的观察:"前面的一行也需要重排--并且只有当前行的第一个词被缩短或者删除的时候才会出现。" 但是在我们的代码里，我们在删除的时候每次都会计算前一行。让我们看看在删除发生在非第一个词之外的地方时能否避免这个计算。
+
+我们可以通过将下面的代码
+#+BEGIN_SRC emacs-lisp
+  (if (zerop len)
+      start
+    find previous line)
+#+END_SRC
+
+修改为
+#+BEGIN_SRC emacs-lisp
+  (if (or (zerop len)
+          (not (before-2nd-word-p start)))
+      start
+    find previous line)
+#+END_SRC
+
+来实现。before-2nd-word-p是一个用来告诉它的参数，一个buffer位置，是否出现在第二个单词之前的函数。
+
+现在我们必须写出before-2nd-word-p。它应该找出当前行的第二个单词的位置，并且跟它的参数进行比较。
+
+如何才能找到行中的第二个单词呢？
+
+我们可以到行的开始，然后调用forward-word来跳过第一个单词。这个方法的问题是我们得到的是第一个单词的末尾，而非第二个单词的开头，它们之间可能有很多空格。
+
+我们可以到行的开始，然后调用forward-word两次(实际上，我们可以调用forward-word一次，传入参数2)，然后调用backward-word，这就会把我们置于第二个单词的开头。这不错，但是我们认识到forward-word和backward-word定义的"word"跟我们需要的定义并不相同。根据这些函数，标点符号(例如破折号)会分开单词，所以(例如)"forward-word"是两个单词。这对我们来说并不好，因为我们的函数只认为被空格分割才算两个单词。
+
+我们可以到行的开始，然后跳过所有非空格的字符(第一个单词)，然后跳过所有空格字符(第一个单词之后的空格)，然后我们就在第二个单词的开头了。这听起来好一些；让我们试一下。
+#+BEGIN_SRC emacs-lisp
+  (defun before-2nd-word-p (pos)
+    "Does POS lie before the second word on the line?"
+    (save-excursion
+      (goto-char pos)
+      (beginning-of-line)
+      (skip-chars-forward "^ ")
+      (skip-chars-forward " ")
+      (< pos (point))))
+#+END_SRC
+
+函数skip-chars-forward非常实用。它会向前移动光标，直到遇到一个你所指定的字符集里包含或者不包含的字符。字符集的工作方式跟正则表达式中的方括号语法一样(参考[[file:4.org][第四章]]中的[[file:4.org::*正则表达式][正则表达式]]中的规则3).所以
+#+BEGIN_SRC emacs-lisp
+  (skip-chars-forward "^ ")
+#+END_SRC
+
+表示"跳过不是空格的所有字符"，而
+#+BEGIN_SRC emacs-lisp
+  (skip-chars-forward " ")
+#+END_SRC
+
+表示"跳过所有空格"。
+
+这个方式的一个问题就是当一行里没有空格时，
+#+BEGIN_SRC emacs-lisp
+  (skip-chars-forward "^ ")
+#+END_SRC
+
+将会直接跳到下一行！我们不希望这样。所以我们通过向第一个skip-chars-forward添加一个换行符来确保我们不会略过太多：
+#+BEGIN_SRC emacs-lisp
+  (skip-chars-forward "^ \n") ; 跳到第一个空格或者换行符
+#+END_SRC
+
+另一个问题是有时tab("\t")制表符也有可能用来像空格一样分割单词。所以我们必须这样来修改我们的两个skip-chars-forward调用：
+#+BEGIN_SRC emacs-lisp
+  (skip-chars-forward "^ \t\n")
+  (skip-chars-forward " \t")
+#+END_SRC
+
+还有其他的类似空格和制表符一样的被认为是空格的字符吗？也许有。换页符(ASCII 12)通常被认为是空格。而如果buffer使用了非ASCII的编码，有可能还有一些其他的字符会被认为是分隔单词的空格。例如，对于Latin-1这样8位字符编码，字符数字32和160都是空格--虽然160表示"非折断空格"，即行不应该在此处折断。
+
+与其我们关心这些细节，为什么不让Emacs自己判断呢？这就是语法表（syntax tables）发挥作用的时候了。语法表是一个与模式关联的将字符对应到"语法类别(syntax classes)"的映射表。类别包括"word constituent"(通常包括单词、省略号，有时包括数字)，"balanced brackets"(通常为(), [], {}, 有时包括<>)，"comment delimiters"(对于Lisp mode来说就是“;”， 对于C mode则为/*和*/)，"punctuation"，以及当然的，"whitespace"。
+
+语法表被一些像forward-word和backward-word这样的函数用来找出一个词的类别是什么。因为不同的buffer有不同的语法表，同一个词的的定义可能会各有不同。我们将会使用语法表来找出在当前buffer中哪些字符被认为是空格。
+
+我们所需要做的就是将我们两次的skip-chars-forward调用替换为skip-syntax-forward，就像这样：
+#+BEGIN_SRC emacs-lisp
+  (skip-syntax-forward "^ ")
+  (skip-syntax-forward " ")
+#+END_SRC
+
+对于每个语法类别，都有一个对应的code letter。[[[7-30][30]]]空格是"whitespace"的code letter，所以上面的两行表示"跳过所有非空格"和"跳过所有空格"。
+
+不幸的是，前面的skip-syntax-forward调用也有跳到下一行的问题。更坏的是，这次我们不能简单的将\n添加到skip-syntax-forward的参数里，因为\n并不是换行符语法类别的code letter。实际上，在不同buffer里的换行字符的code letter是不同的。
+
+我们能做的是请求Emacs告诉我们换行字符的code letter是什么，然后使用这个结果来构建skip-syntax-forward的参数：
+#+BEGIN_SRC emacs-lisp
+  (skip-syntax-forward (concat "^ "
+                               (char-to-string
+                                (char-syntax ?\n))))
+#+END_SRC
+
+函数char-syntax会返回字符的code letter。然后我们使用char-to-string将其转换为一个字符串并且添加到"^ "。
+
+这是before-2nd-word-p的最终形态：
+#+BEGIN_SRC emacs-lisp
+  (defun before-2nd-word-p (pos)
+    "Does POS lie before the second word on the line?"
+    (save-excursion
+      (goto-char pos)
+      (beginning-of-line)
+      (skip-syntax-forward (concat "^ "
+                                   (char-to-string
+                                    (char-syntax ?\n))))
+      (skip-syntax-forward " ")
+      (< pos (point))))
+#+END_SRC
+
+记住计算before-2nd-word-p的代价可能会超过它本身想提供的好处(即，在refill中避免调用end-of-line和backward-paragraph)。如果你感兴趣的话，你可以试着使用性能分析器(参见[[file:C.org][附录C]])来查看哪个版本的refill更快，是使用before-2nd-word-p的还是不使用的。
+
+** 排除不希望的重排
+在每次插入发生的时候我们并不需要重排段落。一个微小的并不会将任何文本推到右边界的插入并不会影响除它之外的任何其他行，所以如果当前改变是一次插入，并且start和end在同一行，并且行的末尾并没有超过右边界，那么我们没有必要调用fill-region。
+
+这意味着我们需要把fill-region的调用包裹在一个if里，如下所示：
+#+BEGIN_SRC emacs-lisp
+  (if (and (zerop len) ; 如果是插入...
+           (same-line-p start end) ; ...并且没有跨行
+           (short-line-p end)) ; ...并且行仍然够短
+      nil ; 那么什么都不做
+    (save-excursion
+      (fill-region ...))) ; 否则，refill
+#+END_SRC
+
+我们现在必须定义same-line-p和short-line-p。
+
+现在看来编写same-line-p应该很简单。我们只需要简单的检测end是否在start和行尾之间就可以了。
+#+BEGIN_SRC emacs-lisp
+  (defun same-line-p (start end)
+    "Are START and END on the same line?"
+    (save-excursion
+      (goto-char start)
+      (end-of-line)
+      (<= end (point))))
+#+END_SRC
+
+编写short-line-p也差不多同样明了。用于控制右边界的变量称为fill-column，而current-column返回一个点的横座标。
+#+BEGIN_SRC emacs-lisp
+  (defun short-line-p (pos)
+    "Does line containing POS stay within 'fill-column'?"
+    (save-excursion
+      (goto-char pos)
+      (end-of-line)
+      (<= (current-column) fill-column)))
+#+END_SRC
+
+下面是refill的新的定义：
+#+BEGIN_SRC emacs-lisp
+  (defun refill (start end len)
+    "After a text change, refill the current paragraph."
+    (let ((left (if (or (zerop len)
+                        (not (before-2nd-word-p start)))
+                    start
+                  (save-excursion
+                    (max (progn
+                           (goto-char start)
+                           (beginning-of-line 0)
+                           (point))
+                         (progn
+                           (goto-char start)
+                           (backward-paragraph 1)
+                           (point)))))))
+      (if (and (zerop len)
+               (same-line-p start end)
+               (short-line-p end))
+          nil
+        (save-excursion
+          (fill-region left end nil nil t)))))
+#+END_SRC
+
+** 尾空格
+我们还是没有解决fill-region会删除每行最后尾部空格的问题，也就是当你进行编辑的时候，你需要输入likethis，然后将光标移动到中间再插入一个空格！
+
+我们的策略是当光标在行末空格的后面，或者光标在行末空格之间的时候不进行refill。这个条件可以被实现为
+#+BEGIN_SRC emacs-lisp
+  (and (eq (char-syntax (preceding-char))
+           ?\ )
+       (looking-at "\\s *$"))
+#+END_SRC
+
+当光标前的字符为空格而光标后面只有空格的时候为真。让我们仔细看一下它。
+
+首先我们计算(char-syntax (preceding-char))，这将会得到光标前面的字符的语法类别，然后跟'?\'进行比较。这个奇怪的结构--问号，斜杠，空格--是Emacs Lisp中书写空格字符的方式。回想空格字符是"whitespace"语法类别的code letter，所以这个是用来检测前面的字符是否为空格的。
+
+下一步我们调用looking-at，一个用来检测光标后的文本是否符合一个给定的正则表达式的函数。这个例子里的正则表达式是\s *$(之前说过，在Lisp字符串里斜杠需要加倍)。在Emacs Lisp正则表达式里，\s表示引入基于当前buffer语法表的一个语法类别。\s之后的字符表示使用哪个语法类别。在这个例子里，也就是空格，表示"whitespace"。所以'\s '表示"匹配一个whitespace字符"，而\s *$表示"匹配0个或多个whitespace字符，直到行末尾"。
+
+我们为refill的最后版本添加上这个检测。
+#+BEGIN_SRC emacs-lisp
+  (defun refill (start end len)
+    "After a text change, refill the current paragraph."
+    (let ((left (if (or (zerop len)
+                        (not (before-2nd-word-p start)))
+                    start
+                  (save-excursion
+                    (max (progn
+                           (goto-char start)
+                           (beginning-of-line 0)
+                           (point))
+                         (progn
+                           (goto-char start)
+                           (backward-paragraph 1)
+                           (point)))))))
+      (if (or (and (zerop len)
+                   (same-line-p start end)
+                   (short-line-p end))
+              (and (eq (char-syntax (preceding-char))
+                       ?\ )
+                   (looking-at "\\s *$")))
+          nil
+        (save-excursion
+          (fill-region left end nil nil t)))))
+#+END_SRC
+
+考虑到效率因素，通常应该避免将函数放到after-change-hooks里，特别是像refill这种复杂的函数。如果你的电脑够快，你可能注意不到每次按键执行这个函数的时间消耗；否则，你可能会发现你的Emacs变得反应缓慢。在下一章，我们将会找到一种方式来加速它。
+
+<<7-27>>[27]. 除了我列出的这几个外还有很多其他的主模式。他们能用来编辑HTML文件、LATEX文件、ASCII文件、troff文件、二进制文件、目录等等等等。而且，主模式也用来实现许多例如新闻阅读或者网页浏览这种非编辑特性。试着输入M-x finder-by-keyword RET来浏览Emacs具有的模式和其他插件。
+<<7-28>>[28]. 函数和变量的名称可以相同；它们不会冲突。
+<<7-29>>[29]. 有的读者可能已经会指出当调用fill-paragraph的时候会改变buffer，而这会导致after-change-functions再次执行，再次递归的触发refill并且可能会导致无限循环，或者说是无限递归。说的不错，但是Emacs会在after-change-functions中的函数执行时重置它来避免这个问题。
+<<7-30>>[30]. 要了解更多关于语法表的细节，执行describe-functions查看modify-syntax-entry。
