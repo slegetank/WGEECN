@@ -26,7 +26,7 @@ facilities to run compilation subprocesses and send and receive mail; many hacke
 of their tube time inside it. Other variants include GOSMACS, CCA EMACS, UniPress EMACS,
 Montgomery EMACS, jove, epsilon, and MicroEMACS.
 
-书中的示例全部在GNU Emacs 19.34以及20.1版本的一个预发行版本上编写以及测试通过。参看附录D，获得和编译Emacs，获取从哪里找到Emacs版本的信息。
+书中的示例全部在GNU Emacs 19.34以及20.1版本的一个预发行版本上编写以及测试通过。参看[[file:D.org][附录D]]，获得和编译Emacs，获取从哪里找到Emacs版本的信息。
 
 我以自身使用Emacs的开发经历作为书中示例选择的指导。书中的示例实际上讲述了我自己的Emacs的使用经历的演变。例如，我在最初使用Emacs的时候就知道一定要让该死的*BACKSPACE*键不要触发在线帮助！也许你也有这个问题。解决这个问题将作为下一章的第一个例子。
 
@@ -38,7 +38,7 @@ Montgomery EMACS, jove, epsilon, and MicroEMACS.
 
 如果你不熟悉Emacs的基本概念，请阅读Debra Cameron，Bill Rosenblatt， 和 Eric Raymond所写的《Learning GNU Emacs, 2nd edition》。你也可以使用Emacs自带的在线帮助，特别是info手册，也就是《The GNU Emacs Manual》。如果你希望更全面的理解Lisp编程，我推荐阅读David Touretzky的《Common Lisp: A Gentle Introduction to Symbolic Computation》。
 
-本书不是Emacs Lisp的参考手册；实际上也并没有特别深入的讲解语言方面的知识。主题的选择更倾向于更有教学意义而不是涵盖所有范畴。在阅读时最好以从前往后的顺序阅读以得到最好的效果。Free Software Foundation发布的《The GNU Emacs Lisp Reference Manual》是这方面的权威。它有多种印刷本和电子版；详情参见附录D。
+本书不是Emacs Lisp的参考手册；实际上也并没有特别深入的讲解语言方面的知识。主题的选择更倾向于更有教学意义而不是涵盖所有范畴。在阅读时最好以从前往后的顺序阅读以得到最好的效果。Free Software Foundation发布的《The GNU Emacs Lisp Reference Manual》是这方面的权威。它有多种印刷本和电子版；详情参见[[file:D.org][附录D]]。
 
 * 什么是Emacs？
 认为Emacs仅仅是一个可编程的文本编辑器是完全错误的。同样的说它是C语言编辑器也是不对的。虽然看起来很较真，但实际上编写C语言和编写文本是两种完全不同的工作，Emacs通过变成两个不同的编辑器来包容这种差异。当编写代码时，你不会关心段落结构。当编写文本时，你不会关心自动缩进。
