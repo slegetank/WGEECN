@@ -339,5 +339,5 @@ define-derived-mode的语法是
 <<9-35>>[35]. 并没有专门用来匹配段落开始的正则变量。作为替代的，段落的开始就是符合paragraph-start但是不符合paragraph-separate的行。
 <<9-36>>[36]. 以一个新行“开始”的行当然是一个空行。
 <<9-37>>[37]. 可以使用一个称为overriding-local-map的变量稍微更改一下这个优先级，但是这只在非常少数的情况下才有用。
-<<9-38>>[38]. 函数current-global-map会返回当前的全局键位表。（有可能通过use-global-keymap改变了全局表，虽然这很少出现。）因此，(global-set-key ...)等价于(define-key (current-global-map) ...)
+<<9-38>>[38]. 函数current-global-map会返回当前的全局键位表。（有可能通过use-global-keymap改变了全局表，虽然这很少出现。）因此，(global-set-key ...)等价于(define-key (current-global-map) ...)。
 <<9-39>>[39]. Narrowing不会嵌套。如果将buffer narrow到了一个区域，然后再把这个区域narrow到更小的区域，C-x n w仍然会恢复到整个buffer（也就是说，它不会恢复到前一次narrowing）。
