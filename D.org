@@ -1,0 +1,50 @@
+#+TITLE: 附录D 分享你的代码
+#+OPTIONS: \n:\n ^:nil
+
+* 在本章：
+*准备源文件*
+*文档*
+*版权*
+*发布*
+
+如果你写了一个buling buling的新Emacs模式，或者一个特性，或者一个游戏，或者其他什么，你应该秉承自由软件的精神与别人分享它，这可以通过向gnu.emacs.sources新闻组发布来实现。这个附录会向你描述分享Emacs Lisp代码的一些惯例。
+
+* 准备源文件
+在你向世界分享你的代码之前，最好对代码进行完整的测试，修复所有你遇到过的bug。通过[[file:C.org][附录C]]学习更多关于测试和调试的信息。
+
+在代码按照你的预想工作之后，你应该向每个源文件的头部添加一个注释块来描述这个文件，它的版权（如下所示），它的作者，它的版本信息，以及其他注释。下面是一个典型的开始：
+#+BEGIN_SRC emacs-lisp
+  ;;; foretell.el -- predict what the user will do
+  ;;; Copyright 1996 by Mortimer J. Hacker <mjh@mjh.net>
+  ;;; Foretell is free software distributed under the terms
+  ;;; of the GNU General Public License, version 2. For details,
+  ;;; see the file COPYING.
+  ;;; This is version 1.7 of 5 August 1996.
+  ;;; For more information about Foretell, subscribe to the
+  ;;; Foretell mailing list by sending a message to
+  ;;; <foretell-request@mjh.net>.
+#+END_SRC
+
+文件的最后应该有这么一行：
+#+BEGIN_SRC emacs-lisp
+  ;;; foretell.el ends here
+#+END_SRC
+
+这会在文件用email发出的时候帮助找到文件的边界（后面可能跟着签名和其他内容）。
+
+如果你的包含有多个文件，通常要创建一个README文件来描述这个包，里面的文件，以及如何进行安装；然后使用shar程序把所有的文件整合进一个单独的发布文件里。如果你没有shar，你可以获取到一个GNU版本的，具体参照[[file:E.org][附录E]]。
+
+* 文档
+最起码的，你的源文件应该在头部的注释块中有足够的注释，这样用户就能够明白这个文件的作用。如果你的代码是自解释的就更好了--也就是说，在你的函数和变量定义时恰当的使用了文档字符串。
+
+如果你希望更严肃地编写文档，你可能会考虑为你的包创建一个Textinfo手册。Textinfo是GNU系统的标准文档格式。Textinfo文件可以通过makeinfo程序处理生成Info文件，这种树形的文件可以通过Emacs的Info模式来浏览。Textinfo文件还能通过TEX排版系统处理来生成良好格式的可打印手册。
+
+一个很不错的关于如何编写Textinfo手册的Info手册包含在GNU textinfo包里，其中还包含着makeinfo。关于如何获取它以及TEX，参照[[file:E.org][附录E]]。
+
+* 版权
+你可以自由的对你的代码设定任何你想要的版权条款，当然要合法。大多数Emacs Lisp包的作者选择让他们的软件遵循GNU General Public License，一种由自由软件基金会（Free Software Foudation）发起的特殊种类的版权以使它们的软件“自由（free，在权限上，而不是价格上）”。遵循GPL的软件会被确保自由访问，但这对于某些情况并不合适，例如你要把你的软件发布到公共领域（这时，其他人可以合法的拷贝你的软件，修改它，声明这是它自己的，贩售它，并且拒绝继续分发代码）。
+
+如果你希望让你的软件基于GPL（一种幽默的称之为使你的软件“copylefting”的过程），你需要把GPL的条款放入到你的源文件里，或者在一个单独的文件里（通常是COPYING）然后在你的每个源文件里引用它（参照本附录开头处的例子）。在Emacs中你可以通过按下M-x describe-copying RET来查看GPL。
+
+* 发布
+当你的软件已经添加完版权，做好了文档，测试并且调试过，你就可以使用你喜欢的新闻阅读器将你的软件发布到gnu.emacs.sources新闻组里了。确保为你的帖子在Subject:域添加一行有用的描述，并且确保新闻组的读者在有问题或者建议的时候知道如何联系你。注意，向gnu.emacs.sources发布任何除Emacs Lisp代码之外的东西都非常糟糕。对于非代码的发布，使用gnu.misc.discuss。

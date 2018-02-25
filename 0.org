@@ -15,30 +15,34 @@ O'REILLY
 
 答案是如果木匠和管钳工知道如何使自己的工具变得更好用的话，他们也会这么做。谁比他们自己更明白自己需要什么样的工具呢？但他们毕竟不是工具制作专家。另一方面，Emacs是一种特殊的工具：它是软件，它和使用它编写的软件并没有什么本质上的不同。Emacs的用户通常是程序员，而编写Emacs其实也就是编程。Emacs用户完全可以做自己的工具专家。
 
-这本书将使用一系列的实例由浅入深的教给你如何编写Emacs Lisp。我们将以向Emacs启动配置文件中添加简单的配置作为开始，在最后我们将会着手编写“主模式（major modes）”以及修改Emacs自己的“命令循环(command loop)”。在这个过程中我们将会学到变量，按键映射，交互式命令，buffers，窗口，处理I/O等。本书中所提到的Emacs特指GNU Emacs。有许多编辑器自称为Emacs。以下是权威的On-line Hacker Jargon File(version 4.0.0, 24-Jul-1996)所叙述的一点历史：
+这本书将使用一系列的实例由浅入深的教给你如何编写Emacs Lisp。我们将以向Emacs启动配置文件中添加简单的配置作为开始，在最后我们将会着手编写“主模式（major modes）”以及修改Emacs自己的“命令循环(command loop)”。在这个过程中我们将会学到变量，键位表，交互式命令，buffers，窗口，处理I/O等。本书中所提到的Emacs特指GNU Emacs。有许多编辑器自称为Emacs。以下是权威的On-line Hacker Jargon File(version 4.0.0, 24-Jul-1996)所叙述的一点历史：
 
-[Emacs] was originally written by Richard Stallman in TECO under ITS at the MIT Al lab; AI Memo
-554 described it as "an advanced, self-documenting, customizable, extensible real-time display
-editor." It has since been re-implemented any number of times, by various hackers, and versions exist
-that run under most major operating systems. Perhaps the most widely used version, also written by
-Stallman and now called "GNU EMACS" or GNUMACS, runs principally under UNIX. It includes
-facilities to run compilation subprocesses and send and receive mail; many hackers spend up to 80%
-of their tube time inside it. Other variants include GOSMACS, CCA EMACS, UniPress EMACS,
-Montgomery EMACS, jove, epsilon, and MicroEMACS.
+#+BEGIN_SRC text
+  [Emacs] was originally written by Richard Stallman in TECO under ITS at the MIT Al lab; AI Memo
+  554 described it as "an advanced, self-documenting, customizable, extensible real-time display
+  editor." It has since been re-implemented any number of times, by various hackers, and versions exist
+  that run under most major operating systems. Perhaps the most widely used version, also written by
+  Stallman and now called "GNU EMACS" or GNUMACS, runs principally under UNIX. It includes
+  facilities to run compilation subprocesses and send and receive mail; many hackers spend up to 80%
+  of their tube time inside it. Other variants include GOSMACS, CCA EMACS, UniPress EMACS,
+  Montgomery EMACS, jove, epsilon, and MicroEMACS.
+#+END_SRC
 
-书中的示例全部在GNU Emacs 19.34以及20.1版本的一个预发行版本上编写以及测试通过。参看[[file:D.org][附录D]]，获得和编译Emacs，获取从哪里找到Emacs版本的信息。
+书中的示例全部在GNU Emacs 19.34以及20.1版本的一个预发行版本上编写以及测试通过。参看[[file:E.org][附录E]]，获取从哪里找到Emacs版本的信息。
 
-我以自身使用Emacs的开发经历作为书中示例选择的指导。书中的示例实际上讲述了我自己的Emacs的使用经历的演变。例如，我在最初使用Emacs的时候就知道一定要让该死的*BACKSPACE*键不要触发在线帮助！也许你也有这个问题。解决这个问题将作为下一章的第一个例子。
+我以自身使用Emacs的开发经历作为书中示例选择的指导。书中的示例实际上讲述了我自己的Emacs使用经历的演变。例如，我在最初使用Emacs的时候就知道一定要让该死的*BACKSPACE*键不要触发在线帮助！也许你也有这个问题。解决这个问题将作为下一章的第一个例子。
 
-在我使用了Emacs一小段时间之后，我发现自己需要许多处理光标移动的快捷键。就我所知，使用Emacs提供的原生功能就可以轻松对其定制。我们将会在《第二章，简单的新命令》中看到一些这样的例子。这之后我需要一种方法来避免我经常遇到的输入错误：我想要按下*CONTROL-b*，但实际上常常按下的却是*CONTROL-v*。我本想让光标向左移动一点，却向下移动了好几屏。在《第三章，协作命令》中你将会看到这也很容易进行优化。当我开始处理不同格式的文件时，我需要特定的工具来处理特定格式的文件。我们将会在《第九章，主模式》中看到一些这样的例子。除了每章开始解决问题时提出的最初的例子之外，我们还会看到一些别的简单例子，每个例子都有自己的章节。每个章节都会提出一些需要使用Emacs Lisp解决的问题，然后展示出一个或一些方法来解决这些问题。然后，就像现实中的自定义行为都要变得更实用、更通用，我们通常会在前往下一个主题前对其进行一到两次改进。
+在我使用了Emacs一小段时间之后，我发现自己需要许多处理光标移动的快捷键。就我所知，使用Emacs提供的原生功能就可以轻松对其定制。我们将会在[[file:2.org][第二章]]中看到一些这样的例子。这之后我需要一种方法来避免我经常遇到的输入错误：我想要按下*CONTROL-b*，但实际上常常按下的却是*CONTROL-v*。我本想让光标向左移动一点，却向下移动了好几屏。在[[file:3.org][第三章]]中你将会看到这也很容易进行优化。当我开始处理记录着很多巧妙的谚语的文件时，我需要特定的工具来处理特定格式的文件。我们将会在[[file:9.org][第九章]]中看到一些这样的例子。
+
+除了每章开始解决问题时提出的最初的例子之外，我们还会看到一些别的简单例子，每个例子都有自己的章节。每个章节都会提出一些需要使用Emacs Lisp解决的问题，然后展示出一个或一些方法来解决这些问题。然后，就像现实中的扩展都要变得更实用、更通用，我们通常会在前往下一个主题前对其进行一到两次改进。
 
 每个例子都基于前面的例子，并且带入一些自己的新东西。在本书的最后，我们将覆盖大部分Emacs Lisp编程的概念并且讨论如何使用在线文档和其他信息来帮你更快的使用Emacs Lisp来满足你自己的需求。俗话说得好：授人以鱼不如授人以渔。
 
 这本书假设你熟悉编程并且正在使用Emacs。如果你熟悉Lisp编程语言中的一些方言（Emacs Lisp也是其中一种）将会有帮助，但不是必要。通过我们每个章节中使用的例子，Lisp编程的要领将会很快很容易的理清。你也可以参考附录B，它简要的描述了Lisp的基本知识。
 
-如果你不熟悉Emacs的基本概念，请阅读Debra Cameron，Bill Rosenblatt， 和 Eric Raymond所写的《Learning GNU Emacs, 2nd edition》。你也可以使用Emacs自带的在线帮助，特别是info手册，也就是《The GNU Emacs Manual》。如果你希望更全面的理解Lisp编程，我推荐阅读David Touretzky的《Common Lisp: A Gentle Introduction to Symbolic Computation》。
+如果你不熟悉Emacs的基本概念，请阅读Debra Cameron，Bill Rosenblatt，和Eric Raymond所写的《Learning GNU Emacs, 2nd edition》。你也可以使用Emacs自带的在线帮助，特别是info手册，也就是《The GNU Emacs Manual》。如果你希望更全面的理解Lisp编程，我推荐阅读David Touretzky的《Common Lisp: A Gentle Introduction to Symbolic Computation》。
 
-本书不是Emacs Lisp的参考手册；实际上也并没有特别深入的讲解语言方面的知识。主题的选择更倾向于更有教学意义而不是涵盖所有范畴。在阅读时最好以从前往后的顺序阅读以得到最好的效果。Free Software Foundation发布的《The GNU Emacs Lisp Reference Manual》是这方面的权威。它有多种印刷本和电子版；详情参见[[file:D.org][附录D]]。
+本书不是Emacs Lisp的参考手册；实际上也并没有特别深入的讲解语言方面的知识。主题的选择更倾向于更有教学意义而不是涵盖所有范畴。在阅读时最好以从前往后的顺序阅读以得到最好的效果。自由软件基金会发布的《The GNU Emacs Lisp Reference Manual》是这方面的权威。它有多种印刷本和电子版；详情参见[[file:E.org][附录E]]。
 
 * 什么是Emacs？
 认为Emacs仅仅是一个可编程的文本编辑器是完全错误的。同样的说它是C语言编辑器也是不对的。虽然看起来很较真，但实际上编写C语言和编写文本是两种完全不同的工作，Emacs通过变成两个不同的编辑器来包容这种差异。当编写代码时，你不会关心段落结构。当编写文本时，你不会关心自动缩进。
@@ -47,16 +51,16 @@ Emacs同时也是一个Lisp代码编辑器。它也是16进制数据文件的编
 
 你能用编辑器生成器生成什么呢？当然是编辑器了，但是什么是编辑器呢？编辑器就是一个用来展示和修改某种数据，以及用来帮助与这些数据更友好的进行交互的程序。当编辑文本文件时，规则很简单：每个可见字符按照顺序展示出来，换行符执行换行；一个光标用来表示用户的下一个操作将会发生在数据的什么位置。当编辑目录时就不是那么直观了--路径文件中的数据必须先转换成可读的格式--最终的交互流程要看起来比较人性化。
 
-这个关于编辑器的定义几乎涵盖了所有交互程序的范畴，而这绝非偶然。交互程序总是用来处理某种数据的编辑器。因此可以说，Emacs在广义上，是一种交互程序的生成器。它是一个UI工具包！就像很多好的工具包一样，Emacs提供了一套UI组件，一套操作它们的方法，一个事件循环，一套成熟的I/O机制，以及一种用来把它们整合起来的程序语言。UI组件看起来可能不如X11，Windows或者Macintosh所提供的那样漂亮，但是就像Emacs程序员所发现的，一个超级漂亮的图形工具集往往是多余的。99%的程序都是文本形式的，不管是数字列表，菜单项，或者填字游戏里的单词（参看《第十章，一个综合示例》）。对于这些程序，Emacs在功能性、精巧性、简单性以及性能上都要优于其他。
+这个关于编辑器的定义几乎涵盖了所有交互程序的范畴，而这绝非偶然。交互程序总是用来处理某种数据的编辑器。因此可以说，Emacs在广义上，是一种交互程序的生成器。它是一个UI工具包！就像很多好的工具包一样，Emacs提供了一套UI组件，一套操作它们的方法，一个事件循环，一套成熟的I/O机制，以及一种用来把它们整合起来的程序语言。UI组件看起来可能不如X11，Windows或者Macintosh所提供的那样漂亮，但是就像Emacs程序员所发现的，一个超级漂亮的图形工具集往往是多余的。99%的程序都是文本形式的，不管是数字列表，菜单项，或者填字游戏里的单词（参考[[file:10.org][第十章]]所展示的例子）。对于这些程序，Emacs在功能性、精巧性、简单性以及性能上都要优于其他。
 
 “为什么Emacs用户不同？”，这个问题的真正答案并不仅仅是他们花费时间在改造他们的工具上。他们在使用Emacs来达到自己所期望的目的：创造出无穷无尽的新工具（a universe of new tools）。
 
 * 本书的组织形式
 书中的每章都基于前一章。我建议你从前往后顺序读这本书；这样的话里面的所有安排就都变得有意义了。
 + 第1章
-  介绍一些你可以对Emacs做出的基本更改。这也会使你熟悉Emacs Lisp，如何计算Lisp表达式，以及那会如何改变Emacs的行为。
+  介绍一些你可以对Emacs做出的基本修改。这也会使你熟悉Emacs Lisp，如何对Lisp表达式求值，以及那会如何改变Emacs的行为。
 + 第2章
-  教给你如何编写和安装Lisp函数来使其正确的执行。钩子和一种称为修饰（advice）的特性将会被引入。
+  教给你如何编写和安装Lisp函数来使其正确执行。钩子和一种称为修饰的特性将会被引入。
 + 第3章
   如何在不同函数调用间保存信息以及如何使多组函数共同工作--这是编写系统而不仅仅是编写命令的第一步。符号属性和标记将会在这中间被介绍。
 + 第4章
@@ -68,7 +72,7 @@ Emacs同时也是一个Lisp代码编辑器。它也是16进制数据文件的编
 + 第7章
   展示如何将相关函数和变量组装进称为“子模式”的包里。这个章节中的核心例子是使Emacs中的段落格式化功能工作的更像一个正常的文本处理软件。
 + 第8章
-  展示Emacs Lisp解释器的灵活性，如何控制在何时计算什么，以及如何编写不受运行时错误影响的代码。
+  展示Emacs Lisp解释器的灵活性，如何控制在何时执行什么，以及如何编写不受运行时错误影响的代码。
 + 第9章
   解释子、主模式间的差别，并且为后者提供一个简单的例子：一个专门用来处理谚语文件的主模式。
 + 第10章
@@ -76,9 +80,9 @@ Emacs同时也是一个Lisp代码编辑器。它也是16进制数据文件的编
 + 附录B
   对Lisp的语法，数据类型以及控制结构提供了一个实用的介绍。
 + 附录C
-  描述了你可以用来追踪你的Emacs Lisp代码中问题的工具。
+  描述了可以用来追踪你的Emacs Lisp代码中问题的工具。
 + 附录D
-  解释了如果你想要把代码分享给别人时需要遵循的步骤。
+  解释了把代码分享给别人时需要遵循的步骤。
 + 附录E
   概述了如何在你的系统上得到一个可用的Emacs版本。
 

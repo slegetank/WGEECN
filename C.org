@@ -1,0 +1,149 @@
+#+TITLE: 附录C 调试和性能分析
+#+OPTIONS: \n:\n ^:nil
+
+* 在本章：
+*求值*
+*调试器*
+*Edebug*
+*性能分析器*
+
+这个附录描述了一些Emacs提供的用来测试和调试你的Lisp程序的一些工具。
+
+* 求值
+任何buffer中的Lisp表达式都可以被执行，只要把光标放到表达式的结尾然后按下C-x C-e（eval-last-sexp）。按键M-:（eval-expression）会在minibuffer中提示你输入一个要求值的Lisp表达式。你还可以调用eval-region和eval-current-buffer。
+
+*scratch* buffer通常处于Lisp交互模式（如果不是的话，你可以通过M-x lisp-interaction-mode RET来切换）。在这个模式里，C-j通常执行eval-print-last-sexp，它与eval-last-sexp很像，除了它还会把结果插入到当前buffer里。在这个模式里C-M-x，eval-defun，会执行光标所在处的“defun”。这里所说的“defun”的意义很宽泛；它表示的是一个以括号开头的闭合的Lisp表达式（如果存在的话）。最后，Lisp交互模式还允许你输入部分Lisp符号然后使用M-TAB对其进行补全。
+
+Lisp表达式还能存储在文件里，然后通过load，load-file，load-library和require进行加载。
+
+* 调试器
+Emacs Lisp有一个在指定情况下自动触发的内置调试模式。可以使用下面的手段进入调试器。
+#+BEGIN_SRC emacs-lisp
+  debug-on-entry
+#+END_SRC
+这是一个命令。它会提示（并且补全）你输入一个函数的名字。每当这个函数执行时，Emacs将会进入调试器。
+
+#+BEGIN_SRC emacs-lisp
+  debug-on-error
+#+END_SRC
+这是一个变量。如果非空，每当错误发出时，Emacs将会进入调试器。
+
+#+BEGIN_SRC emacs-lisp
+  debug-on-next-call
+#+END_SRC
+这是一个变量。如果非空，那么Emacs会在下一次一个表达式求值的时候进入调试器。
+
+#+BEGIN_SRC emacs-lisp
+  debug-on-quit
+#+END_SRC
+这是一个变量。如果非空，每当“quit”信号发出时（例如用户按下了C-g），Emacs将会进入调试器。
+
+当调试器触发时，一个显示着Lisp栈的窗口将会显示出来。这个buffer称为*Backtrace*，每一行代表了一个挂起的函数调用，最上面表示着最近的调用。你可以看到挂起的Lisp表达式，查看不同位置的表达式和变量的值，并且强制函数返回指定的值。
+
+下面是调试模式中的命令。
+
+#+BEGIN_SRC emacs-lisp
+  c
+#+END_SRC
+离开调试器，继续执行被打断的代码。这在由错误触发调试器的时候不可用。
+
+#+BEGIN_SRC emacs-lisp
+  q
+#+END_SRC
+离开调试器，终止挂起的运算。
+
+#+BEGIN_SRC emacs-lisp
+  d
+#+END_SRC
+继续执行直到下一个函数调用，然后返回调试器。
+
+#+BEGIN_SRC emacs-lisp
+  e
+#+END_SRC
+提示输入一个Lisp表达式在当前栈最上面的“帧”上执行。
+
+#+BEGIN_SRC emacs-lisp
+  b
+#+END_SRC
+在当前函数返回的时候“break”。如果调试器是在调用一个函数的时候触发的，那么这个命令将会继续执行直到该函数将要返回的时候重新进入调试器。
+
+#+BEGIN_SRC emacs-lisp
+  r
+#+END_SRC
+当要从一个函数返回时，提示你输入一个值作为那个函数的返回值（替换它原来的返回值）。
+
+* Edebug
+Edebug是一个比上一部分讲到的工具更强大的调试环境。它允许你单步调试实际运行的Lisp程序。Edebug是一个完全由Lisp完成的惊艳的作品；它既是它的作者Daniel LaLiberate天赋的一种证明，也是Emacs Lisp强大表现力的一种证明--Emacs Lisp提供了足够的对于其内部的访问能力来使这么一个工具变得可能。
+
+这一部分只是Edebug的一个简要总结。要阅读完整的信息，请查看The GNU Emacs Lisp Reference Manual的Edebug部分。获取它的细节请参照[[file:E.org][附录E]]。
+
+要使用Edebug，你需要选择你要追踪的函数。每个函数都必须单独插桩（instrument），这表示需要以特殊的方式对其求值。函数edebug-defun就是用来执行这个任务的，它的用法与eval-defun类似。变量edebug-all-defs控制着载入Edebug时是否重新定义eval-开头的那些命令以使它们也执行插桩操作。
+
+在对目标函数插桩之后，你需要把这些定义记录在某个buffer中。你可以用通常的形式重新定义它们来去桩（uninstrument）。
+
+Edebug在任何插桩的函数被调用的时候激活。一个显示着函数定义的窗口会弹出来，最左边显示着一个小箭头表示当前停在哪一行。光标停在下一步要执行的表达式的前面（但是如果你需要的话，你可以移动光标，甚至隐藏这个buffer，而不影响Edebug的操作）。
+
+现在，你处在Edebug模式中并且可以执行下面的命令：
+
+#+BEGIN_SRC emacs-lisp
+  c
+#+END_SRC
+(Continue)继续执行。
+
+#+BEGIN_SRC emacs-lisp
+  q
+#+END_SRC
+(Quit)终止执行并且离开Edebug。
+
+#+BEGIN_SRC emacs-lisp
+  SPC
+#+END_SRC
+(Single-step)单步。如果Edebug停在一个变量或者一个常量上，则跳过它并且显示它的值。如果Edebug停在一个函数调用的开始处，则会进入该函数调用语句的内部。后续的单步将会经过每个参数，并且显示它们的值。如果所有的参数都求值完毕，那么单步就会用这些参数调用这个函数并且显示结果。如果这个函数也插桩了，则单步会进入该函数。每次单步，光标都会移动到代码中合适的位置。
+
+#+BEGIN_SRC emacs-lisp
+  n
+#+END_SRC
+(Next)下一步。就像单步，但是会对嵌套的、插桩的函数求值而不会进入它们。
+
+#+BEGIN_SRC emacs-lisp
+  e
+#+END_SRC
+(Eval)提示输入一个表达式在当前停止的程序上下文中执行。
+
+#+BEGIN_SRC emacs-lisp
+  h
+#+END_SRC
+(Here)执行到此处。如果你把光标放置在代码中一处你希望停止的位置上，h将会使程序继续执行直到当前位置。
+
+#+BEGIN_SRC emacs-lisp
+  d
+#+END_SRC
+(Display)显示一个调用栈，就像Emacs的*Backtrace* buffer那样（参照上一部分）但是并没有相对应的功能（Edebug命令继续工作）。
+
+#+BEGIN_SRC emacs-lisp
+  b
+#+END_SRC
+(Breakpoint)在光标处设置一个断点。程序将在执行到断点时停止。
+
+#+BEGIN_SRC emacs-lisp
+  u
+#+END_SRC
+(Unset)去掉一个断点。
+
+#+BEGIN_SRC emacs-lisp
+  x
+#+END_SRC
+(Conditional breakpoint)设置一个条件断点。你会被提示输入一个Lisp表达式。每次经过这个断点时，如果表达式为真，则程序停止。
+
+Edebug还有很多这里没有列出的能力，但是这些是最常用的功能。
+
+* 性能分析器
+性能分析（Profiling）一个程序是找出它运行每一部分所花时间的过程，一般来说是为了提高效率。Barry Warsaw写了一个精巧的称为ELP的包来分析Emacs Lisp。
+
+就像Edebug，ELP也作用于“插桩”的函数。这通过命令elp-instrument-function来实现，它会提示输入一个函数名。还有一个elp-instrument-package，它提示一个前缀。任何以该前缀开始的函数都会被插桩。
+
+可以通过elp-restore-function和elp-restore-all来去桩。
+
+要使用ELP，只需要在插桩之后执行就好了。性能分析数据将会在后台记录。当你需要查看到目前为止的结果时，调用命令elp-result。一个buffer将会弹出来显示每个被分析的函数执行的次数，一共花费了多少时间，以及平均时间。
+
+对一个函数调用elp-reset-function来重置其调用的次数以及花费的时间；elp-reset-all重置所有函数。
