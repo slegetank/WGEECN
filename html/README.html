@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-02-26 Mon 23:44 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Writing GNU Emacs Extesions 翻译</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="slegetank" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Writing GNU Emacs Extesions 翻译</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org9508689">1. 目前项目状态</a></li>
+<li><a href="#orge1d5a40">2. 译者的话</a></li>
+<li><a href="#orgba21ebf">3. 声明</a></li>
+</ul>
+</div>
+</div>
+<p>
+《Writing GNU Emacs Extensions》是由Bob Glicksteion在1997年基于Emacs 19版本编写的一本关于如何编写Emacs extensions的书。作者对于基础的讲解非常非常耐心，很适合想要深入学习使用emacs和elisp的同志作为基础读物。<br />
+</p>
+
+<p>
+Emacs的中文书籍很少，对于部分同志，特别是想入坑的同志来说难免遗憾。因此将本书翻译为中文，以为有志于走上不归路的后来人提供指引。<br />
+</p>
+
+
+<div class="figure">
+<p><img src="../resource/cover.png" alt="cover.png" /><br />
+</p>
+</div>
+<div id="outline-container-org9508689" class="outline-2">
+<h2 id="org9508689"><span class="section-number-2">1</span> 目前项目状态</h2>
+<div class="outline-text-2" id="text-1">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-right">编号</td>
+<td class="org-left">章节</td>
+<td class="org-left">状态</td>
+</tr>
+
+<tr>
+<td class="org-right">0</td>
+<td class="org-left">前言</td>
+<td class="org-left">完成</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-left">自定义Emacs</td>
+<td class="org-left">完成</td>
+</tr>
+
+<tr>
+<td class="org-right">2</td>
+<td class="org-left">简单的新命令</td>
+<td class="org-left">完成</td>
+</tr>
+
+<tr>
+<td class="org-right">3</td>
+<td class="org-left">协作命令</td>
+<td class="org-left">完成</td>
+</tr>
+
+<tr>
+<td class="org-right">4</td>
+<td class="org-left">搜索和修改Buffers</td>
+<td class="org-left">完成</td>
+</tr>
+
+<tr>
+<td class="org-right">5</td>
+<td class="org-left">Lisp文件</td>
+<td class="org-left">完成</td>
+</tr>
+
+<tr>
+<td class="org-right">6</td>
+<td class="org-left">列表</td>
+<td class="org-left">完成</td>
+</tr>
+
+<tr>
+<td class="org-right">7</td>
+<td class="org-left">子模式</td>
+<td class="org-left">完成</td>
+</tr>
+
+<tr>
+<td class="org-right">8</td>
+<td class="org-left">求值和纠错</td>
+<td class="org-left">完成</td>
+</tr>
+
+<tr>
+<td class="org-right">9</td>
+<td class="org-left">主模式</td>
+<td class="org-left">完成</td>
+</tr>
+
+<tr>
+<td class="org-right">10</td>
+<td class="org-left">一个综合示例</td>
+<td class="org-left">完成</td>
+</tr>
+
+<tr>
+<td class="org-right">附录A</td>
+<td class="org-left">总结</td>
+<td class="org-left">完成</td>
+</tr>
+
+<tr>
+<td class="org-right">附录B</td>
+<td class="org-left">Lisp快速参考</td>
+<td class="org-left">完成</td>
+</tr>
+
+<tr>
+<td class="org-right">附录C</td>
+<td class="org-left">调试和性能分析</td>
+<td class="org-left">完成</td>
+</tr>
+
+<tr>
+<td class="org-right">附录D</td>
+<td class="org-left">分享你的代码</td>
+<td class="org-left">完成</td>
+</tr>
+
+<tr>
+<td class="org-right">附录E</td>
+<td class="org-left">获取以及编译Emacs</td>
+<td class="org-left">完成</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orge1d5a40" class="outline-2">
+<h2 id="orge1d5a40"><span class="section-number-2">2</span> 译者的话</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+这是一本讲解如何自己扩展Emacs的基础的书籍，在阅读的时候定位要准确。以后辈的角度看，书中很多要处理的问题现在都能找到一些更好的解决方案。在能理解书中所讲的基础的情况下，再结合github上流行的配置，再去折腾自己的配置方能事半功倍。毕竟，站在巨人的肩膀上才能看得更远。<br />
+</p>
+
+<p>
+业余时间翻译，校对自己完成，能力时间有限。因此其中出现的语言晦涩，用词错误，还请各位同志不吝赐教。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgba21ebf" class="outline-2">
+<h2 id="orgba21ebf"><span class="section-number-2">3</span> 声明</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+之前联系过作者和出版社，后来不了了之。再后来工作忙，也懒得去要授权了。因此各位且看且珍惜，说不定哪天就凉了。<br />
+目前采用GPL协议。<br />
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>

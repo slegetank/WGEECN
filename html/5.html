@@ -1,0 +1,767 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-02-26 Mon 23:44 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lisp文件</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Shuai Zhao" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="../resource/org.css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Lisp文件</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org8bcb37b">1. 在本章：</a></li>
+<li><a href="#orgaf8c7b5">2. 创建Lisp文件</a></li>
+<li><a href="#org64b7fa4">3. 加载文件</a>
+<ul>
+<li><a href="#orga74b4cc">3.1. 找到Lisp文件</a></li>
+<li><a href="#org42904b7">3.2. 交互式加载</a></li>
+<li><a href="#org9ed3e97">3.3. 以代码加载</a>
+<ul>
+<li><a href="#org4023d33">3.3.1. 显式加载</a></li>
+<li><a href="#org809276e">3.3.2. 条件加载</a></li>
+<li><a href="#org154c83a">3.3.3. 自动加载</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgbf040fb">4. 编译文件</a></li>
+<li><a href="#orga5a8a0f">5. eval-after-load</a></li>
+<li><a href="#orgbea8ffa">6. 局部变量列表</a></li>
+<li><a href="#org011301d">7. 补充：安全考虑</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org8bcb37b" class="outline-2">
+<h2 id="org8bcb37b"><span class="section-number-2">1</span> 在本章：</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<b>创建Lisp文件</b><br />
+<b>加载文件</b><br />
+<b>编译文件</b><br />
+<b>eval-after-load</b><br />
+<b>局部变量列表</b><br />
+<b>补充：安全考虑</b><br />
+</p>
+
+<p>
+到目前为止，我们编写的大多数Emacs Lisp都可以放进你的.emacs文件里。一种替代的方案是将Emacs Lisp的代码根据功能放进不同的文件里。这需要更多的努力，但是这同样也比把代码直接放到.emacs里多了一些好处：<br />
+</p>
+
+<ul class="org-ul">
+<li>.emacs中的代码在Emacs启动时总是会执行，即使我们在当前的工作中可能根本不需要它。这会使启动时间延长并且会消耗内存。相反的，分离的Lisp文件只有在我们需要的时候才去载入它。<br /></li>
+<li>.emacs中的代码通常并不会进行字节编译（byte-compiled）。字节编译会将Emacs Lisp转换成载入更高效、执行更快并且使用更少内存的格式（就像其他语言的程序一样，这会将代码变成不适于程序员阅读的格式）。字节编译过的Lisp文件通常以.elc（“Emacs Lisp, compiled”）作为后缀名，而未进行编译的文件通常以.el（“Emacs Lisp”）后缀。<br /></li>
+<li>将所有代码放到.emacs里将会使文件膨胀成难以管理的乱麻。<br /></li>
+</ul>
+
+<p>
+前面章节所编写的代码就是这种可以根据功能划分到不同Lisp文件中的很好的例子，它们只应该在需要的时候载入，并且应该进行字节编译以提高执行效率。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgaf8c7b5" class="outline-2">
+<h2 id="orgaf8c7b5"><span class="section-number-2">2</span> 创建Lisp文件</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Emacs Lisp文件名通常以.el为后缀，所以作为开始，让我们创建timestamp.el并且将上一章中最后完成的代码放进去，如下所示。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">insert-time-format</span> ...<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">insert-date-format</span> ...<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">insert-time</span> <span style="color: #66D9EF;">()</span> ...<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">insert-date</span> <span style="color: #66D9EF;">()</span> ...<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">writestamp-format</span> ...<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">writestamp-prefix</span> ...<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">writestamp-suffix</span> ...<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">update-writestamps</span> <span style="color: #66D9EF;">()</span> ...<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">last-change-time</span> ...<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span>make-variable-buffer-local 'last-change-time<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">remember-change-time</span> ...<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">modifystamp-format</span> ...<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">modifystamp-prefix</span> ...<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">modifystamp-suffix</span> ...<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">maybe-update-modifystamps</span> <span style="color: #66D9EF;">()</span> ...<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">update-modifystamps</span> <span style="color: #66D9EF;">(</span>time<span style="color: #66D9EF;">)</span> ...<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+先不要加入add-hook和make-local-hook。我们后面再来关注他们。现在，你需要注意的是当编写Lisp文件的时候，它应该能在任意时机被加载，甚至加载多次，而并不会带来你不希望的副总用。一个这种副作用的例子是，假如你不希望当前buffer的after-change-functions变为局部变量，而又把(make-local-hook 'after-change-functions)加入了到timestamp.el中。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org64b7fa4" class="outline-2">
+<h2 id="org64b7fa4"><span class="section-number-2">3</span> 加载文件</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+当把代码写入到timestamp.el中后，我们必须进行配置，以使我们在需要的时候能够正确的访问到它们。这是通过加载（loading）完成的，也就是使Emacs读取和执行它的内容。在Emacs中有许多方式来加载Lisp文件：交互式的（interactively）、非交互式的（non-interactively）、明确的（explicitly）、模糊的（implicitly）、以及使用或者不使用路径搜索（pathsearching）的。<br />
+</p>
+</div>
+
+<div id="outline-container-orga74b4cc" class="outline-3">
+<h3 id="orga74b4cc"><span class="section-number-3">3.1</span> 找到Lisp文件</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+Emacs能够根据像/usr/local/share/emacs/site-lisp/foo.el这样的绝对路径来加载文件，但是通常更为方便的方式是直接使用如bo.el这样的文件名，而让Emacs在加载路径（load path）中去找到它。加载路径简单来说就是Emacs用来搜索要加载的文件的目录列表，跟UNIX shell中使用环境变量PATH来找到要执行的程序相似。Emacs的加载路径储存在一个字符串列表变量load-path里。<br />
+</p>
+
+<p>
+当Emacs启动的时候，load-path的初始设置大概看起来跟这个差不多：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #E6DB74;">"/usr/local/share/emacs/19.34/site-lisp"</span>
+ <span style="color: #E6DB74;">"/usr/local/share/emacs/site-lisp"</span>
+ <span style="color: #E6DB74;">"/usr/local/share/emacs/19.34/lisp"</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+搜索路径时的顺序与其在列表中出现的顺序相同。要在load-path的头部加入一个路径，在你的.emacs文件中加入下面的代码：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> load-path
+      <span style="color: #66D9EF;">(</span>cons <span style="color: #E6DB74;">"/your/directory/here"</span>
+            load-path<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+要在其末尾加入，则使用：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> load-path
+      <span style="color: #66D9EF;">(</span>append load-path
+              '<span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">"/your/directory/here"</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+注意到在第一个例子中，“/your/directory/here”只作为一个普通字符串，而在第二个例子中，它却出现在一个括起来的列表中。<a href="6.html">第六章</a>将会解释Lisp中各种处理列表的方式。<br />
+</p>
+
+<p>
+如果你要求Emacs在加载路径中查找一个Lisp文件并且忽略掉后缀名的话&#x2013;例如你使用foo而不是foo.el&#x2013;Emacs会首先查找fool.elc，也就是foo.el的字节编译格式。如果找不到，那么它将会尝试foo.el，最后是foo。通常加载文件时最好忽略掉后缀名。因为这样不仅会使你得到更有效的查找行为，而且这还会让eval-after-load工作的更好（阅读本章后面的<a href="#orga5a8a0f">eval-after-load</a>章节获得更多信息）。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org42904b7" class="outline-3">
+<h3 id="org42904b7"><span class="section-number-3">3.2</span> 交互式加载</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+有两个Emacs命令用来交互式的加载Lisp文件：load-file和load-library。当你输入M-x load-file RET时，Emacs会提示你输入一个Lisp文件的绝对路径（例如/home/bobg/emacs/foo.el）而不去搜索load-path。这会使用通常的文件名提示方法，所以文件名会进行自动补全。而另一种方式，当你输入M-x load-library RET时，Emacs将会提示你输入库的基本名称（例如foo）并且尝试在load-path中找到它。这不会使用文件名提示方法，因此也就不会进行自动补全。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9ed3e97" class="outline-3">
+<h3 id="org9ed3e97"><span class="section-number-3">3.3</span> 以代码加载</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+当在Lisp代码中加载文件时，你可以选择显式加载、条件加载或者自动加载。<br />
+</p>
+</div>
+<div id="outline-container-org4023d33" class="outline-4">
+<h4 id="org4023d33"><span class="section-number-4">3.3.1</span> 显式加载</h4>
+<div class="outline-text-4" id="text-3-3-1">
+<p>
+可以显式的调用load（和交互式加载中的load-library行为类似）或者load-file加载文件。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>load <span style="color: #E6DB74;">"lazy-lock"</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+会搜索load-path来查找lazy-lock.elc、lazy-lock.el或者lazy-lock。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>load-file <span style="color: #E6DB74;">"/home/bobg/emacs/lazy-lock.elc"</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+将不会使用load-path。<br />
+</p>
+
+<p>
+显式加载应该在你确定需要马上加载某个文件时才使用，并且你应该确信文件并没有加载过或者你并不关心。事实上，如果使用下面的替代方式，你基本上不会用到显式加载这种方式。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org809276e" class="outline-4">
+<h4 id="org809276e"><span class="section-number-4">3.3.2</span> 条件加载</h4>
+<div class="outline-text-4" id="text-3-3-2">
+<p>
+当n处不同的Lisp代码想要载入同一个文件时，有两个Emacs Lisp函数，即require和provide，给出了一种方法来确保文件只会被加载一次而不是n次。<br />
+</p>
+
+<p>
+一个Lisp文件通常包含着一系列相关的函数。我们可以认为这些函数是一个单独的特性（feature）。加载这个文件会使得其包含的特性可用。<br />
+</p>
+
+<p>
+Emacs明确了特性这个概念。特性通过Lisp符号进行命名，使用provide进行声明，使用require进行请求。<br />
+</p>
+
+<p>
+它是这么工作的。首先，我们为timestamp.el提供的特性来选择一个代表的符号。让我们使用一个明显的，timestamp。我们通过在timestamp.el中写入<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">provide</span> '<span style="color: #AE81FF;">timestamp</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+来表明timestamp.el提供了特性timestamp。通常它出现在文件的末尾，这样只有当前面所有语句都正确执行后，这个特性才会被标识为“provided”。(如果发生了什么异常，那么文件的加载将会在调用provide之前终止)。<br />
+</p>
+
+<p>
+现在假设在某处的代码需要使用时间戳功能。使用require：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">require</span> '<span style="color: #AE81FF;">timestamp</span> <span style="color: #E6DB74;">"timestamp"</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这表示，“如果timestamp特性还不可用，那么加载timestamp”（这会使用load，并且会搜索load-path）。如果timestamp特性已经提供了（也就是timestamp之前已经加载了），那么什么都不做。<br />
+</p>
+
+<p>
+通常，对于require的调用通常都出现在Lisp文件的头部&#x2013;就像C程序中通常以一大堆#includes开头一样。但是有些程序员喜欢在需要某个特性时才在那里调用require。这可能有很多个地方，而如果每次都会真的去加载文件的话，程序将会慢的像爬，每载入一个文件都会耗费大量的时间。使用“特性”将会使得文件只载入一次，大量的节省时间！<br />
+</p>
+
+<p>
+调用require时，如果文件名是特性名的“字符串等价式”，那么文件名可以被省略而根据特性名推断出来。符号的“字符串等价式”就是简单的符号名称的字符串格式。特性符号timestamp的字符串等价式为“timestamp”，所以我们可以这么写：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">require</span> '<span style="color: #AE81FF;">timestamp</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+来替换(require 'timestamp "timestamp")。（函数symbol-name可以得到符号的字符串等价式）。<br />
+</p>
+
+<p>
+如果require使得相关的文件被加载（这时其特性还未被提供），那么那个文件应该provide请求的特性。否则，require将会报告加载的文件并没有提供需要的特性。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org154c83a" class="outline-4">
+<h4 id="org154c83a"><span class="section-number-4">3.3.3</span> 自动加载</h4>
+<div class="outline-text-4" id="text-3-3-3">
+<p>
+当使用自动加载（autoloading）时，你可以推迟一个文件的加载直到它必须加载的时候&#x2013;也就是直到你调用了它里面的方法。设置自动加载代价很小，因此通常都是在.emacs文件里做。<br />
+</p>
+
+<p>
+函数autoload将一个函数名称与一个定义它的文件联系在一起。当Emacs尝试调用一个还未被定义的函数时，它将根据autoload来载入指定的文件，并且假定它做出了定义。而不使用autoload，尝试执行一个未定义的函数将会报错。<br />
+</p>
+
+<p>
+下面是如何使用：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>autoload 'insert-time <span style="color: #E6DB74;">"timestamp"</span><span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span>autoload 'insert-date <span style="color: #E6DB74;">"timestamp"</span><span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span>autoload 'update-writestamps <span style="color: #E6DB74;">"timestamp"</span><span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span>autoload 'update-modifystamps <span style="color: #E6DB74;">"timestamp"</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+当第一次调用这四个函数insert-time，insert-date，updatewritestamps，或者update-modifystamps中的任意一个时，Emacs都将加载timestamp。这不仅会载入被调用的函数定义，并且会使另外的三个也被载入，所以后续的对于这几个函数的调用不会重新载入timestamp。<br />
+</p>
+
+<p>
+autoload函数有多个可选参数。第一个参数是文档字符串。文档字符串允许用户甚至在还未从文件中加载函数的定义之前就得到帮助（通过describe-function和apropos）。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>autoload 'insert-time <span style="color: #E6DB74;">"timestamp"</span>
+  <span style="color: #75715E;">"Insert the current time according to insert-time-format."</span><span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span>autoload 'insert-date <span style="color: #E6DB74;">"timestamp"</span>
+  <span style="color: #75715E;">"Insert the current date according to insert-date-format."</span><span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span>autoload 'update-writestamps <span style="color: #E6DB74;">"timestamp"</span>
+  <span style="color: #75715E;">"Find writestamps and replace them with the current time."</span><span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span>autoload 'update-modifystamps <span style="color: #E6DB74;">"timestamp"</span>
+  <span style="color: #75715E;">"Find modifystamps and replace them with the given time."</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+下一个可选参数定义了当函数被加载后是一个交互式命令还是一个普通函数。如果忽略或者为nil，函数将被认为是非交互的；否则它就是一个命令。函数被加载之前，像command-apropos这样的函数也可以使用这个信息来区分函数是交互式还是非交互式的。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>autoload 'insert-time <span style="color: #E6DB74;">"timestamp"</span>
+  <span style="color: #75715E;">"Insert the current time according to insert-time-format."</span>
+  t<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span>autoload 'insert-date <span style="color: #E6DB74;">"timestamp"</span>
+  <span style="color: #75715E;">"Insert the current date according to insert-date-format."</span>
+  t<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span>autoload 'update-writestamps <span style="color: #E6DB74;">"timestamp"</span>
+  <span style="color: #75715E;">"Find writestamps and replace them with the current time."</span>
+  nil<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span>autoload 'update-modifystamps <span style="color: #E6DB74;">"timestamp"</span>
+  <span style="color: #75715E;">"Find modifystamps and replace them with the given time."</span>
+  nil<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+如果你在autoload中错误的将交互式函数标记为非交互的，或者相反，当函数被载入之后就不要紧了。真正的函数定义会将所有autoload所给出的信息替换掉。<br />
+</p>
+
+<p>
+最后一个可选参数我们这里不会讲。如果自动加载对象的类型不是函数的话，它会指定类型。就像它所指出的，键映射表和宏（我们后面的章节将会讲到）也可以被自动加载。<br />
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgbf040fb" class="outline-2">
+<h2 id="orgbf040fb"><span class="section-number-2">4</span> 编译文件</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+就像在本章开始所提到的，当我们将Lisp代码储存在各自的文件里之后，我们可以对它进行字节编译（byte-compile）。字节编译将Emacs Lisp转换成更紧凑、执行更快的格式。就像在其他编程语言中的编译一样，程序员很难阅读字节编译的结果。但不像其他的编译，字节编译的结果在不同硬件平台和操作系统上是可移植的（但可能不兼容老版本的Emacs）。<br />
+</p>
+
+<p>
+字节编译过的Lisp代码比未编译的代码执行速度快很多。<br />
+</p>
+
+<p>
+字节编译的Lisp文件后缀名为.el文件。<br />
+</p>
+
+<p>
+有几种字节编译文件的方式。最直接的方式是<br />
+</p>
+
+<ul class="org-ul">
+<li>在Emacs里：执行M-x byte-compile-file RET file.el RET。<br /></li>
+<li>在UNIX shell里：执行emacs -batch -f batch-byte-compile file.el。<br /></li>
+</ul>
+
+<p>
+你可以对Lisp文件的路径执行byte-recompile-directory来进行字节编译。<br />
+</p>
+
+<p>
+当Emacs要载入的.elc文件的日期比对应的.el文件的日期旧时，Emacs将仍然会载入它，但是会提示一个警告。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga5a8a0f" class="outline-2">
+<h2 id="orga5a8a0f"><span class="section-number-2">5</span> eval-after-load</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+如果你希望直到某个特定文件加载之后才执行某些代码，eval-after-load就是你需要的。例如，假如你搞出了一个比dired（Emacs的目录编辑模块）自身的dired-sort-toggle更好的函数定义。你不能简单的把它放入.emacs中，因为一旦你编辑一个目录，dired将会被自动加载，而这将会把你自己的定义替换掉。<br />
+</p>
+
+<p>
+你应该做的是：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>eval-after-load
+    <span style="color: #E6DB74;">"dired"</span>
+  '<span style="color: #66D9EF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">dired-sort-toggle</span> <span style="color: #A6E22E;">()</span>
+     ...<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这将会在dired加载之后马上执行defun，将dired自己的dired-sort-toggle替换为其他的版本。但是要注意，这只有当使用dired这个名称加载时才会工作。如果使用名称dired.elc或者/usr/local/share/emacs/19.34/lisp/dired加载dired的话就不会执行。load或者autoload或者require必须使用同eval-after-load中一模一样的名称才可以。这也就是前面提到的为什么最好只用文件的基本名称加载文件的原因。<br />
+</p>
+
+<p>
+eval-after-load的另一个作用是当你希望在一个包中使用某个变量、函数或者按键映射，而你又不想强制这个包加载的时候：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>eval-after-load
+    <span style="color: #E6DB74;">"font-lock"</span>
+  '<span style="color: #66D9EF;">(</span><span style="color: #F92672;">setq</span> lisp-font-lock-keywords lisp-font-lock-keywords-2<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这里使用了font-lock定义的变量lisp-font-lock-keywords-2。如果你在fontlock加载之前使用lisp-font-lock-keywords-2，你将会得到一个“Symbol's value as variable is void”错误。但是不要急着加载font-lock，因为这个setq只是为了将lisp-font-lock-keywords-2设置给font-lock的另一个变量lisp-font-lock-keywords，而这只有当font-lock由于什么原因加载的时候才会用到。所以我们使用eval-after-load来保证setq不会发生的太早而引起错误。<br />
+</p>
+
+<p>
+如果你调用eval-after-load而文件已经被加载会发生什么呢？那么后面的Lisp表达式会马上执行。如果同一个文件有多个eval-after-load会发生什么呢？它们会在文件加载时一个接一个的全部执行。<br />
+</p>
+
+<p>
+你可能发现eval-after-load的工作方式和钩子变量很相似。这是对的，但是一个重要的区别是钩子只执行Lisp函数（通常为lambda表达式的形式），而eval-after-load可以执行任何Lisp表达式。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbea8ffa" class="outline-2">
+<h2 id="orgbea8ffa"><span class="section-number-2">6</span> 局部变量列表</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+本章前面的内容已经足够创建并且根据需要加载Lisp代码文件了。但是对于timestamp的例子，事情还是有些不同。当调用update-writestamps时会自动载入timestamp，但是谁来调用update-writestamps并且加载timestamp呢？回想一下前一章中update-writestamps是由local-write-file-hooks调用的。那么如何将update-writestamps放进local-write-file-hooks里呢？而因为前面的章节<a href="#orgaf8c7b5">2</a>中所提到的副作用，我们一定不能在加载文件时这么做。<br />
+</p>
+
+<p>
+我们需要一种方法将update-writestmpas加入到需要它的buffer的局部变量local-write-file-hooks里，这样当local-write-file-hooks第一次触发时就会自动加载timestamp。<br />
+</p>
+
+<p>
+一种很好的完成这个需求的手段是使用文件尾部的局部变量列表（local variables list）。当Emacs访问一个新文件的时候，它会扫描文件的尾部是否有这样的文本块[<a href="#org63ef9b1">22</a>]：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">Local Variables&#58;
+var1: value1
+var2: value2
+...
+End:
+</pre>
+</div>
+
+<p>
+当Emacs找到这样一个块的时候，它会将每个value赋给对应的var，并且使其变为buffer的局部变量。Emacs甚至能解析出以某个前缀开头的这种块，只要它们的前缀相同。而在Lisp代码文件中必须将其作为注释，这样它们就不会被当做是Lisp代码执行：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #75715E;">; </span><span style="color: #75715E;">Local Variables&#58;</span>
+<span style="color: #75715E;">; </span><span style="color: #75715E;">var1: value1</span>
+<span style="color: #75715E;">; </span><span style="color: #75715E;">var2: value2</span>
+<span style="color: #75715E;">; </span><span style="color: #75715E;">...</span>
+<span style="color: #75715E;">; </span><span style="color: #75715E;">End:</span>
+</pre>
+</div>
+
+<p>
+values被当做引用来对待；它们在赋给对应的vars之前不会被计算。所以在包含下面这个块<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #75715E;">; </span><span style="color: #75715E;">Local Variables&#58;</span>
+<span style="color: #75715E;">; </span><span style="color: #75715E;">foo: (+ 3 5)</span>
+<span style="color: #75715E;">; </span><span style="color: #75715E;">End:</span>
+</pre>
+</div>
+
+<p>
+的文件中buffer局部变量foo的值为(+ 3 5)，而不是8。<br />
+</p>
+
+<p>
+因此任何需要将update-writestamps加入到local-write-file-hooks中的文件都可以这样指定：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">Local Variables&#58;
+local-write-file-hooks: <span style="color: #AE81FF;">(</span>update-writestamps<span style="color: #AE81FF;">)</span>
+End:
+</pre>
+</div>
+
+<p>
+实际上，文件可以根据需要建立起自己所有的变量：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">Local Variables&#58;
+local-write-file-hooks: <span style="color: #AE81FF;">(</span>update-writestamps<span style="color: #AE81FF;">)</span>
+writestamp-prefix: <span style="color: #E6DB74;">"Written:"</span>
+writestamp-suffix: <span style="color: #E6DB74;">"."</span>
+writestamp-format: <span style="color: #E6DB74;">"%D"</span>
+End:
+</pre>
+</div>
+
+<p>
+使用这种方式设置local-write-file-hooks的一个问题是它会将local-write-file-hooks替换为上面例子中所示的一个新的列表，而不是一种更好的方式&#x2013;保留原来local-write-file-hooks里的其他值并向其中添加update-writestamps。虽然这样做需要执行Lisp代码。即，你需要执行下面的表达式：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>add-hook 'local-write-file-hooks 'update-writestamps<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+Emacs在局部变量列表中引入一个“伪变量（pseudovariable）”eval来完成这个功能。<br />
+当<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">eval: value
+</pre>
+</div>
+
+<p>
+出现在局部变量列表中时，value将被计算。计算的结果将被忽略；它将不会存储到局部变量eval中。因此完整的解决方案是将<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">eval: <span style="color: #AE81FF;">(</span>add-hook 'local-write-file-hooks 'update-writestamps<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+添加到局部变量里。<br />
+</p>
+
+<p>
+实际上，设置local-write-file-hooks的正确做法应该是编写一个子模式（minor mode），这将是<a href="7.html">第7章</a>的主题。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org011301d" class="outline-2">
+<h2 id="org011301d"><span class="section-number-2">7</span> 补充：安全考虑</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+局部变量列表是一个潜在的安全漏洞，会导致用户受到“特洛伊木马”类型的攻击。例如一个变量的设置使得Emacs的工作不正常；或者一个eval有一些不可预知的副作用，例如删除文件或者使用你的名字伪造邮件。而攻击者只要引诱你访问一个在局部变量列表中包含这些设置的文件就可以了。只要你访问了这个文件，这些代码就会被执行。<br />
+</p>
+
+<p>
+保护你自己的方式是将<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> enable-local-variables 'query<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+加入到你的.emacs文件里。这将会使Emacs在执行任何局部变量列表时都会询问你。也可以使用enable-local-eval来控制伪变量eval的执行。<br />
+</p>
+
+<p>
+<a id="org63ef9b1"></a>[22]. “文件的尾部”的意思是：文件的最后3000个字节&#x2013;是的，这很随意&#x2013;直到最后一行以CONTROL-L开头的行，如果存在的话。<br />
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>

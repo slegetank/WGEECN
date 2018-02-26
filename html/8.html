@@ -1,0 +1,841 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-02-26 Mon 23:44 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>求值和纠错</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Shuai Zhao" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="../resource/org.css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">求值和纠错</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orge7f3a56">1. 在本章：</a></li>
+<li><a href="#org6b0e0de">2. 有限版本的save-excursion</a></li>
+<li><a href="#org02f1092">3. eval</a></li>
+<li><a href="#org223376c">4. 宏函数</a></li>
+<li><a href="#orgf28944e">5. 反引用和去引用(Backquote and Unquote)</a></li>
+<li><a href="#orgeb2b91c">6. 返回值</a></li>
+<li><a href="#orgb88437c">7. 优雅的失败</a></li>
+<li><a href="#org7dc9c95">8. 点标记</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge7f3a56" class="outline-2">
+<h2 id="orge7f3a56"><span class="section-number-2">1</span> 在本章：</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<b>有限版本的save-excursion</b><br />
+<b>eval</b><br />
+<b>宏函数</b><br />
+<b>反引用和去引用</b><br />
+<b>返回值</b><br />
+<b>优雅的失败</b><br />
+<b>点标记</b><br />
+</p>
+
+<p>
+在前面的章节里，我们注意到save-excursion是一个消耗比较大的函数，而我们尝试在refill函数中尽量少的调用它(因为每次buffer改变时都会执行，所以我们需要它尽可能的快)。然而，在refill中仍然包含了五次对于save-excursion的调用。<br />
+</p>
+
+<p>
+我们可以尝试将save-excursion的使用进行合并&#x2013;例如，可以将refill的整个函数体用save-excursion包起来，将里面其他的save-excursion都删掉，重新编写里面的代码来确保光标能够正确的放置。但是这会影响到我们代码布局的清晰性。当然，在某些情况下为了优化可以牺牲掉代码的清晰性，但是在我们考虑合并save-excursion之前，让我们看看我们是否还有别的方法。我们可以寻找另一个更适合的函数来替代它。<br />
+</p>
+
+<p>
+在本章中我们将会尝试编写一个更快的，有限版本的save-excursion。我们将会遇到很多有趣的有着一个共同目的的特性：控制表达式何时执行以及它们对于周围代码的影响。我们将会关注这些返回值相关的问题以及在发生错误时如何清理。我们将会看到如何使Lisp解释器延后对于表达式的求值，直到你希望它做为止。我们甚至能找到更改函数执行的顺序的方法。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6b0e0de" class="outline-2">
+<h2 id="org6b0e0de"><span class="section-number-2">2</span> 有限版本的save-excursion</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+save-excursion的目的是在执行完一些Lisp表达式之后恢复"point"的值；但这并不是它所有的能力。它也会恢复"mark"的值，恢复Emacs对于哪个buffer是当前buffer的认知。对于refill来说这过于强大了；毕竟，我们只改变了point的值。我们并没有切换buffer或者移动mark。<br />
+</p>
+
+<p>
+我们可以编写一个仅仅满足我们需求的缩减版本的save-excursion。也就是说，我们需要编写一个接收任何数量Lisp表达式作为参数的函数，做如下事情：<br />
+</p>
+<ol class="org-ol">
+<li>记录point的位置<br /></li>
+<li>按顺序对每个子表达式求值<br /></li>
+<li>将point恢复到初始值<br /></li>
+</ol>
+
+<p>
+我们遇到的第一个问题是在执行Lisp函数时，它的参数会在这个函数获得控制权之前执行。换句话说，如果我们编写一个名为limited-save-excursion的函数并且这么调用它：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>limited-save-excursion
+ <span style="color: #66D9EF;">(</span>beginning-of-line<span style="color: #66D9EF;">)</span>
+ <span style="color: #66D9EF;">(</span>point<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+那么调用顺序如下：<br />
+</p>
+<ol class="org-ol">
+<li>(beginning-of-line)执行，point移动至当前行的开始并且返回nil。<br /></li>
+<li>(point)执行，返回光标移动到的位置。<br /></li>
+<li>limited-save-excursion执行，参数为刚才函数返回的值&#x2013;也就是nil和一个数字。<br /></li>
+</ol>
+
+<p>
+在这个例子里，limited-save-excursion无法记录子表达式执行之前的point位置；而计算出来的nil和光标的位置很显然也并没有什么用。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org02f1092" class="outline-2">
+<h2 id="org02f1092"><span class="section-number-2">3</span> eval</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+我们可以通过引用来绕过这个问题：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>limited-save-excursion
+ '<span style="color: #66D9EF;">(</span>beginning-of-line<span style="color: #66D9EF;">)</span>
+ '<span style="color: #66D9EF;">(</span>point<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这一次limit-save-excursion的参数是(beginning-of-line)和(point)。它能够记录point的值，正确的按顺序执行子表达式，然后恢复point并且返回。它大概可以实现为下面的样子。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">limited-save-excursion</span> <span style="color: #66D9EF;">(</span><span style="color: #66D9EF;">&amp;rest</span> exprs<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Like save-excursion, but only restores point."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">let</span> <span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">(</span>saved-point <span style="color: #FD971F;">(</span>point<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">&#35760;&#24405;point</span>
+    <span style="color: #A6E22E;">(</span><span style="color: #F92672;">while</span> exprs
+      <span style="color: #E6DB74;">(</span>eval <span style="color: #FD971F;">(</span>car exprs<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">&#25191;&#34892;&#19979;&#19968;&#20010;&#21442;&#25968;</span>
+      <span style="color: #E6DB74;">(</span><span style="color: #F92672;">setq</span> exprs <span style="color: #FD971F;">(</span>cdr exprs<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+    <span style="color: #A6E22E;">(</span>goto-char saved-point<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">&#24674;&#22797;point</span>
+</pre>
+</div>
+
+<p>
+这个函数有一些新的东西：即eval的调用，它使用一个Lisp表达式作为参数然后执行它。乍看起来这可能并没有什么新鲜的，因为毕竟Lisp解释器能够自动执行Lisp表达式，而不必额外的调用eval。但是有时表达式执行的返回值是另一个你想要执行的Lisp表达式，而Lisp本身并不会自动执行这个表达式。如果我们只执行(car exprs)，我们将会提取出列表中的第一个子表达式，然后就把它丢掉了！我们需要显式调用eval使那个表达式能为我们所用。<br />
+</p>
+
+<p>
+下面是一个用来展示Emacs通常的执行行为以及eval的必要性的简单例子：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> x '<span style="color: #66D9EF;">(</span>+ 3 5<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+x -&gt; <span style="color: #AE81FF;">(</span>+ 3 5<span style="color: #AE81FF;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">&#23545;x&#27714;&#20540;</span>
+<span style="color: #AE81FF;">(</span>eval x<span style="color: #AE81FF;">)</span> -&gt; 8 <span style="color: #75715E;">; </span><span style="color: #75715E;">&#23545;x&#30340;&#20540;&#27714;&#20540;</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org223376c" class="outline-2">
+<h2 id="org223376c"><span class="section-number-2">4</span> 宏函数</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+虽然limited-save-excursion在给参数加上引用符之后就正常工作了，但是这对于调用者来说很繁琐，而且这会导致它不能成为save-excursion的合格替代者(毕竟save-excursion并没有这个限制)。<br />
+</p>
+
+<p>
+我们可以实现一种称为宏函数(macro function)[<a href="#org6bc2934">31</a>]的特殊函数，它的参数都是默认被引用的。也就是说，当宏函数执行时，它的参数在它获得控制权之前都是不会被执行的。作为替代的，宏函数会产生一些值，通常是其参数的重新排列，然后这些值会被执行。<br />
+</p>
+
+<p>
+这里有一个简单的例子。假设我们想要一个称为incr的函数，它的作用是将一个数值变量增加1。我们希望它有这种行为：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> x 17<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span>incr x<span style="color: #AE81FF;">)</span>
+x -&gt; 18
+</pre>
+</div>
+
+<p>
+如果incr是一个普通函数，那么它的参数将会是17，而不是x，因此也不会影响x的值。所以incr必须是一个宏函数。它的输出必须是一个表达式，当这个表达式执行的时候就会对其参数里引用的变量的值加1。<br />
+</p>
+
+<p>
+宏函数使用defmacro定义(语法跟defun类似)。incr的写法如下：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defmacro</span> <span style="color: #A6E22E;">incr</span> <span style="color: #66D9EF;">(</span>var<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Add one to the named variable."</span>
+  <span style="color: #66D9EF;">(</span>list 'setq var <span style="color: #A6E22E;">(</span>list '+ var 1<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+宏函数的函数体是对于入参的一个展开式。然后这个展开式会被求值。(incr x)的展开式是：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> x <span style="color: #66D9EF;">(</span>+ x 1<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+当对这个表达式求值的时候，x将会被加一。<br />
+</p>
+
+<p>
+你可以使用函数macroexpand函数来调试宏函数。这是一个把Lisp表达式作为输入，返回它的宏展开结果的函数。如果输入的表达式不是一个宏，那么将会返回原表达式。所以：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>macroexpand '<span style="color: #66D9EF;">(</span>incr x<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> x <span style="color: #66D9EF;">(</span>+ x 1<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf28944e" class="outline-2">
+<h2 id="orgf28944e"><span class="section-number-2">5</span> 反引用和去引用(Backquote and Unquote)</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+既然limited-save-excursion必须是一个宏函数，我们所要做的就是想象出limited-save-excursion如何展开。让我们开始：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>limited-save-excursion
+ subexpr1
+ subexpr2
+ ...<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+它需要被展开成<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">let</span> <span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>orig-point <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
+  subexpr1
+  subexpr2
+  ...
+  <span style="color: #66D9EF;">(</span>goto-char orig-point<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+然后我们要将其编写成宏函数：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defmacro</span> <span style="color: #A6E22E;">limited-save-excursion</span> <span style="color: #66D9EF;">(</span><span style="color: #66D9EF;">&amp;rest</span> subexprs<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Like save-excursion, but only restores point."</span>
+  <span style="color: #66D9EF;">(</span>append '<span style="color: #A6E22E;">(</span><span style="color: #F92672;">let</span> <span style="color: #E6DB74;">(</span><span style="color: #FD971F;">(</span>orig-point <span style="color: #F92672;">(</span>point<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+          subexprs
+          '<span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">(</span>goto-char orig-point<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+回忆之前讲过的append是将每个列表的括号剥掉，然后将他们组合在一起，最后将一个新的括号包在结果的外面。所以这个append的参数为三个列表：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">let</span> <span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>orig-point <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span>subexpr1 subexpr2 ...<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span><span style="color: #66D9EF;">(</span>goto-char orig-point<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+剥掉他们最外面的括号：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">let <span style="color: #AE81FF;">(</span><span style="color: #66D9EF;">(</span>orig-point <span style="color: #A6E22E;">(</span>point<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+subexpr1 subexpr2 ...
+<span style="color: #AE81FF;">(</span>goto-char orig-point<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+然后将结果包在新的括号里：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">let</span> <span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>orig-point <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
+  subexpr1
+  subexpr2
+  ...
+  <span style="color: #66D9EF;">(</span>goto-char orig-point<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这就是宏的展开式，然后再对其求值。<br />
+</p>
+
+<p>
+这就能完成我们的需求了，但是阅读理解宏定义是很困难的一件事。幸运的是，还有更好的办法。看起来几乎所有的宏都会调用list和append这种函数来重新组合他们的参数，一些表达式会被括起来而另一些不会。实际上，这是如此常见，以至于Emacs Lisp提供了一个特殊表达式来模板化地编写宏扩展。<br />
+</p>
+
+<p>
+记得'expr吗，它会展开成(quote expr)？好吧，还有一个`expr，它将会展开成(backquote expr)。[<a href="#orgcf66d60">32</a>]反引用(backquote)跟引用(quote)很像，即对反引用表达式求值的结果仍然是表达式本身：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">`<span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+但是有一个重要的区别。一个反引用的列表的子表达式可以各自独立的使用去引用符(unquoted)进行修饰。即当反引用表达式求值时，其中的去引用子表达式也会被求值&#x2013;而列表中其他的子表达式仍然保持引用状态！<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">`<span style="color: #AE81FF;">(</span>a ,b c<span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>a value-of-b c<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+要理解这为什么有用，让我们回到incr的例子。我们可以这么重写incr：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defmacro</span> <span style="color: #A6E22E;">incr</span> <span style="color: #66D9EF;">(</span>var<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Add one to the named variable."</span>
+  `<span style="color: #66D9EF;">(</span><span style="color: #F92672;">setq</span> ,var <span style="color: #A6E22E;">(</span>+ ,var 1<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+每个逗号表示子表达式被去引用，所以在这个例子里，一个这种列表：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> ... <span style="color: #66D9EF;">(</span>+ ... 1<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+其中var的值（某个变量名）被插入了两次。结果跟我们第一个版本的incr相同，但是这一次表达的如此清晰。<br />
+</p>
+
+<p>
+将反引用和去引用应用到limited-save-excursion上并不能马上变得正确：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defmacro</span> <span style="color: #A6E22E;">limited-save-excursion</span> <span style="color: #66D9EF;">(</span><span style="color: #66D9EF;">&amp;rest</span> subexprs<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Like save-excursion, but only restores point."</span>
+  `<span style="color: #66D9EF;">(</span><span style="color: #F92672;">let</span> <span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">(</span>orig-point <span style="color: #FD971F;">(</span>point<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+     ,subexprs <span style="color: #75715E;">; </span><span style="color: #75715E;">&#38169;&#21862;&#65281;</span>
+     <span style="color: #A6E22E;">(</span>goto-char orig-point<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+对于反引用还有一个细节需要学习。subexprs是一个&amp;rest的参数，他是一个包含着所有传递给limited-save-excursion的参数的列表。因此当它替换到上面的模板里面的时候，它也会是一个列表。换句话说，<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>limited-save-excursion
+ <span style="color: #66D9EF;">(</span>beginning-of-line<span style="color: #66D9EF;">)</span>
+ <span style="color: #66D9EF;">(</span>point<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+将会展开为：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">let</span> <span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>orig-point <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>beginning-of-line<span style="color: #A6E22E;">)</span>
+   <span style="color: #A6E22E;">(</span>point<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>goto-char orig-point<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+而这会造成语法错误，因为有括号多余了。我们需要的是一种将subexprs中的值提取到一个列表中，并且移除外面括号的方法。为此，Emacs Lisp提供了另一个特殊语法(最后一个，我保证)：拼接去引用操作符(splicing unquote operator)，,@。这个版本：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defmacro</span> <span style="color: #A6E22E;">limited-save-excursion</span> <span style="color: #66D9EF;">(</span><span style="color: #66D9EF;">&amp;rest</span> subexprs<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Like save-excursion, but only restores point."</span>
+  `<span style="color: #66D9EF;">(</span><span style="color: #F92672;">let</span> <span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">(</span>orig-point <span style="color: #FD971F;">(</span>point<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+     ,@subexprs
+     <span style="color: #A6E22E;">(</span>goto-char orig-point<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+将会获取到正确的结果：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">let</span> <span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>orig-point <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>beginning-of-line<span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>point<span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>goto-char orig-point<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgeb2b91c" class="outline-2">
+<h2 id="orgeb2b91c"><span class="section-number-2">6</span> 返回值</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+要完成limited-save-excursion我们还有很多事情要做。比如，它并没有返回subexprs的最后一个表达式，而save-excursion会。limited-save-excursion返回了并没有什么帮助的(goto-char orig-point)的值，也就是orig-point的值，因为goto-char会返回它的参数。而当你希望使用这个值的时候，这显然是不正确的：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> line-start <span style="color: #66D9EF;">(</span>limited-save-excursion
+                  <span style="color: #A6E22E;">(</span>beginning-of-line<span style="color: #A6E22E;">)</span>
+                  <span style="color: #A6E22E;">(</span>point<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
+</pre>
+</div>
+
+<p>
+为了修复这个问题，我们必须记录最后一个表达式的值，然后恢复point，然后返回之前储存起来的值。我们可能会这么做：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defmacro</span> <span style="color: #A6E22E;">limited-save-excursion</span> <span style="color: #66D9EF;">(</span><span style="color: #66D9EF;">&amp;rest</span> subexprs<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Like save-excursion, but only restores point."</span>
+  `<span style="color: #66D9EF;">(</span><span style="color: #F92672;">let</span> <span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">(</span>orig-point <span style="color: #FD971F;">(</span>point<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span>
+         <span style="color: #E6DB74;">(</span>result <span style="color: #FD971F;">(</span><span style="color: #F92672;">progn</span> ,@subexprs<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+     <span style="color: #A6E22E;">(</span>goto-char orig-point<span style="color: #A6E22E;">)</span>
+     result<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+注意到progn的使用，它的作用是执行每个传递给它的参数然后返回最后一个参数的值&#x2013;这正是我们的宏所希望的。但是，这个版本因为两个原因是错误的。第一个原因跟let的工作机制有关。当下面这个表达式执行时：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">let</span> <span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>var1 val1<span style="color: #A6E22E;">)</span>
+      <span style="color: #A6E22E;">(</span>var2 val2<span style="color: #A6E22E;">)</span>
+      ...
+      <span style="color: #A6E22E;">(</span>varn valn<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
+  body ...<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+所有vals会在任何vars赋值之前执行，所以没有val能引用到var。而且，它们执行的顺序也是随机的。所以，如果我们使用上面版本的limited-save-excursion来将<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>limited-save-excursion
+ <span style="color: #66D9EF;">(</span>beginning-of-line<span style="color: #66D9EF;">)</span>
+ <span style="color: #66D9EF;">(</span>point<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+扩展为<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">let</span> <span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>orig-point <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+      <span style="color: #A6E22E;">(</span>result <span style="color: #E6DB74;">(</span><span style="color: #F92672;">progn</span> <span style="color: #FD971F;">(</span>beginning-of-line<span style="color: #FD971F;">)</span>
+                     <span style="color: #FD971F;">(</span>point<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
+      <span style="color: #66D9EF;">(</span>goto-char orig-point<span style="color: #66D9EF;">)</span>
+      result<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+那么很有可能，当对这个表达式求值时，beggining-of-line会先于写在前面的point执行，而这会导致orig-point的值的错误。<br />
+</p>
+
+<p>
+对于这个问题的解决方法是使用let*代替let。当使用let*时，就没有了这种不确定性：vals的执行顺序就是它们在代码中所写的顺序。[<a href="#org2aa605c">33</a>]而且，每个var都会在对应的val求值之后马上赋值，所以vali可以引用从var1到vari-1之间的值。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defmacro</span> <span style="color: #A6E22E;">limited-save-excursion</span> <span style="color: #66D9EF;">(</span><span style="color: #66D9EF;">&amp;rest</span> subexprs<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Like save-excursion, but only restores point."</span>
+  `<span style="color: #66D9EF;">(</span><span style="color: #F92672;">let*</span> <span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">(</span>orig-point <span style="color: #FD971F;">(</span>point<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span>
+          <span style="color: #E6DB74;">(</span>result <span style="color: #FD971F;">(</span><span style="color: #F92672;">progn</span> ,@subexprs<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+     <span style="color: #A6E22E;">(</span>goto-char orig-point<span style="color: #A6E22E;">)</span>
+     result<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+下一个问题的修复就没这么简单了。假设子表达式中使用了全局变量orig-point。就像我们刚刚提到的，每个val都可以访问到前面的vars，所以如果子表达式中引用了orig-point，它将会因此引用到limited-save-excursion中定义的那个orig-point局部变量&#x2013;这几乎可以肯定不是子表达式的作者所希望使用的。宏展开的子表达式会使用这个变量。这会对子表达式的编写造成很大的困扰，因为它所希望操作的完全是另一个变量。而假如这些子表达式又对orig-point的值进行了修改，这反过来又会影响到limited-save-excursion自身。<br />
+</p>
+
+<p>
+我们将子表达式的执行放入定义了orig-point局部变量的let*，却因此将子表达式“真正”希望使用的orig-point给隐藏起来了。<br />
+</p>
+
+<p>
+你可能会想到规避这个问题的一个好方法是为orig-point挑选一个不大可能出现在子表达式中的其他名称。这并不是一个令人满意的解决方案，因为(a)不管你定义的变量名如何特殊，总是有可能会发生重复，(b)况且这件事有正确的解决方法。正确的方法是产生一个肯定不会与其他在使用的变量产生冲突的新变量。那么如何做呢？<br />
+</p>
+
+<p>
+要回答这个问题，我们首先需要理解两个符号发生冲突表示什么。两个符号只有在表示同一个对象时才会冲突，而不仅仅是名字相同。当你向Lisp程序中输入一个符号名时，Lisp解释器在内部会将其转化为一个符号对象。符号对象包含着比它的名字更多的信息。它包含着这个符号的局部和全局的变量绑定关系；它包含着任何与这个符号绑定的函数定义(使用defun)；以及包含着符号的属性列表(参照<a href="3.html">第三章</a>的<a href="3.html#MissingReference">符号属性</a>部分)。<br />
+</p>
+
+<p>
+将编写的Lisp代码转换成像符号对象(或者cons cell等)这种内部数据结构的过程称为reading。当Lisp"解释器"两次看到同一个符号名时，它并不会创建两个内部符号对象&#x2013;它会重用同一个。<br />
+</p>
+
+<p>
+可能你看出来我们需要怎么做了：如果我们能够获取到一个其他的符号对象，而不是通过Lisp自己的内部符号和重用机制，那么Lisp就不会认为它跟其他符号对象是同一个，即使它们有着同样的名字。创建这种符号的方法是通过函数make-symbol，它使用符号的名称(一个字符串)来创建一个新的，非内部的，保证与其他对象都不同的对象。<br />
+</p>
+
+<p>
+换句话说，<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>make-symbol <span style="color: #E6DB74;">"orig-point"</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+将不会与任何其他地方出现过的orig-point冲突。新创建的orig-point与其他之前创建的对象都不同。<br />
+</p>
+
+<p>
+在你想避免与其他变量引用冲突的时候，使用新的、非内部的符号是一种很安全的做法。下面是我们函数的改进版本：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defmacro</span> <span style="color: #A6E22E;">limited-save-excursion</span> <span style="color: #66D9EF;">(</span><span style="color: #66D9EF;">&amp;rest</span> subexprs<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Like save-excursion, but only restores point."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">let</span> <span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">(</span>orig-point-symbol <span style="color: #FD971F;">(</span>make-symbol <span style="color: #E6DB74;">"orig-point"</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+    `<span style="color: #A6E22E;">(</span><span style="color: #F92672;">let*</span> <span style="color: #E6DB74;">(</span><span style="color: #FD971F;">(</span>,orig-point-symbol <span style="color: #F92672;">(</span>point<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span>
+            <span style="color: #FD971F;">(</span>result <span style="color: #F92672;">(</span><span style="color: #F92672;">progn</span> ,@subexprs<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span>
+       <span style="color: #E6DB74;">(</span>goto-char ,orig-point-symbol<span style="color: #E6DB74;">)</span>
+       result<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+第一个let创建了一个名为orig-point的新符号对象，并且不与任何其他符号相同，包括同样名为orig-point的对象。这个新的对象被赋值给orig-point-symbol，然后在后面的反引用模板里(通过去引用)使用了两次。<br />
+</p>
+
+<p>
+乍看起来，我们只是将orig-point冲突的危险转换为了orig-point-symbol的危险。但是orig-point-symbol实际上并不会出现在宏的展开式里，展开式看起来大概是这样的(orig-point'代表了使用make-symbol创建的非内部的符号):<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">let*</span> <span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>orig-point' <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+       <span style="color: #A6E22E;">(</span>result <span style="color: #E6DB74;">(</span><span style="color: #F92672;">progn</span> subexprs<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>goto-char orig-point'<span style="color: #66D9EF;">)</span>
+  result<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+所以在subexprs执行的时候&#x2013;在宏展开之后&#x2013;唯一的临时变量是orig-point'，而这是唯一的。临时变量result这时还不存在。所以变量冲突的问题彻底解决了。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb88437c" class="outline-2">
+<h2 id="orgb88437c"><span class="section-number-2">7</span> 优雅的失败</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+当Emacs中发生错误时，当前的计算将会终止而Emacs会返回到上层的主循环，在那里它会等待按键或者其他输入。当执行limited-save-excursion子表达式发生错误时，整个limited-save-excursion将会在调用goto-char之前终止，而point的值将会变为未知的一个值而不会恢复。但是真正的save-excursion即使在错误发生时也可以正确的恢复point(以及mark和当前buffer)。这是怎么做到的？<br />
+</p>
+
+<p>
+调用函数的信息被存在一个称为栈(stack)的内部数据结构里。错误发生之后，回到顶层主循环将会弹出这个栈，以相反的顺序每次弹出一个函数调用&#x2013;所以如果a调用了b，b调用了c，然后错误发生了，c将会弹出，然后是b，然后是a，直到Emacs回到"顶层"。<br />
+</p>
+
+<p>
+在栈弹出时执行编写的Lisp代码是可能的！这是编写"优雅的"失败处理的关键，使得我们可以在函数自己由于一些错误(或者用户自己触发C-g)而无法完成时对其进行清理。我们要使用的函数称为unwind-protect，它会正常执行输入的第一个表达式，后面跟着任意数量需要后续执行的表达式&#x2013;即使异常打断了第一个表达式的执行。它看起来是这样的：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">unwind-protect</span>
+    normal
+  cleanup1
+  cleanup2
+  ...<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+显然，我们需要将对于point值的恢复行为放到unwind-protect的"清理"部分：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defmacro</span> <span style="color: #A6E22E;">limited-save-excursion</span> <span style="color: #66D9EF;">(</span><span style="color: #66D9EF;">&amp;rest</span> subexprs<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Like save-excursion, but only restores point."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">let</span> <span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">(</span>orig-point-symbol <span style="color: #FD971F;">(</span>make-symbol <span style="color: #E6DB74;">"orig-point"</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+    `<span style="color: #A6E22E;">(</span><span style="color: #F92672;">let</span> <span style="color: #E6DB74;">(</span><span style="color: #FD971F;">(</span>,orig-point-symbol <span style="color: #F92672;">(</span>point<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span>
+       <span style="color: #E6DB74;">(</span><span style="color: #F92672;">unwind-protect</span>
+           <span style="color: #FD971F;">(</span><span style="color: #F92672;">progn</span> ,@subexprs<span style="color: #FD971F;">)</span>
+         <span style="color: #FD971F;">(</span>goto-char ,orig-point-symbol<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+unwind-protect的一个好的特性是在非错误的情况下，它的返回值是"正常"表达式的值(如果错误发生了，返回值并没有意义)。在这个例子里，也就是(progn ,@subexprs)，正是我们希望的limited-save-excursion的返回值，所以我们可以移除掉之前的result变量，并且将let*改回let。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7dc9c95" class="outline-2">
+<h2 id="org7dc9c95"><span class="section-number-2">8</span> 点标记</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+在最后对于limited-save-excursion的改进里，我们将会把point记录为一个标记，而非一个数字，就像我们在unscroll中所定义的那样(参照<a href="3.html">第三章</a><a href="3.html#MissingReference">标记</a>部分)：也就是说，对于子表达式的执行可能会使保存的buffer位置变得不准确，因为文本可能已经被插入或删除掉了。<br />
+</p>
+
+<p>
+要做的修改非常简单。将返回数值的point调用，替换为将当前位置表达为一个标记的point-marker就可以了。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defmacro</span> <span style="color: #A6E22E;">limited-save-excursion</span> <span style="color: #66D9EF;">(</span><span style="color: #66D9EF;">&amp;rest</span> subexprs<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Like save-excursion, but only restores point."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">let</span> <span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">(</span>orig-point-symbol <span style="color: #FD971F;">(</span>make-symbol <span style="color: #E6DB74;">"orig-point"</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+    `<span style="color: #A6E22E;">(</span><span style="color: #F92672;">let</span> <span style="color: #E6DB74;">(</span><span style="color: #FD971F;">(</span>,orig-point-symbol <span style="color: #F92672;">(</span>point-marker<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span>
+       <span style="color: #E6DB74;">(</span><span style="color: #F92672;">unwind-protect</span>
+           <span style="color: #FD971F;">(</span><span style="color: #F92672;">progn</span> ,@subexprs<span style="color: #FD971F;">)</span>
+         <span style="color: #FD971F;">(</span>goto-char ,orig-point-symbol<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+现在剩下的就是将这个定义存入一个名为limited.el的文件，后面加上<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">provide</span> '<span style="color: #AE81FF;">limited</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+然后放入一个load-path中存在的路径并且对其进行字节编译(参考<a href="5.html">第五章</a>)。然后在refill.el中我们可以把save-excursion的调用替换为limited-save-excursion；在refill.el的开头添加<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">require</span> '<span style="color: #AE81FF;">limited</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+然后对其字节编译。这样当refill载入的时候才会载入limited，并且如果你将<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>autoload 'refill-mode <span style="color: #E6DB74;">"refill"</span> <span style="color: #75715E;">"Refill minor mode."</span> t<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+添加到你的.emacs中，那么直到你触发refill-mode时才会载入refill。<br />
+</p>
+
+<p>
+<a id="org6bc2934"></a>[31]. 不要把宏函数与键盘宏混淆，也就是Emacs的名字（“editor macros”）的来源。<br />
+<a id="orgcf66d60"></a>[32]. 这个表达式是Emacs 19.29新引入的。在之前的版本里，它们必须像函数调用一样触发，例如：(` expr)。<br />
+<a id="org2aa605c"></a>[33]. 如果let如此模糊而let*这么清晰，那么为什么不只用let*呢？答案是：let在某些情况下跟高效。而且，有时你就是会需要在任何vars存在之前就计算出所有的vals。通常，你应该使用let除非你确实需要let*&#x2013;当然你应该能够想到，不恰当地选择使用它们是常见的程序异常来源之一。<br />
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,2 +1,2 @@
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./resource/org.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../resource/org.css" />
 #+OPTIONS: \n:\n

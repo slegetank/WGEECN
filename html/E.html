@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-02-26 Mon 23:44 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>附录E 获取以及编译Emacs</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Shuai Zhao" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="../resource/org.css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">附录E 获取以及编译Emacs</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org7f84550">1. 在本章：</a></li>
+<li><a href="#orgd6f14f9">2. 获取包</a></li>
+<li><a href="#orga50eab4">3. 解包，编译，以及安装Emacs</a>
+<ul>
+<li><a href="#org327ac3e">3.1. 解包</a></li>
+<li><a href="#org806cdc0">3.2. 编译和安装</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org7f84550" class="outline-2">
+<h2 id="org7f84550"><span class="section-number-2">1</span> 在本章：</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<b>获取包</b><br />
+<b>解包，编译，以及安装Emacs</b><br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd6f14f9" class="outline-2">
+<h2 id="orgd6f14f9"><span class="section-number-2">2</span> 获取包</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+本书中描述的所有软件包，除了TEX，都是自由软件基金会的GNU软件。它们的软件和其他包都可以通过匿名FTP从ftp.gnu.ai.mit.edu下的/pub/gnu路径获取。有很多镜像网站，相关信息在GNUinfo/FTP下。<br />
+</p>
+
+<p>
+如果你不能从网上下载到，或者你希望有更简单的方式，你可以从自由软件基金会订购软件的发布版本。它们有磁盘，磁带，以及光盘版本。你还可以订购许多纸质版本的GNU手册，包括一些关于Emacs的，还有<a href="D.html">附录D</a>中提到的Textinfo手册。要知道更多信息，包括价格，可以联系FSF：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-text">Free Software Foundation, Inc.
+59 Temple Place - Suite 330
+Boston, MA 02111-1307 USA
+Telephone: +1-617-542-5942
+Fax: +1-617-542-2652
+Email: gnu@prep.ai.mit.ed
+</pre>
+</div>
+
+<p>
+本书中提到的FSF提供的包有：<br />
+</p>
+
+<ul class="org-ul">
+<li>Emacs<br />
+编辑器本身，包括很多Lisp扩展。源文件以emacs-x.y.tar.gz的形式存在，其中x和y分别是最新版本的主版本和小版本号（当前是19.34）。<br /></li>
+<li>Textinfo<br />
+GNU文档系统，包括makeinfo和一个关于如何编写Textinfo文档的手册。需要TEX来生成可打印的手册。形式为textinfo-x.y.gz。当前版本为3.7。<br /></li>
+<li>Emacs Lisp Reference Manual<br />
+The Emacs Lisp Reference Manual的Textinfo文档的源文件以elisp-manual-19-x.y.tar.gz的形式存在。（19是Emacs的主版本。）当前手册的版本是2.4。对于Emacs Lisp程序员来说，一个在线版本的手册是不可或缺的。<br /></li>
+<li>Shar untilities<br />
+包括shar和unshar，用来创建和解包软件发布版本。形式为sharutils-x.y.gz。当前版本是4.2。shar文件不需要使用unshar解包；只需要使用标准的UNIX sh命令就可以了。<br /></li>
+<li>Gzip Compression and decompression package<br />
+形式为gzip-x.y.shar。当前版本为1.2.4。<br /></li>
+<li>Tar &#x2013; 另一个用来创建和解包软件发布版本的程序<br />
+形式为tar-x.y.shar.gz。当前版本为1.11.8。注意不像大多数其他的实现，GNU tar可以处理.tar.gz文件而并不需要gzip的存在。<br /></li>
+<li>The Jargon File<br />
+在线Hacker Jargon File（在前言中引用过）在FSF中也有提供，文件为jargversion.txt.gz，当前版本为400。也有Info格式的版本，jargversion.info.gz。它是黑客知识的宝库，会以书籍的形式The New Hacker's Dictionary定期发布。<br /></li>
+</ul>
+
+<p>
+你可以通过TEX用户组获取到TEX。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-text">TEX Users Group
+1850 Union Street&#8212;Suite 1637
+San Francisco, CA 94123 USA
+Home page: http://www.tug.org/
+Email: tug@tug.org
+Fax: +1-415-982-8559
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga50eab4" class="outline-2">
+<h2 id="orga50eab4"><span class="section-number-2">3</span> 解包，编译，以及安装Emacs</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+就像大多数GNU软件，Emacs的解包，编译和安装也很简单。实际上，下面的说明对于几乎所有GNU软件包都有效，而不仅仅是Emacs。<br />
+</p>
+</div>
+
+<div id="outline-container-org327ac3e" class="outline-3">
+<h3 id="org327ac3e"><span class="section-number-3">3.1</span> 解包</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+如果你有一个压缩的tar文件（文件名以.tar.gz，.tar.Z，或者.tgz）并且你拥有GNU tar，执行：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">tar zxvf file
+</pre>
+</div>
+
+<p>
+如果你没有GNU tar，使用这个：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">zcat file | tar xvf -
+</pre>
+</div>
+
+<p>
+（你可以在Gzip包中找到zcat。）如果你使用的tar来自于SVR4的衍生版本，你可能需要把xvf替换为xvof。o使你成为展开的文件的拥有者。（否则，拥有者为tar文件的发布者&#x2013;你的电脑可能并不认识他。）<br />
+</p>
+
+<p>
+如果你有一个shar文件（文件名以.sh或者.shar结尾），执行<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">unshar file
+</pre>
+</div>
+<p>
+或者简单的<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">sh file
+</pre>
+</div>
+
+<p>
+如果shar文件本身压缩了（.Z或者.gz），首先用gzip -d解压它。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org806cdc0" class="outline-3">
+<h3 id="org806cdc0"><span class="section-number-3">3.2</span> 编译和安装</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+首先在要编译的软件包的顶层目录，通过运行configure脚本来配置软件。<br />
+</p>
+
+<p>
+不同的软件包拥有不同的配置选项。使用./configure &#x2013;help来查看这个包的选项。Emacs的选项有：<br />
+</p>
+<ul class="org-ul">
+<li>&#x2013;with-gcc<br />
+使用GNU C编译器来编译Emacs。<br /></li>
+<li>&#x2013;with-pop<br />
+编译支持Post Office Protocol（POP），有时用来收取email（对于用Emacs读取邮件的用户）<br /></li>
+<li>&#x2013;with-kerberos<br />
+对POP使用Kerberos鉴权扩展。<br /></li>
+<li>&#x2013;with-hesiod<br />
+使用Hesiod寻找POP服务器。<br /></li>
+<li>&#x2013;with-x<br />
+支持X窗口。<br /></li>
+<li>&#x2013;with-x-toolkit<br />
+更好的X窗口支持；使用工具箱部件。默认使用Toolkit，但是&#x2013;with-x-toolkit=motif会使用Motif工具箱替代它。<br /></li>
+</ul>
+
+<p>
+你还可能希望查看configure脚本在执行的时候做了什么&#x2013;这可能会有一会儿&#x2013;所以你还可以使用&#x2013;verbose选项。下面就是我经常执行的configure：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">./configure --verbose --with-x --with-x-toolkit
+</pre>
+</div>
+
+<p>
+在配置完包之后，执行make。这将会编译程序并且会花相当长的时间。<br />
+</p>
+
+<p>
+下一步，执行make check。这会执行包里提供的自检程序。<br />
+</p>
+
+<p>
+假设软件正确编译并且通过了测试，使用make install来安装它。<br />
+</p>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

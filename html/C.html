@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-02-26 Mon 23:44 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>附录C 调试和性能分析</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Shuai Zhao" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="../resource/org.css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">附录C 调试和性能分析</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgec453e2">1. 在本章：</a></li>
+<li><a href="#org307ee55">2. 求值</a></li>
+<li><a href="#orga1dd481">3. 调试器</a></li>
+<li><a href="#org9f6224d">4. Edebug</a></li>
+<li><a href="#orgda85e96">5. 性能分析器</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgec453e2" class="outline-2">
+<h2 id="orgec453e2"><span class="section-number-2">1</span> 在本章：</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<b>求值</b><br />
+<b>调试器</b><br />
+<b>Edebug</b><br />
+<b>性能分析器</b><br />
+</p>
+
+<p>
+这个附录描述了一些Emacs提供的用来测试和调试你的Lisp程序的一些工具。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org307ee55" class="outline-2">
+<h2 id="org307ee55"><span class="section-number-2">2</span> 求值</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+任何buffer中的Lisp表达式都可以被执行，只要把光标放到表达式的结尾然后按下C-x C-e（eval-last-sexp）。按键M-:（eval-expression）会在minibuffer中提示你输入一个要求值的Lisp表达式。你还可以调用eval-region和eval-current-buffer。<br />
+</p>
+
+<p>
+<b>scratch</b> buffer通常处于Lisp交互模式（如果不是的话，你可以通过M-x lisp-interaction-mode RET来切换）。在这个模式里，C-j通常执行eval-print-last-sexp，它与eval-last-sexp很像，除了它还会把结果插入到当前buffer里。在这个模式里C-M-x，eval-defun，会执行光标所在处的“defun”。这里所说的“defun”的意义很宽泛；它表示的是一个以括号开头的闭合的Lisp表达式（如果存在的话）。最后，Lisp交互模式还允许你输入部分Lisp符号然后使用M-TAB对其进行补全。<br />
+</p>
+
+<p>
+Lisp表达式还能存储在文件里，然后通过load，load-file，load-library和require进行加载。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga1dd481" class="outline-2">
+<h2 id="orga1dd481"><span class="section-number-2">3</span> 调试器</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Emacs Lisp有一个在指定情况下自动触发的内置调试模式。可以使用下面的手段进入调试器。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">debug-on-entry
+</pre>
+</div>
+<p>
+这是一个命令。它会提示（并且补全）你输入一个函数的名字。每当这个函数执行时，Emacs将会进入调试器。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">debug-on-error
+</pre>
+</div>
+<p>
+这是一个变量。如果非空，每当错误发出时，Emacs将会进入调试器。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">debug-on-next-call
+</pre>
+</div>
+<p>
+这是一个变量。如果非空，那么Emacs会在下一次一个表达式求值的时候进入调试器。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">debug-on-quit
+</pre>
+</div>
+<p>
+这是一个变量。如果非空，每当“quit”信号发出时（例如用户按下了C-g），Emacs将会进入调试器。<br />
+</p>
+
+<p>
+当调试器触发时，一个显示着Lisp栈的窗口将会显示出来。这个buffer称为*Backtrace*，每一行代表了一个挂起的函数调用，最上面表示着最近的调用。你可以看到挂起的Lisp表达式，查看不同位置的表达式和变量的值，并且强制函数返回指定的值。<br />
+</p>
+
+<p>
+下面是调试模式中的命令。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">c
+</pre>
+</div>
+<p>
+离开调试器，继续执行被打断的代码。这在由错误触发调试器的时候不可用。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">q
+</pre>
+</div>
+<p>
+离开调试器，终止挂起的运算。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">d
+</pre>
+</div>
+<p>
+继续执行直到下一个函数调用，然后返回调试器。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">e
+</pre>
+</div>
+<p>
+提示输入一个Lisp表达式在当前栈最上面的“帧”上执行。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">b
+</pre>
+</div>
+<p>
+在当前函数返回的时候“break”。如果调试器是在调用一个函数的时候触发的，那么这个命令将会继续执行直到该函数将要返回的时候重新进入调试器。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">r
+</pre>
+</div>
+<p>
+当要从一个函数返回时，提示你输入一个值作为那个函数的返回值（替换它原来的返回值）。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9f6224d" class="outline-2">
+<h2 id="org9f6224d"><span class="section-number-2">4</span> Edebug</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Edebug是一个比上一部分讲到的工具更强大的调试环境。它允许你单步调试实际运行的Lisp程序。Edebug是一个完全由Lisp完成的惊艳的作品；它既是它的作者Daniel LaLiberate天赋的一种证明，也是Emacs Lisp强大表现力的一种证明&#x2013;Emacs Lisp提供了足够的对于其内部的访问能力来使这么一个工具变得可能。<br />
+</p>
+
+<p>
+这一部分只是Edebug的一个简要总结。要阅读完整的信息，请查看The GNU Emacs Lisp Reference Manual的Edebug部分。获取它的细节请参照<a href="E.html">附录E</a>。<br />
+</p>
+
+<p>
+要使用Edebug，你需要选择你要追踪的函数。每个函数都必须单独插桩（instrument），这表示需要以特殊的方式对其求值。函数edebug-defun就是用来执行这个任务的，它的用法与eval-defun类似。变量edebug-all-defs控制着载入Edebug时是否重新定义eval-开头的那些命令以使它们也执行插桩操作。<br />
+</p>
+
+<p>
+在对目标函数插桩之后，你需要把这些定义记录在某个buffer中。你可以用通常的形式重新定义它们来去桩（uninstrument）。<br />
+</p>
+
+<p>
+Edebug在任何插桩的函数被调用的时候激活。一个显示着函数定义的窗口会弹出来，最左边显示着一个小箭头表示当前停在哪一行。光标停在下一步要执行的表达式的前面（但是如果你需要的话，你可以移动光标，甚至隐藏这个buffer，而不影响Edebug的操作）。<br />
+</p>
+
+<p>
+现在，你处在Edebug模式中并且可以执行下面的命令：<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">c
+</pre>
+</div>
+<p>
+(Continue)继续执行。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">q
+</pre>
+</div>
+<p>
+(Quit)终止执行并且离开Edebug。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">SPC
+</pre>
+</div>
+<p>
+(Single-step)单步。如果Edebug停在一个变量或者一个常量上，则跳过它并且显示它的值。如果Edebug停在一个函数调用的开始处，则会进入该函数调用语句的内部。后续的单步将会经过每个参数，并且显示它们的值。如果所有的参数都求值完毕，那么单步就会用这些参数调用这个函数并且显示结果。如果这个函数也插桩了，则单步会进入该函数。每次单步，光标都会移动到代码中合适的位置。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">n
+</pre>
+</div>
+<p>
+(Next)下一步。就像单步，但是会对嵌套的、插桩的函数求值而不会进入它们。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">e
+</pre>
+</div>
+<p>
+(Eval)提示输入一个表达式在当前停止的程序上下文中执行。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">h
+</pre>
+</div>
+<p>
+(Here)执行到此处。如果你把光标放置在代码中一处你希望停止的位置上，h将会使程序继续执行直到当前位置。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">d
+</pre>
+</div>
+<p>
+(Display)显示一个调用栈，就像Emacs的*Backtrace* buffer那样（参照上一部分）但是并没有相对应的功能（Edebug命令继续工作）。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">b
+</pre>
+</div>
+<p>
+(Breakpoint)在光标处设置一个断点。程序将在执行到断点时停止。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">u
+</pre>
+</div>
+<p>
+(Unset)去掉一个断点。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">x
+</pre>
+</div>
+<p>
+(Conditional breakpoint)设置一个条件断点。你会被提示输入一个Lisp表达式。每次经过这个断点时，如果表达式为真，则程序停止。<br />
+</p>
+
+<p>
+Edebug还有很多这里没有列出的能力，但是这些是最常用的功能。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgda85e96" class="outline-2">
+<h2 id="orgda85e96"><span class="section-number-2">5</span> 性能分析器</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+性能分析（Profiling）一个程序是找出它运行每一部分所花时间的过程，一般来说是为了提高效率。Barry Warsaw写了一个精巧的称为ELP的包来分析Emacs Lisp。<br />
+</p>
+
+<p>
+就像Edebug，ELP也作用于“插桩”的函数。这通过命令elp-instrument-function来实现，它会提示输入一个函数名。还有一个elp-instrument-package，它提示一个前缀。任何以该前缀开始的函数都会被插桩。<br />
+</p>
+
+<p>
+可以通过elp-restore-function和elp-restore-all来去桩。<br />
+</p>
+
+<p>
+要使用ELP，只需要在插桩之后执行就好了。性能分析数据将会在后台记录。当你需要查看到目前为止的结果时，调用命令elp-result。一个buffer将会弹出来显示每个被分析的函数执行的次数，一共花费了多少时间，以及平均时间。<br />
+</p>
+
+<p>
+对一个函数调用elp-reset-function来重置其调用的次数以及花费的时间；elp-reset-all重置所有函数。<br />
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>

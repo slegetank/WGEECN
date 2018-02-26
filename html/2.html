@@ -1,0 +1,1351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-02-26 Mon 23:43 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>简单的新命令</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Shuai Zhao" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="../resource/org.css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">简单的新命令</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org5dfa2ee">1. 在本章：</a></li>
+<li><a href="#org28d3bab">2. 游历窗口</a>
+<ul>
+<li><a href="#orgb3097b9">2.1. 定义other-window-backward</a></li>
+<li><a href="#orgf1c3666">2.2. 为other-window-backward添加参数</a></li>
+<li><a href="#org4dc2454">2.3. 可选参数</a></li>
+<li><a href="#org9383103">2.4. 简化代码</a></li>
+<li><a href="#org006c1f6">2.5. 逻辑表达式</a></li>
+<li><a href="#orgcdfd404">2.6. 最好的other-window-backward</a></li>
+</ul>
+</li>
+<li><a href="#orgac6d35e">3. 逐行滚动</a></li>
+<li><a href="#org143147a">4. 其他光标和文本移动命令</a></li>
+<li><a href="#org4a8d34f">5. 处理符号链接</a>
+<ul>
+<li><a href="#org818f9a6">5.1. 钩子</a></li>
+<li><a href="#orgfb0d843">5.2. 匿名函数</a></li>
+<li><a href="#orgcd1586e">5.3. 处理符号链接</a></li>
+</ul>
+</li>
+<li><a href="#org8012ca5">6. 修饰Buffer切换</a></li>
+<li><a href="#org1159b46">7. 补充：原始的前置参数</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5dfa2ee" class="outline-2">
+<h2 id="org5dfa2ee"><span class="section-number-2">1</span> 在本章：</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<b>游历窗口</b><br />
+<b>逐行滚动</b><br />
+<b>其他光标和文本移动命令</b><br />
+<b>处理符号链接</b><br />
+<b>修饰Buffer切换</b><br />
+<b>补充：原始的前置参数</b><br />
+</p>
+
+<p>
+本章中我们将会着手写一些很小的Lisp函数和命令，介绍很多的概念来帮助我们面对后面章节中将出现的更大的任务。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org28d3bab" class="outline-2">
+<h2 id="org28d3bab"><span class="section-number-2">2</span> 游历窗口</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+当我最初使用Emacs时，我对于C-x o很满意，也就是other-window。它将光标从一个窗口移动到另一个。如果我想把光标移动回前一个，我必须使用-1作为参数执行other-window，这需要输入C-u -1 C-x o，这太繁琐了。而同样繁琐的另一种方案是不停C-x o直到我逛遍所有窗口最终回到前一个窗口。<br />
+</p>
+
+<p>
+我真正需要的是用一个按键绑定表示“下一个窗口”以及另一个表示“前一个窗口”。我知道我可以编写一些Emacs Lisp代码将我需要的方法绑定到新的按键上。首先我必须选择这些按键。“Next”和“Previous”自然可以想到C-n和C-p，但是这些已经被绑定到了next-line和previous-line而我并不想修改它们。另一个选择是使用一些前置按键，后面跟着C-n和C-p。Emacs已经使用C-x作为很多两键命令的前置键（就像C-x o自己），所以我选择C-x C-n对应“下一个窗口”而C-x C-p对应“前一个窗口”。<br />
+</p>
+
+<p>
+我使用帮助命令describe-key[<a href="#orge42522d">8</a>]来查看C-x C-n和C-x C-p是否已经绑定到其他按键了。我发现C-x C-p已经绑定到了set-goal-column，而C-x C-p绑定到了mark-page。将他们绑定到“下一个窗口”和“上一个窗口”将会覆盖他们默认的绑定。而因为这并不是我经常使用的命令，所以我并不介意覆盖他们。如果我需要的话可以使用M-x来触发他们。<br />
+</p>
+
+<p>
+在决定了使用C-x C-n表示“下一个窗口”之后，我需要将它绑定到一些触发“下一个窗口”的命令上。而下一个窗口实际上和C-x o所执行的跳到另一个窗口的行为一样，也就是other-window。所以C-x C-n的按键绑定很简单。将下面的命令<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\C-x \C-n"</span> 'other-window<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+写入到.emacs中就完成了。而定义C-x C-p绑定的命令就要动一点脑子了。Emacs中并不存在一个命令表示“将光标移动到上一个窗口”。是时候定义一个了！<br />
+</p>
+</div>
+
+<div id="outline-container-orgb3097b9" class="outline-3">
+<h3 id="orgb3097b9"><span class="section-number-3">2.1</span> 定义other-window-backward</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+既然知道了给other-window传递一个参数-1可以使光标移动到上一个窗口，那么我们可以定义一个新的命令other-window-backward，如下所示：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">other-window-backward</span> <span style="color: #66D9EF;">()</span>
+  <span style="color: #75715E;">"Select the previous window."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>other-window -1<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+让我们看一下这个函数定义的各个部分。<br />
+</p>
+<ol class="org-ol">
+<li>Lisp函数的定义以defun开始。<br /></li>
+<li>下面跟着要定义的函数名称；这里使用other-window-backward。<br /></li>
+<li>下面跟着函数的参数列表[<a href="#orgf83530d">9</a>]。这个函数没有参数，所以我们使用了一个空列表。<br /></li>
+<li>字符串”Select the previous window.”是这个新函数的文档字符串，或者叫做docstring。任何Lisp函数定义都可以有一个文档字符串。Emacs将会在使用命令describe-function(M-? f)或者apropos展示在线帮助时显示这个字符串。<br /></li>
+<li>下一行(interactive)很特殊。这表示这个函数是一个交互式命令。在Emacs里，命令表示一个可以交互执行的Lisp函数，这表示它可以通过按键绑定或者通过M-x command-name来进行触发。并不是所有Lisp函数都是命令，但所有命令都是Lisp函数。<br />
+任何Lisp函数，包括交互命令，可以被其他Lisp代码使用(function arg &#x2026;)语法来进行调用。<br />
+函数通过在函数定义的头部（在可选的docstring之后）使用特殊的(interactive)表达式来表示自己是交互命令。更多信息在之后的“交互声明”中做更多叙述。<br /></li>
+
+<li>跟在函数名，参数列表，文档字符串，以及interactive声明之后的是函数体，也就是一个Lisp表达式序列。这个函数的函数体是一个单独的表达式(other-window -1)，也就是使用参数-1调用函数other-window。<br /></li>
+</ol>
+
+<p>
+执行defun表达式用来定义函数。现在我们可以在Lisp程序中通过(other-window-backward)来调用它；或者通过输入M-x other-window-backward RET来调用它；也可以通过M-? f other-window-backward RET[<a href="#orgd631f89">10</a>]来查看帮助。现在我们唯一需要做的就是绑定：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\C-x \C-p"</span> 'other-window-backward<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf1c3666" class="outline-3">
+<h3 id="orgf1c3666"><span class="section-number-3">2.2</span> 为other-window-backward添加参数</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+这个按键绑定已经能满足我们的需求了，但是我们还需要进行一点点改进。当使用C-x o（或者我们现在可以使用C-x C-n）来调用other-window时，你可以使用一个数字n作为参数来改变它的行为。如果使用了n，other-window可以跳过很多窗口。例如，C-u 2 C-x C-n表示“移动到当前窗口后面的第二个窗口”。就像我们已经看到的，n可以是一个负数来向回跳n个窗口。因此给other-window-backward添加一个参数来跳过窗口是很自然的想法。而现在，other-window-backward只能每次向后跳一次。<br />
+</p>
+
+<p>
+因此，我们需要给这个函数一个参数：要跳过的窗口数。我们可以这么做：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">other-window-backward</span> <span style="color: #66D9EF;">(</span>n<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Select Nth previous window."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span> <span style="color: #E6DB74;">"p"</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>other-window <span style="color: #A6E22E;">(</span>- n<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+我们给自己的函数一个参数n。我们还把交互声明修改为(interactive "p")，还把传递给other-window的参数从-1改为-n。让我们从交互声明开始看一下这些改动。<br />
+</p>
+
+<p>
+就像我们所看到的，交互命令是一种Lisp函数。这意味着命令也可以有参数。从Lisp中向函数传递参数是简单的；只要函数调用时写下来就可以了，就像(other-window -1)。但是如果函数是通过交互命令触发的呢？参数怎么传递？这也就是交互声明的目的。<br />
+</p>
+
+<p>
+interactive的参数描述了这个函数如何获取参数。当命令不需要参数时，那么interactive也没有参数，就像我们一开始other-window-backward中所示的那样。当命令需要参数时，interactive也有了一个参数：一个字母构成的字符串，每个字母描述一个参数。例子中的字母p表示“如果有前置参数，将它解释为一个数字，如果没有前置参数，就将参数默认设为1。”[<a href="#org2844e8f">11</a>]在命令触发时参数n将接收这个值。所以如果用户输入C-u 7 C-x C-p，n就是7 。如果输入C-x C-p，则n是1 。当然你也可以在Lisp代码中调用other-window-backward，例如(other-window-backward 4)。<br />
+</p>
+
+<p>
+新版本的other-window-backward使用参数(- n)来调用other-window。这里将n传递给函数-来得到相反数（注意-和n之间的空格）。-通常表示减&#x2013;例如(- 5 2)得到3&#x2013;但是当只有一个参数时，他表示取负。<br />
+</p>
+
+<p>
+默认情况下，n是1，(- n)就是-1，对于other-window的调用就变成了(other-window -1)&#x2013;同函数的第一个版本一样。如果用户指定了一个数字前缀参数&#x2013;例如C-u 3 C-x C-p&#x2013;那么我们调用的就是(other-window -3)，也就是向前移动3个窗口，这正是我们需要的。<br />
+</p>
+
+<p>
+理解(- n)和-1的区别很重要。前者是一个函数调用。函数名和参数之间必须有一个空格。后者是一个整数常量。负号和1之间并没有空格。当然你也可以将它写成(- 1)（虽然没有必要在能直接写成-1的情况下而触发一次函数调用）。不能写成-n，因为n不是一个常量。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4dc2454" class="outline-3">
+<h3 id="org4dc2454"><span class="section-number-3">2.3</span> 可选参数</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+我们还可以对other-window-backward做出另一个改进，即当调用函数的时候参数n是可选的，也就是当交互触发的时候前置参数也是可选的。它应该能够在不提供参数（other-window-backward）时触发默认行为（即(other-window-backward 1)）。就像这样实现：<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">other-window-backward</span> <span style="color: #66D9EF;">(</span><span style="color: #66D9EF;">&amp;optional</span> n<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Select Nth previous window."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span> <span style="color: #E6DB74;">"p"</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> n
+      <span style="color: #A6E22E;">(</span>other-window <span style="color: #E6DB74;">(</span>- n<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>              <span style="color: #75715E;">; </span><span style="color: #75715E;">&#22914;&#26524;n&#38750;&#31354;</span>
+    <span style="color: #A6E22E;">(</span>other-window -1<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>                 <span style="color: #75715E;">; </span><span style="color: #75715E;">&#22914;&#26524;n&#20026;&#31354;</span>
+</pre>
+</div>
+
+<p>
+参数中的关键词&amp;optional表示所有后续的参数都是可选的。可选参数可能会也可能不会传递给函数。如果没给，可选参数的值为nil。<br />
+</p>
+
+<p>
+关于符号nil有三点需要注意：<br />
+</p>
+<ol class="org-ol">
+<li><p>
+它表示错误。在Lisp的判断结构中&#x2013;if, cond, while, and, or以及not&#x2013;nil表示“false”，其他值表示“true”。因此，在表达式  <br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> n
+    <span style="color: #66D9EF;">(</span>other-window <span style="color: #A6E22E;">(</span>- n<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>other-window -1<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span><span style="color: #FD971F; font-weight: bold; font-style: italic; text-decoration: underline;">&#8232;</span>
+</pre>
+</div>
+
+<p>
+(Lisp版本的if-then-else结构)中，第一个n被求值。如果n的值是true（非空），那么<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>other-window <span style="color: #66D9EF;">(</span>- n<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+被执行，否则<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>other-window -1<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+被执行。<br />
+</p>
+
+<p>
+还有另一个符号，t，代表truth， 但是这没有nil重要，就像后面表明的。<br />
+</p></li>
+<li>它和空表很难区分。在Lisp解释器中，符号nil和空表()是相同的对象。如果你调用listp来判断符号nil是否是一个表，你将会得到结果t，也就是truth。同样的，如果你使用symbolp来判断空表是否是一个符号，那么也会得到t。但是，如果你传递任何其他列表给symbolp，或者传递其他符号给listp，那么你会得到nil&#x2013;即表示非。<br /></li>
+<li><p>
+它的值就是它自身。当你计算符号nil时，结果是nil。因此，不像其他的符号，当你需要它的名称而不是它的值得时候，nil不需要引用，因为它的名称就是它的值。所以你可以这样写：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> x nil<span style="color: #AE81FF;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">&#23558;nil&#36171;&#32473;&#21464;&#37327;x</span>
+</pre>
+</div>
+
+<p>
+将nil赋给变量x而不必这样写：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">&#8232;&#8232;<span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> x 'nil<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+虽然这两种写法都可以。同样的，不要试图将任何新的值赋给nil，[<a href="#orgedf38e6">12</a>]虽然它看起来是一个合法的变量名称。<br />
+</p></li>
+</ol>
+
+<p>
+nil的另一个功能就是区分列表是否正确。这将在<a href="./6.html">第六章</a>中讨论。<br />
+</p>
+
+<p>
+另一个符号t用来表示正确。就像nil，t也表示着自身的值，因此不需要引用。与nil不同的是，t并没有跟其他什么对象相同。也与nil不同的是，nil是唯一表示错误的方式，而其他所有Lisp值都和t一样表示正确。但是，当你仅仅想表示正确时（就像symbolp的返回值）你不需要选择一个类似17或者“plugin”这样的值来表示它。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9383103" class="outline-3">
+<h3 id="org9383103"><span class="section-number-3">2.4</span> 简化代码</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+就像前面提到的，表达式<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> n                                   <span style="color: #75715E;">; </span><span style="color: #75715E;">&#22914;&#26524;...</span>
+    <span style="color: #66D9EF;">(</span>other-window <span style="color: #A6E22E;">(</span>- n<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>                <span style="color: #75715E;">; </span><span style="color: #75715E;">...&#37027;&#20040;</span>
+  <span style="color: #66D9EF;">(</span>other-window -1<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>                    <span style="color: #75715E;">; </span><span style="color: #75715E;">...&#21542;&#21017;</span>
+</pre>
+</div>
+
+<p>
+是Lisp版本的if-then-else结构。if的第一个参数是一个条件。它将被检测结果是真（除nil之外的一切值）还是假（nil）。如果为真，则第二个参数&#x2013;“then”分句将会被执行。如果是假，第三个参数&#x2013;“else”分句（可选的）&#x2013;将会被执行。if的返回值总是最后执行的表达式的结果。<a href="./B.html">附录B</a>会向你展示if和其他像cond和while这样的Lisp流程控制函数。<br />
+</p>
+
+<p>
+在本例中，我们可以通过提取公有表达式的方式来进行简化。注意到other-window在if的两个分支中都被调用了。唯一的区别来自传递给other-window的参数n。因此我们可以将表达式重写：<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>other-window <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> n <span style="color: #A6E22E;">(</span>- n<span style="color: #A6E22E;">)</span> -1<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+通常，<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> test
+    <span style="color: #66D9EF;">(</span>a b<span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>a c<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+可以简写成(a (if test b c))。<br />
+</p>
+
+<p>
+我们还观察到在if的两个分支上，我们都在取反&#x2013;不管是n的负数还是1的负数。所以<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> n <span style="color: #66D9EF;">(</span>-n<span style="color: #66D9EF;">)</span> -1<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+可以变为<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>- <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> n n 1<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org006c1f6" class="outline-3">
+<h3 id="org006c1f6"><span class="section-number-3">2.5</span> 逻辑表达式</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+另一个Lisp程序员的常用技巧甚至可以使这个表达式更简单：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> n n 1<span style="color: #AE81FF;">)</span> = <span style="color: #AE81FF;">(</span><span style="color: #F92672;">or</span> n 1<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+函数or跟大多数语言中的逻辑或都一样：如果所有条件为否，则返回否，否则返回是。但是Lisp的or还有另一个用途：它挨个计算它的参数的值直到找到第一个为真的值并返回。如果没找到，则返回nil。所以or的返回值并不仅仅是false或者true，它返回false或者表中的第一个为true的值。这意味着通常来说，<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> a a b<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+可以替换为<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">or</span> a b<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+实际上，通常我们都应该这么写，因为如果a是true，那么(if a a b)会执行两次a而(or a b)只执行一次。（另一方面，如果你就是想a执行两次，那么当然你应该使用if）。实际上，<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> a a <span style="color: #75715E;">; </span><span style="color: #75715E;">&#22914;&#26524;a&#20026;true&#65292;&#36820;&#22238;a</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> b b <span style="color: #75715E;">; </span><span style="color: #75715E;">else if b&#20026;true&#65292;&#36820;&#22238;b</span>
+    ...
+    <span style="color: #A6E22E;">(</span><span style="color: #F92672;">if</span> y y z<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">else if y&#20026;true&#65292;&#36820;&#22238;y&#65292;&#21542;&#21017;z</span>
+</pre>
+</div>
+
+<p>
+（虽然这看上去很夸张但在真正的程序里这是很常见的一种模式）可以转换成下面这种形式。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">or</span> a b .. y z<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+同样的，<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> a
+    <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> b
+        ...
+      <span style="color: #A6E22E;">(</span><span style="color: #F92672;">if</span> y z<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+（注意这个例子中没有任何else）可以被写成<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">and</span> a b ... y z<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+因为and通过计算每个参数直到遇到一个值为nil的参数。如果找到了，就返回nil，否则它返回最后一个参数的值。<br />
+</p>
+
+<p>
+另一个简写需要注意：一些程序员喜欢将<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> <span style="color: #66D9EF;">(</span><span style="color: #F92672;">and</span> a b ... y<span style="color: #66D9EF;">)</span> z<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+转换成<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">and</span> a b ... y z<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+我不这么做，因为虽然他们功能上相同，但是前一个有一个细微的暗示&#x2013;即“如果a-y都是true的话就执行z”&#x2013;后一种却不是这样，这可以让人更加容易理解代码。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgcdfd404" class="outline-3">
+<h3 id="orgcdfd404"><span class="section-number-3">2.6</span> 最好的other-window-backward</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+回到other-window-backward。使用我们自己整理过的other-window调用，现在函数的定义看起来是这样的：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">other-window-backward</span> <span style="color: #66D9EF;">(</span><span style="color: #66D9EF;">&amp;optional</span> n<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Select Nth previous window."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span> <span style="color: #E6DB74;">"p"</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>other-window <span style="color: #A6E22E;">(</span>- <span style="color: #E6DB74;">(</span><span style="color: #F92672;">or</span> n 1<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+但是最好的定义&#x2013;最有Emacs Lisp风格的&#x2013;应该是这样：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">other-window-backward</span> <span style="color: #66D9EF;">(</span><span style="color: #66D9EF;">&amp;optional</span> n<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Select Nth previous window."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span> <span style="color: #E6DB74;">"P"</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>other-window <span style="color: #A6E22E;">(</span>- <span style="color: #E6DB74;">(</span>prefix-numeric-value n<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+在这个版本中，交互声明中的字母并不是小写的p了，而是大写的P；而other-window的参数变成了(- (prefix-numeric-value n))，而不是(- (or n 1))。<br />
+</p>
+
+<p>
+大写的P表示“当以交互的方式调用时，将前置参数保持为原始形式（raw form）并将其赋值给n”。前置参数的原始形式是Emacs使用的一种内部数据结构，用于在触发命令之前记录用户提供的前置信息。（查看<a href="#org1159b46">补充：原始的前置参数</a>得到更多关于原始前置参数数据结构的细节。）函数prefix-numeric-value可以将像(interactive "p")那样将数据结构转换为一个数字。而且，如果other-window-backward以非交互的方式调用（因此n就不再是一个原始形式的前置参数），prefix-numeric-value还是会做正确的事情&#x2013;也就是说，如果n是数字则直接返回n，如果n为nil则返回1。<br />
+</p>
+
+<p>
+可以说，这个定义并不比我们前面定义的other-window-backward的功能更强大。但是这个版本更“Emacs-Lisp-like”，因为它的代码重用性更好。它使用内建的函数prefix-numeric-value而不是重复定义函数的行为。<br />
+</p>
+
+<p>
+现在，让我们看看另一个例子。<br />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgac6d35e" class="outline-2">
+<h2 id="orgac6d35e"><span class="section-number-2">3</span> 逐行滚动</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+在我使用Emacs之前，我习惯了一些编辑器上存在而Emacs上并没有的特性。自然我很怀念这些功能并且决定找回他们。这其中的一个例子是使用一个键来向上、向下滚屏。<br />
+</p>
+
+<p>
+Emacs有两个滚屏方法，scroll-up和scroll-down，分别绑定到C-v和M-v。每个方法都有一个可选参数来告诉它要滚动多少行。默认的，他们每次翻一屏。（不要把向上、向下滚屏和通过C-n/C-p向上、向下移动光标混淆。）<br />
+</p>
+
+<p>
+虽然我可以使用C-u 1 C-v和C-u 1 M-v来每次向上、向下滚动一行，我还是希望只使用一次按键就实现这一功能。使用前面章节所讲述的技术，这很容易实现。<br />
+</p>
+
+<p>
+虽然在这之前，我还是要先考虑一件事。我永远也分不清这两个函数实际上分别是干什么的。scroll-up是不是将文本向上移动，展示出下面的一部分文件？或者它表示展示上面的一部分文件，而把所有文字下移？我希望这些方法的名称能够少一些混淆，就像scroll-ahead和scrll-behind。<br />
+</p>
+
+<p>
+我们可以使用defalias来指向任意Lisp函数。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defalias</span> '<span style="color: #A6E22E;">scroll-ahead</span> 'scroll-up<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defalias</span> '<span style="color: #A6E22E;">scroll-behind</span> 'scroll-down<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这样就好多了。现在我们就再也不用为这些混淆的名字而头痛了（虽然原来的名字仍然还在）。<br />
+</p>
+
+<p>
+现在我们来定义两个函数来使用正确的参数调用scroll-ahead和scroll-behind。这个过程和之前定义other-window-backward一样：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">scroll-one-line-ahead</span> <span style="color: #66D9EF;">()</span>
+  <span style="color: #75715E;">"Scroll ahead one line."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>scroll-ahead 1<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">scroll-one-line-behind</span> <span style="color: #66D9EF;">()</span>
+  <span style="color: #75715E;">"Scroll behind one line."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>scroll-behind 1<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+同样，我们可以给他们一个可选参数来使函数更通用：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">scroll-n-lines-ahead</span> <span style="color: #66D9EF;">(</span><span style="color: #66D9EF;">&amp;optional</span> n<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Scroll ahead N lines (1 by default)."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span> <span style="color: #E6DB74;">"P"</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>scroll-ahead <span style="color: #A6E22E;">(</span>prefix-numeric-value n<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">scroll-n-lines-behind</span> <span style="color: #66D9EF;">(</span><span style="color: #66D9EF;">&amp;optional</span> n<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Scroll behind N lines (1 by default)."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span> <span style="color: #E6DB74;">"P"</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+最后，我们需要选择按键来绑定新的命令。我喜欢C-q绑定scroll-n-lines-behind而C-z绑定scroll-n-lines-ahead：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\C-q"</span> 'scroll-n-lines-behind<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\C-z"</span> 'scroll-n-lines-ahead<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+默认的，C-q绑定到了quoted-insert。我将这条不常用的函数移动到了C-x C-q：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\C-x \C-q"</span> 'quoted-insert<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+C-x C-q的默认绑定是vc-toggle-read-only，我并不关心它的丢失。<br />
+</p>
+
+<p>
+C-z的在X系统下默认绑定是iconify-or-deiconify-frame，在终端的绑定是suspend-emacs。在这两种情况下，函数也绑定到了C-x C-z，所以也没有必要重新绑定他们。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org143147a" class="outline-2">
+<h2 id="org143147a"><span class="section-number-2">4</span> 其他光标和文本移动命令</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+下面是另外一些绑定到合理键位的简单命令。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">point-to-top</span> <span style="color: #66D9EF;">()</span>
+  <span style="color: #75715E;">"Put point on top line of window."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>move-to-window-line 0<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+
+<span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\M-,"</span> 'point-to-top<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+"Point"指代光标的位置。这个命令将光标移动到窗口的左上角。推荐的按键绑定替换了tags-loop-continue，我把它替换到了C-x,:<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\C-x,"</span> 'tags-loop-continue<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+下一个函数将光标移动到了窗口的左下角。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">point-to-bottom</span> <span style="color: #66D9EF;">()</span>
+  <span style="color: #75715E;">"Put point at beginning of last visible line."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>move-to-window-line -1<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+
+<span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\M-."</span> 'point-to-bottom<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这次的按键绑定替换了find-tag。我将它放到了C-x.，这回替换了我并不关心的set-fill-prefix。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">line-to-top</span> <span style="color: #66D9EF;">()</span>
+  <span style="color: #75715E;">"Move current line to top of window."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>recenter 0<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+
+<span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\M-!"</span> 'line-to-top<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这条命令将光标所在的行移动到屏幕的最顶端。这条命令替换了shell-command。<br />
+</p>
+
+<p>
+改变Emacs的按键绑定有一个缺点。当你习惯了自己高度定制化的Emacs后再在另一个没有这些定制的Emacs上工作时（例如在不同的电脑上或者使用了朋友的账号登录），你会很不习惯。这经常困扰着我。我训练着自己在未定制的Emacs上工作而不会受太多影响。我很少使用未定制的Emacs，所以总的来说得大于失。当你疯狂的更改按键绑定之前，你需要权衡一下这些得失。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4a8d34f" class="outline-2">
+<h2 id="org4a8d34f"><span class="section-number-2">5</span> 处理符号链接</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+目前为止，我们写的函数都非常简单。本质上，他们都只是重新排列了一下参数来调用其他已经存在的函数。现在让我们看看需要我们更多编程工作的示例。<br />
+</p>
+
+<p>
+在UNIX里，符号链接（symbol link，或者symlink）是一个指向另一个文件的文件。当你查看符号链接的内容时，你实际上得到的是它所指向的文件的内容。<br />
+</p>
+
+<p>
+假设你在Emacs里访问了一个指向其他文件的符号链接。你修改了一下文件内容然后按下C-x C-s来保存buffer。Emacs应该做什么呢？<br />
+</p>
+
+<ol class="org-ol">
+<li>使用编辑的文件替换符号链接，破坏链接，所指向的原始文件保持不变。<br /></li>
+<li>覆盖符号链接所指向的文件。<br /></li>
+<li>提示用户来选择上面的方案。<br /></li>
+<li>其他。<br /></li>
+</ol>
+
+<p>
+不同的编辑器处理符号链接的方式都不一样，所以习惯一个编辑器的用户可能会对其他编辑器的行为感到不适应。而且，我相信情况不同正确的处理方式也不同，而用户每次遇到这种情况都被迫需要考虑一下。<br />
+</p>
+
+<p>
+我的做法是：当我访问一个符号链接文件时，我让Emacs自动的将buffer变为只读。当我想要修改时会导致一个“Buffer is read-only”的错误。这个错误提示我可能正在访问一个符号链接。然后我会选择使用我自己设计的两个特殊命令之一来处理。<br />
+</p>
+</div>
+
+<div id="outline-container-org818f9a6" class="outline-3">
+<h3 id="org818f9a6"><span class="section-number-3">5.1</span> 钩子</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+当我希望Emacs在我访问某个文件时将其对应的buffer变为只读，我必须告诉Emacs“当我访问这个文件时执行一段特定的Lisp代码”。访问文件的动作应该触发一段我写的代码。这时钩子（hooks）就出场了。<br />
+</p>
+
+<p>
+钩子是指在特定情况下执行的指向某个函数列表的Lisp变量。例如，变量write-file-hooks是当一个buffer保存时Emacs执行的函数列表，而post-command-hook是当执行一个交互命令时执行的函数列表。在本例中我们最感兴趣的钩子是find-file-hooks，这在当Emacs访问一个新文件时会被执行。（有许多钩子，有一些我们将会在后面的内容中看到。要查看所有钩子，可以使用M-x apropos RET hook RET。）<br />
+</p>
+
+<p>
+函数add-hook将一个函数添加到钩子变量上。下面的函数将被添加到find-file-hooks：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">read-only-if-symlink</span> <span style="color: #66D9EF;">()</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>file-symlink-p buffer-file-name<span style="color: #A6E22E;">)</span>
+      <span style="color: #A6E22E;">(</span><span style="color: #F92672;">progn</span>
+        <span style="color: #E6DB74;">(</span><span style="color: #F92672;">setq</span> buffer-read-only t<span style="color: #E6DB74;">)</span>
+        <span style="color: #E6DB74;">(</span>message <span style="color: #E6DB74;">"File is a symlink"</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这个函数用来检测当前buffer的文件是否是符号链接。如果是，则buffer将变为只读并且显示“File is a symlink”。让我们仔细看一下这个函数。<br />
+</p>
+
+<ul class="org-ul">
+<li>首先，注意参数列表是空的。钩子变量中的函数都没有参数。<br /></li>
+<li>函数file-symlink-p用来检测它的参数，也就是buffer的文件名称是否是一个符号链接。它是一个断言（predicate），这表示它会返回true或者false。在Lisp中，断言通常被以p或者-p结尾。<br /></li>
+<li>file-symlink-p的参数是buffer-file-name。这个预置的变量在每个buffer中都有不同的值，因此也称为buffer局部变量。它总是保存着当前buffer的名字。在这里，当前buffer是指find-file-hooks执行时找到的文件。<br /></li>
+<li><p>
+如果buffer-file-name指向的是符号链接，我们希望做两件事：将buffer变为只读，并且提示一条信息。但是，Lisp在if-then-else中的“then”部分只允许一条表达式。如果我们写成：  <br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> <span style="color: #66D9EF;">(</span>file-symlink-p buffer-file-name<span style="color: #66D9EF;">)</span>
+    <span style="color: #66D9EF;">(</span><span style="color: #F92672;">setq</span> buffer-read-only t<span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>message <span style="color: #E6DB74;">"File is a symlink"</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这表示，“如果buffer-file-name是符号链接，那么就把buffer变成只读的，否则打印信息‘File is a symlink.’”要想两条语句都执行，我们可以把他们放到progn里，就像下面这样： <br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">&#8232;<span style="color: #AE81FF;">(</span><span style="color: #F92672;">progn</span>
+   <span style="color: #66D9EF;">(</span><span style="color: #F92672;">setq</span> buffer-read-only t<span style="color: #66D9EF;">)</span>
+   <span style="color: #66D9EF;">(</span>message <span style="color: #E6DB74;">"File is a symlink"</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+progn表达式会顺序执行内部的表达式并且返回最后执行的语句的值。<br />
+</p></li>
+<li>变量buffer-read-only也是buffer局部变量，用于控制当前buffer是否是只读的。<br /></li>
+</ul>
+
+<p>
+既然我们已经定义了read-only-if-symlink，我们就可以调用<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>add-hook 'find-file-hooks 'read-only-if-symlink<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+来将其添加到访问新文件就会触发的函数列表中。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgfb0d843" class="outline-3">
+<h3 id="orgfb0d843"><span class="section-number-3">5.2</span> 匿名函数</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+当你使用defun定义函数的时候，你给了函数一个可以在任何地方调用的名字。但是对于那些并不需要在任何地方都被调用的函数呢？假如它只需要在一个地方生效呢？可以说，read-only-if-symlink仅需要在find-file-hooks的列表里执行；实际上，在find-file-hooks之外的地方调用它甚至并不是什么好事。<br />
+</p>
+
+<p>
+我们可以在不指定名称的情况下定义函数。这种函数被称为匿名函数。我们使用Lisp的关键词lambda[<a href="#org002611d">13</a>]来定义，除了不指定函数名外，它的作用跟defun一模一样。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">lambda</span> <span style="color: #66D9EF;">()</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>file-symlink-p buffer-file-name<span style="color: #A6E22E;">)</span>
+      <span style="color: #A6E22E;">(</span><span style="color: #F92672;">progn</span>
+        <span style="color: #E6DB74;">(</span><span style="color: #F92672;">setq</span> buffer-readonly t<span style="color: #E6DB74;">)</span>
+        <span style="color: #E6DB74;">(</span>message &#8220;File is a symlink<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+lambda后面的空括号是匿名函数的参数列表。这个函数没有参数。匿名函数可以用在任何你使用函数名的地方：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>add-hook 'find-file-hooks
+          '<span style="color: #66D9EF;">(</span>lambda <span style="color: #A6E22E;">()</span>
+             <span style="color: #A6E22E;">(</span><span style="color: #F92672;">if</span> <span style="color: #E6DB74;">(</span>file-symlink-p buffer-file-name<span style="color: #E6DB74;">)</span>
+                 <span style="color: #E6DB74;">(</span><span style="color: #F92672;">progn</span>
+                   <span style="color: #FD971F;">(</span><span style="color: #F92672;">setq</span> buffer-read-only t<span style="color: #FD971F;">)</span>
+                   <span style="color: #FD971F;">(</span>message <span style="color: #E6DB74;">"File is a symlink"</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这样就只有add-hook可以访问它了。[<a href="#org594d06b">14</a>]<br />
+</p>
+
+<p>
+不过也有一个不应该在钩子中使用匿名函数的原因。如果你想要从钩子中移除一个函数的话，你需要使用函数名来调用remove-hook，就像这样：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>remove-hook 'find-file-hooks 'read-only-if-symlink<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+而如果使用匿名函数就没法这样做了。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgcd1586e" class="outline-3">
+<h3 id="orgcd1586e"><span class="section-number-3">5.3</span> 处理符号链接</h3>
+<div class="outline-text-3" id="text-5-3">
+<p>
+当Emacs提醒我在编辑符号链接时，我可能希望打开链接的目标文件来作为当前buffer的内容；我也可能希望"clobber"符号链接（将符号链接文件替换为所指向的真实文件）然后再访问它。下面是这两个的实现方式：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">visit-target-instead</span> <span style="color: #66D9EF;">()</span>
+  <span style="color: #75715E;">"Replace this buffer with a buffer visiting the link target."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> buffer-file-name
+      <span style="color: #A6E22E;">(</span><span style="color: #F92672;">let</span> <span style="color: #E6DB74;">(</span><span style="color: #FD971F;">(</span>target <span style="color: #F92672;">(</span>file-symlink-p buffer-file-name<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span>
+        <span style="color: #E6DB74;">(</span><span style="color: #F92672;">if</span> target
+            <span style="color: #FD971F;">(</span>find-alternate-file target<span style="color: #FD971F;">)</span>
+          <span style="color: #FD971F;">(</span><span style="color: #FD971F; font-weight: bold; font-style: italic; text-decoration: underline;">error</span> <span style="color: #E6DB74;">"Not visiting a symlink"</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+    <span style="color: #A6E22E;">(</span><span style="color: #FD971F; font-weight: bold; font-style: italic; text-decoration: underline;">error</span> <span style="color: #E6DB74;">"Not visiting a file"</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">clobber-symlink</span> <span style="color: #66D9EF;">()</span>
+  <span style="color: #75715E;">"Replace symlink with a copy of the file."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> buffer-file-name
+      <span style="color: #A6E22E;">(</span><span style="color: #F92672;">let</span> <span style="color: #E6DB74;">(</span><span style="color: #FD971F;">(</span>target <span style="color: #F92672;">(</span>file-symlink-p buffer-file-name<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span>
+        <span style="color: #E6DB74;">(</span><span style="color: #F92672;">if</span> target
+            <span style="color: #FD971F;">(</span><span style="color: #F92672;">if</span> <span style="color: #F92672;">(</span>yes-or-no-p <span style="color: #AE81FF;">(</span>format <span style="color: #E6DB74;">"Replace %s with %s?"</span>
+                                     buffer-file-name
+                                     target<span style="color: #AE81FF;">)</span><span style="color: #F92672;">)</span>
+                <span style="color: #F92672;">(</span><span style="color: #F92672;">progn</span>
+                  <span style="color: #AE81FF;">(</span>delete-file buffer-file-name<span style="color: #AE81FF;">)</span>
+                  <span style="color: #AE81FF;">(</span>write-file buffer-file-name<span style="color: #AE81FF;">)</span><span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span>
+          <span style="color: #FD971F;">(</span><span style="color: #FD971F; font-weight: bold; font-style: italic; text-decoration: underline;">error</span> <span style="color: #E6DB74;">"Not visiting a symlink"</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+    <span style="color: #A6E22E;">(</span><span style="color: #FD971F; font-weight: bold; font-style: italic; text-decoration: underline;">error</span> <span style="color: #E6DB74;">"Not visiting a file"</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+两个函数都以下面的表达式开始：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> buffer-file-name
+    ...
+  <span style="color: #66D9EF;">(</span><span style="color: #FD971F; font-weight: bold; font-style: italic; text-decoration: underline;">error</span> &#8220;Not visiting a file&#8221;<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+（我将其他内容省略掉以强调这个if结构。）因为buffer-file-name可能为空（当前buffer可能没有访问任何文件&#x2013;例如，*scratch* buffer），所以这是必要的，而传递nil给file-symlink-p将会触发错误，“Wrong type argument: stringp,nil”。[<a href="#org7aec7d6">15</a>]这个错误表示一个函数的参数应该是字符串&#x2013;一个符合stringp断言的对象&#x2013;但是却得到了nil。visit-target-instead和clobber-symlink都会触发这个错误信息，所以我们自己来检测buffer-file-name是不是nil。如果是nil，那么“else”子句里我们会使用error函数生成一个可读性更好的错误信息&#x2013;“Not visiting a file”。当error函数被调用时，当前的命令会被终止，Emacs将会返回到它的最顶层来等待用户的下一个输入。<br />
+</p>
+
+<p>
+为什么read-only-if-symlink中不需要检测buffer-file-name是否为空呢？因为这个方法只会由find-file-hooks调用，而这个钩子只有当访问某个文件时才会触发。<br />
+</p>
+
+<p>
+在buffer-file-name条件的“then”部分，两个函数都有下面的结构<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">let</span> <span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>target <span style="color: #E6DB74;">(</span>file-symlink-p buffer-file-name<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span> ...<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+大多数语言都有方法来创建临时变量（也称为局部变量），它们只存在于某个特定的代码域中，称为变量的作用域。在Lisp中，临时变量使用let来创建，结构是这样的：<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">let</span> <span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>var1 value1<span style="color: #A6E22E;">)</span>
+      <span style="color: #A6E22E;">(</span>var2 value2<span style="color: #A6E22E;">)</span>
+      ...
+      <span style="color: #A6E22E;">(</span>varn valuen<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
+  body1 body2 ... bodyn<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这会将value1赋值给var1，value2赋值给var2，依此类推；var1和var2只能在bodyi表达式中使用。此外，使用临时变量能够帮助避免不同域的代码中出现函数名相同的冲突。<br />
+</p>
+
+<p>
+所以表达式<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">let</span> <span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>target <span style="color: #E6DB74;">(</span>file-symlink-p buffer-file-name<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span> ...<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+创建了一个名为target的临时变量，它的值是(file-symlink-p buffer-file-name)的返回值。<br />
+</p>
+
+<p>
+就像前面提到的，file-symlink-p是一个断言，也就是说它的返回值是真或者假。但是因为真在Lisp中可以被任何除nil之外的值表示，如果file-symlink-p的参数是一个符号链接时它的返回值并不一定就是t。实际上，它会返回符号链接所指向的文件名。所以如果buffer-file-name是符号链接的名字，target将会是符号链接的目标的名称。<br />
+</p>
+
+<p>
+在临时变量target的作用域中，let的body都是这样的：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> target
+    ...
+  <span style="color: #66D9EF;">(</span><span style="color: #FD971F; font-weight: bold; font-style: italic; text-decoration: underline;">error</span> &#8220;Not visiting a symlink&#8221;<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+在执行完let的body之后，变量target就不存在了。<br />
+</p>
+
+<p>
+在let中，如果target为空（file-symlink-p可能会返回nil，因为buffer-file-name可能并不是一个符号链接），那么我们就会在“else”里产生一个错误信息，“Not visiting a symlink”。否则每个函数中会执行自己的逻辑。最后我们来看两个函数不一样的地方。<br />
+</p>
+
+<p>
+函数visit-target-instead中执行<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>find-alternate-file target<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这会访问target文件来替换当前的buffer，并且会提示用户，以免原buffer还有未保存的修改。它甚至会触发find-file-hooks，因为新文件也可能是一个符号链接！<br />
+</p>
+
+<p>
+在visit-target-instead调用find-alternate-file的地方，clobber-symlink则如下所示：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> <span style="color: #66D9EF;">(</span>yes-or-no-p ...<span style="color: #66D9EF;">)</span> ...<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+函数yes-or-no-p会询问用户一个问题，并会根据用户的选择返回true或false。本例中，问题是：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>format <span style="color: #E6DB74;">"Replace %s with %s?"</span>
+        buffer-file-name
+        target<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这个字符串的结构和C语言的printf很相似。第一个参数是一个格式化模式字符串。每个%s都使用后面的字符串参数来替换。第一个%s使用buffer-file-name的值替换，第二个使用target的值替换。所以如果buffer-file-name的值是“foo”而target的值是“bar”，那么提示就会是“Replace foo with bar?”（format函数还支持其他的格式化符号。例如，如果参数是ASCII值则%c会打印出一个字母。使用M-? f format RET来查看整个功能列表。）<br />
+</p>
+
+<p>
+在检查了yes-or-no-p的返回值并且用户选择了“yes”之后，clobber-symlink将会执行：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">progn</span>
+  <span style="color: #66D9EF;">(</span>delete-file buffer-file-name<span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>write-file buffer-file-name<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+我们已经知道，progn会把多条Lisp表达式组合起来。delete-file会删除文件（只是个符号链接），write-file会将当前buffer的内容保存到buffer-file-name所指向的位置，只是这次保存的是普通文件。<br />
+</p>
+
+<p>
+我喜欢将C-x t绑定到visit-target-instead（默认未被使用）而C-x 1绑定到clobber-symlink（默认绑定到count-linespage）。<br />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8012ca5" class="outline-2">
+<h2 id="org8012ca5"><span class="section-number-2">6</span> 修饰Buffer切换</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+让我们以一个例子总结本章，这个例子将会引入一个称为修饰（advice）的非常有用的Lisp工具。<br />
+</p>
+
+<p>
+我发现我经常同时编辑许多名称相似的文件；例如，foobar.c和foobar.h。当我想从一个buffer切换到另一个时，我使用C-x b，也就是switch-to-buffer，它会询问我buffer的名称。因为我希望尽量少的按键，我使用TAB来补全buffer名称。我会输入<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">C-x b fo TAB
+</pre>
+</div>
+
+<p>
+并且希望TAB会将“fo”补全为”foobar.c”，然后我只要按下RET就可以了。90%的情况下这工作的很好。另外的情况下，就像这个例子中，按下fo TAB将只会补全为“foobar.”，而让我自己区分是选择”foobar.c”还是”foobar.h”。出于习惯，我常常按下RET，结果buffer的名称变成了”foobar.”。<br />
+</p>
+
+<p>
+这时，Emacs将会创建一个新的名为foobar.的新buffer，当然这完全不是我想要的。现在我需要杀掉这个新buffer（使用C-x k，kill-buffer）然后再来一次。虽然我有时也需要新建一个不存在的buffer，但是这和刚刚这种错误的情况相比很少见。我希望在这种情况中，Emacs能够在我 出错之前提示我。<br />
+</p>
+
+<p>
+要达到这点，我们可以使用advice。advice是指一段在函数调用之前或之后执行的代码。前置修饰可以在参数传递给函数之前对其进行修改。后置修饰可以修改函数的返回值。修饰跟钩子变量有点像，只是Emacs只为一些特定的情况定义了不多的一些钩子，而你却能选择对哪些方法进行修饰。<br />
+</p>
+
+<p>
+下面是修饰的第一次尝试：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defadvice</span> <span style="color: #A6E22E;">switch-to-buffer</span> <span style="color: #66D9EF;">(</span>before existing-buffer
+                                    activate compile<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"When interactive, switch to existing buffers only."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span> <span style="color: #E6DB74;">"b"</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+让我们仔细看看它。函数defadvice用于创建一个新的修饰。它的第一个参数是要被修饰的函数名（不必引用，unquoted）&#x2013;在本例中也就是switch-to-buffer。后面跟着的是特定格式的列表。它的第一个元素&#x2013;在本例中也就是before&#x2013;告诉我们这是前置还是后置修饰。（还有一种修饰，称为“around”，它能让你在修饰函数的内部调用被修饰的方法。）后面跟着的是这个修饰的名称；本例中是existing-buffer。以后如果你想删除或者修改这个修饰你可以使用这个名称。再后面是一些关键词：activate表示这个修饰在其定义之后马上生效（可以只是定义修饰而不生效）；compile表示这个修饰的代码应该被“byte-compiled”提高执行速度（查看<a href="./5.html">第五章</a>）。<br />
+</p>
+
+<p>
+在特定格式的列表之后，跟着一个可选的文档字符串。<br />
+</p>
+
+<p>
+本例中的body只有一行交互声明，这会替换switch-to-buffer的交互声明。switch-to-buffer接受任何字符串作为buffer-name参数，而交互声明中的字符b表示“只接受已存在的buffer的名称”。我们在不影响任何以非交互形式调用switch-to-buffer的情况下做出了这个更改。所以这个修饰高效的完成了整件工作：它使switch-to-buffer只接受已存在的buffer名。<br />
+</p>
+
+<p>
+不幸的是，这样约束性太大了。还是应该能够切换到不存在的buffer，但是只在某些特殊的条件下才移除这个限制&#x2013;例如，当使用前置参数的时候。这样，C-x b将会拒绝切换到不存在的buffer，而C-u C-x b将允许。<br />
+</p>
+
+<p>
+我们可以这么做：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defadvice</span> <span style="color: #A6E22E;">switch-to-buffer</span> <span style="color: #66D9EF;">(</span>before existing-buffer
+                                    activate compile<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"When interactive, switch to existing buffers only,</span>
+<span style="color: #75715E;">        unless given a prefix argument."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span>
+   <span style="color: #A6E22E;">(</span>list <span style="color: #E6DB74;">(</span>read-buffer <span style="color: #E6DB74;">"Switch to buffer:"</span>
+                      <span style="color: #FD971F;">(</span>other-buffer<span style="color: #FD971F;">)</span>
+                      <span style="color: #FD971F;">(</span>null current-prefix-arg<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+又一次，我们使用了前置修饰修改了switch-to-buffer的交互声明。但是这次，我们使用了一种未见过的形式调用interactive：我们传递了一个列表作为参数给它，而不是一个字母组成的字符串。<br />
+</p>
+
+<p>
+当interactive的参数不是字符串而是一些表达式时，这个表达式会进行运算得到一个参数列表传递给函数。所以在这个例子中我们调用了list，它使用下面这段表达式的返回值构建：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>read-buffer <span style="color: #E6DB74;">"Switch to buffer: "</span>
+             <span style="color: #66D9EF;">(</span>other-buffer<span style="color: #66D9EF;">)</span>
+             <span style="color: #66D9EF;">(</span>null current-prefix-arg<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+函数read-buffer是一个底层的用于向用户询问buffer名称的函数。说它底层是因为所有其他询问buffer名称的函数最终调用的都是它。它的调用需要一个提示字符串和两个可选参数：一个默认切换到的buffer，以及一个布尔值用于标示输入是否只能是已存在的buffer。<br />
+</p>
+
+<p>
+默认的buffer，我们传递了(other-buffer)的返回值给它，它的作用是产生一个可用的默认buffer。（通常它会选择最近使用的但是当前不可见的buffer。）对于是否限制输入的布尔状态值，我们使用了<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>null current-prefix-arg<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这会查看current-prefix-arg是否为nil。如果是，则返回t；否则返回nil。因此，如果没有前置参数（也就是current-prefix-arg为nil），那么我们调用的是<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>read-buffer <span style="color: #E6DB74;">"Switch to buffer: "</span>
+             <span style="color: #66D9EF;">(</span>other-buffer<span style="color: #66D9EF;">)</span>
+             t<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+表示“读入buffer名称，只接受已存在的buffer”。如果有前置参数，那么我们调用的是<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #AE81FF;">(</span>read-buffer <span style="color: #E6DB74;">"Switch to buffer: "</span>
+                <span style="color: #66D9EF;">(</span>other-buffer<span style="color: #66D9EF;">)</span>
+                nil<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+表示“读入buffer名称而不做任何限制”（允许不存在的buffer作为参数）。然后read-buffer的返回值被传给了list，list（包含着一个元素，也就是buffer名称）传递给switch-to-buffer作为参数列表。<br />
+</p>
+
+<p>
+switch-to-buffer这样修饰之后，Emacs将不会回应我切换到不存在的buffer的要求了，除非我按下C-u来要求这种能力。<br />
+</p>
+
+<p>
+完整起见，你还应该同样修饰函数switch-to-buffer-other-window和switch-to-buffer-other-frame。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1159b46" class="outline-2">
+<h2 id="org1159b46"><span class="section-number-2">7</span> 补充：原始的前置参数</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+变量current-prefix-arg总是保存着最后的“原始”前置参数，跟你从(interactive "P")中取到的一样。<br />
+</p>
+
+<p>
+函数prefix-numeric-value可以应用到一个跟你从(interactive "P")中取得的“原始”前置参数一样类型的值来得到数值。<br />
+</p>
+
+<p>
+原始的前置参数什么样子呢？表格2-1展示出了原始值以及对应的数值。<br />
+表格2-1：前置参数<br />
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">如果用户输入</td>
+<td class="org-left">原始值</td>
+<td class="org-left">数值</td>
+</tr>
+
+<tr>
+<td class="org-left">C-u后面跟一个（可能是负数）数字</td>
+<td class="org-left">数字本身</td>
+<td class="org-left">数字本身</td>
+</tr>
+
+<tr>
+<td class="org-left">C-u - （后面什么都没有）</td>
+<td class="org-left">符号-</td>
+<td class="org-left">-1</td>
+</tr>
+
+<tr>
+<td class="org-left">C-u 一行中n次</td>
+<td class="org-left">一个包含数字4的n次方的表</td>
+<td class="org-left">4的n次方</td>
+</tr>
+
+<tr>
+<td class="org-left">没有前置参数</td>
+<td class="org-left">nil</td>
+<td class="org-left">1</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+<a id="orge42522d"></a>[8]. 如果你像<a href="file:///1.html">第一章</a>中描述的那样修改了help-command的绑定，那么describe-key的按键绑定是M-? k；否则是C-h k。<br />
+<a id="orgf83530d"></a>[9]. “parameter”与“argument”有什么不同呢？这两个概念通常可以替换使用，但是技术上来讲，“parameter”是指函数定义中的形参，而“argument”是指函数调用时传入的实参。argument的值会传递给parameter。<br />
+<a id="orgd631f89"></a>[10]. 再一次，如果你已经把help-command的绑定到M-?那么就是M-? f。从这开始，我将假设你修改过了，或者你至少应该理解我的做法。<br />
+<a id="org2844e8f"></a>[11]. 要查看interactive的code letter，按下M-? f interactive RET。<br />
+<a id="orgedf38e6"></a>[12]. 实际上Emacs也不允许你把任何值赋给nil。<br />
+<a id="org002611d"></a>[13]. “lambda演算”是一套用于研究函数及其参数的数学形式。某种意义上来说它是Lisp（以及其他很多语言）的理论基础。单词“lambda”只是一个希腊语中的单词，并没有什么特殊的含义。<br />
+<a id="org594d06b"></a>[14]. 这并不是绝对正确的。其他的代码可以搜索find-file-hooks列表的内容并且执行里面的所有函数。这里的意思是这个函数相对于defun的显式声明来说隐藏起来了。<br />
+<a id="org7aec7d6"></a>[15]. 请自己试一下：M-: (file-symlink-p nil) RET。<br />
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>

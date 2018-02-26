@@ -1,0 +1,906 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-02-26 Mon 23:44 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>协作命令</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Shuai Zhao" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="../resource/org.css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">协作命令</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org3b74768">1. 在本章：</a></li>
+<li><a href="#orgab14264">2. 症状</a></li>
+<li><a href="#org5940df0">3. 解药</a>
+<ul>
+<li><a href="#org3d3a973">3.1. 声明变量</a></li>
+<li><a href="#org255934f">3.2. 保存和取出point</a></li>
+<li><a href="#org75705f2">3.3. 窗口内容</a></li>
+<li><a href="#orgc85dee6">3.4. 错误检查</a></li>
+</ul>
+</li>
+<li><a href="#org96286e7">4. 归纳出更一般的解决方法</a>
+<ul>
+<li><a href="#orgd3685ae">4.1. 使用this-command</a></li>
+<li><a href="#org8eae50d">4.2. 符号属性</a></li>
+<li><a href="#orgf6d6134">4.3. 标记</a></li>
+<li><a href="#org51b4e45">4.4. 附录：关于效率</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3b74768" class="outline-2">
+<h2 id="org3b74768"><span class="section-number-2">1</span> 在本章：</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<b>症状</b><br />
+<b>解药</b><br />
+<b>归纳出更一般的解决方法</b><br />
+</p>
+
+<p>
+本章将讲述不同命令协同工作，以完成在一个命令里保存信息而在另一个命令里获取它。共享信息的最简单的方式是创建一个变量并把值存进去。本章中我们当然也会这么做。例如，我们会把当前buffer中的位置信息存储起来然后在其他命令中使用它。但是我们也会学到一些更复杂的保存状态的方式，特别是标记（markers）和符号属性（symbol properties）。我们将会把这些跟buffer和窗口的信息组合起来写出一套允许你“回滚”翻页动作的函数。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgab14264" class="outline-2">
+<h2 id="orgab14264"><span class="section-number-2">2</span> 症状</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+你正在编写一些复杂的Lisp代码。你非常专注，在头脑中努力的理清数据之间的微妙的联系然后将它们编写到屏幕上。你正在处理一个非常精妙的部分而这时你发现了左面的一个拼写错误。你希望按下C-b C-b C-b来回到那里对其修正，但是&#x2013;灾难发生了&#x2013;你按下了C-v C-v C-v，向下翻了三屏，最终停在了离你的代码几光年以外的地方。你试图找到在这个失误发生之前光标在哪里，以及为什么在那里，以及你正在那里做什么，这无疑打乱了你头脑中的思考。当你翻页，或者搜索，或者查找撤销列表来回到那里时，你已经忘了最初想要修正的那个拼写错误，最终这变成了一个bug，可能会花费你几个小时来找到它。<br />
+</p>
+
+<p>
+Emacs在这个例子中没有起到帮助作用。它使你如此容易的在你的文档中迷失而找到回去的路却很困难。虽然Emacs有一个可扩展的撤销工具，但这只能撤销修改。你不能撤销如此简单的浏览行为。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5940df0" class="outline-2">
+<h2 id="org5940df0"><span class="section-number-2">3</span> 解药</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+假设我们可以这样修改C-v（scroll-up命令[<a href="#orga9ff30e">16</a>]），当我们按下它之后，Emacs认为，“可能用户是误按的C-v，所以我将记录一些‘撤销’的信息以备未来需要”。然后我们可以编写另一个函数，unscroll，它可以回滚最后一次的滚动。这样只要记住unscroll的按键绑定就能避免再次发生这种迷失。<br />
+</p>
+
+<p>
+实际上这并没完全解决问题。如果你一次按下了多个C-v，调用一次unscroll应该将它们都撤销，而不是只撤销最后一次。这表示只有序列中的第一个C-v才需要记住它的起始位置。我们怎样来检测这种情况的发生呢？在我们的C-v代码里记录开始位置之前，我们需要知道（a）下一个命令是否还是scroll-up，或者（b）前一个命令是否不是scroll-up。显然（a）是不可能的：我们不能预见未来。幸运的是（b）很简单：Emacs有一个称为last-command的变量专门记录这一信息。这个变量是我们将使用的在不同命令间传递信息的第一个方法。<br />
+</p>
+
+<p>
+现在唯一剩下的问题是：我们如何把这个额外的代码关联到scroll-up？修饰特性能很好的解决这一问题。前面讲过一段修饰代码可以在被修饰方法之前或之后执行。在本例中我们需要前置修饰，因为只有在执行scroll-up之前我们才能知道开始的位置在哪里。<br />
+</p>
+</div>
+
+<div id="outline-container-org3d3a973" class="outline-3">
+<h3 id="org3d3a973"><span class="section-number-3">3.1</span> 声明变量</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+我们将以建立一个保存“撤销”信息的全局变量unscorll-to开始，它保存了unscroll应该将光标移动到的位置。我们将使用defvar来声明变量。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">unscroll-to</span> nil
+  <span style="color: #75715E;">"Text position for next call to 'unscroll'."</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+全局变量不需要声明。但是使用defvar声明变量有一些优势：<br />
+</p>
+<ul class="org-ul">
+<li>使用defvar能够关联一个文档字符串给变量，就像defun那样。<br /></li>
+<li><p>
+可以给变量赋一个默认值。本例中，unscroll-to的默认值是nil。<br />
+</p>
+
+<p>
+通过defvar给变量赋默认值与使用setq不一样。使用setq将会强制给变量赋默认值，而defvar只会在变量没有任何值时才会赋给默认值。<br />
+</p>
+
+<p>
+为什么这很重要呢？假设你的.emacs文件有这么一行：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">&#8232;&#8232;<span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> mail-signature t<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这表示当你使用Emacs发送email时，你希望在最后添加你自己的签名文件。当你启动Emacs时，mail-signature被设置为了t，但是定义邮件发送代码的Lisp文件，sendmail，还没有被载入。它只有当你第一次调用mail命令时才会加载。当你调用mail时，Emacs将执行sendmail Lisp文件中的代码：  <br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">mail-signature</span> nil ...<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这表示nil是mail-signature的默认初始值。但是你已经给mail-signature赋过值了，而你不希望载入sendmail时把你的设置给覆盖了。另一方面，如果你在.emacs中并没有给mail-signature赋过任何值，你还是希望这个值能够生效。<br />
+</p></li>
+<li>使用defvar声明的变量可以通过多个标签相关（tag-related）的命令找到。在工程中通过标签找到变量和函数定义是一种快捷的方式。Emacs的标签工具，例如find-tag函数，可以找到任何通过def&#x2026;函数(defun, defalias, defmacro, defvar, defsubst, defconst, defadvice)定义的东西。<br /></li>
+<li>当你编译字节码时（见<a href="./5.html">第五章</a>），编译器如果发现变量未使用defvar声明将会产生一个警告。如果你的所有变量都进行了声明，那么你可以使用这些警告来找出哪些变量名写错了。<br /></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org255934f" class="outline-3">
+<h3 id="org255934f"><span class="section-number-3">3.2</span> 保存和取出point</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+让我们定义一个变量来存储scroll-up队列的最初位置，即最初光标在文本中的位置。光标在文本中的位置被称为point，其值就是从buffer开始位置计算（从1开始）有多少个字符。point的值可以由函数point得到。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defadvice</span> <span style="color: #A6E22E;">scroll-up</span> <span style="color: #66D9EF;">(</span>before remember-for-unscroll
+                             activate compile<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Remember where we started from, for 'unscroll'."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>not <span style="color: #E6DB74;">(</span>eq last-command 'scroll-up<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+      <span style="color: #A6E22E;">(</span><span style="color: #F92672;">setq</span> unscroll-to <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这个修饰是这么工作的：<br />
+</p>
+
+<ol class="org-ol">
+<li>函数eq告诉我们它的两个参数是否相等。本例中，参数是last-command变量的值，以及符号scroll-up。last-command的值是最后一次用户触发的命令的符号（在本章后面的部分<a href="#orgd3685ae">使用this-command</a>中也能看到）。<br /></li>
+<li>eq的返回值被传递给not，这会对它的参数的布尔值取反。如果nil传给not，那么返回t。如果其他值传给not，则返回nil。[<a href="#org3653236">17</a>]<br /></li>
+<li>如果not的返回值是t，即last-command的值并不是scroll-up，那么变量unscroll-to的的值将被设置为当前的point值。<br /></li>
+</ol>
+
+<p>
+现在定义unscroll就很简单了：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">unscroll</span> <span style="color: #66D9EF;">()</span>
+  <span style="color: #75715E;">"Jump to location specified by 'unscroll-to'."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>goto-char unscroll-to<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+函数goto-char将光标移动到指定的位置。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org75705f2" class="outline-3">
+<h3 id="org75705f2"><span class="section-number-3">3.3</span> 窗口内容</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+对于这个解决方案有一些不完美的地方。在一次unscroll之后，光标确实返回到了正确的地方，但这时屏幕却看起来和按下C-v之前不一样了。例如，我在按下C-v C-v C-v之前可能正在屏幕的底部编辑一行代码。在我调用unscroll之后，虽然光标确实回到了之前的位置，但是那一行可能显示到了窗口的中间。<br />
+</p>
+
+<p>
+既然我们的目的是最小化意料之外的滚动所造成的破坏，那么我们不只希望仅仅恢复光标的位置，我们还希望之前编辑的行的位置也恢复到原处。<br />
+</p>
+
+<p>
+因此只保存point的值就不够了。我们还必须保存一个值来表示当前窗口中显示什么。Emacs提供了几个函数来描述窗口中显示什么，例如window-edges，window-height，current-window-configuration。目前我们只需要使用window-start，它表示对于给定的窗口，显示的第一个（窗口左上角）字符在buffer中的位置。这样我们只需要在命令间传递更多一点信息就可以了。<br />
+</p>
+
+<p>
+更新我们的例子很简单。首相我们要将变量unscroll-to的声明替换为两个新的变量：一个用于保存point的值，另一个用于保存窗口中第一个字符的位置。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">unscroll-point</span> nil
+  <span style="color: #75715E;">"Cursor position for next call to 'unscroll'."</span><span style="color: #AE81FF;">)</span>
+
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">unscroll-window-start</span> nil
+  <span style="color: #75715E;">"Window start for next call to 'unscroll'."</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+然后我们要修改scroll-up的修饰以及unscroll来使用这两个值。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defadvice</span> <span style="color: #A6E22E;">scroll-up</span> <span style="color: #66D9EF;">(</span>before remember-for-unscroll
+                             activate compile<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Remember where we started from, for &#8216;</span><span style="color: #AE81FF;">unscroll</span><span style="color: #75715E;">'."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>not <span style="color: #E6DB74;">(</span>eq last-command 'scroll-up<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+      <span style="color: #A6E22E;">(</span><span style="color: #F92672;">progn</span>
+        <span style="color: #E6DB74;">(</span><span style="color: #F92672;">setq</span> unscroll-point <span style="color: #FD971F;">(</span>point<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span>
+        <span style="color: #E6DB74;">(</span><span style="color: #F92672;">setq</span> unscroll-window-start <span style="color: #FD971F;">(</span>window-start<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">unscroll</span> <span style="color: #66D9EF;">()</span>
+  <span style="color: #75715E;">"Revert to 'unscroll-point' and 'unscroll-window-start'."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>goto-char unscroll-point<span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>set-window-start nil unscroll-window-start<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+修饰的名称仍然是remember-for-unscroll，这会替换之前同名的修饰。<br />
+</p>
+
+<p>
+函数set-window-start和goto-char移动光标位置的方式类似，它会设置窗口开始的位置。不一样的是，set-window-start有两个参数。第一个参数表明操作的是哪个窗口。如果为nil，则默认使用当前选中的窗口。（传递给set-window-start的窗口对象可以通过类似get-buffer-window以及previous-window的函数得到。）<br />
+</p>
+
+<p>
+对于回滚我们可能还希望保持另一个信息，即窗口的hscroll，它保存着窗口横向翻滚的列数，默认为0 。我们可以添加另一个变量来保存：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">unscroll-hscroll</span> nil
+  <span style="color: #75715E;">"Hscroll for next call to 'unscroll'."</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+然后我们再次更新unscroll和scroll-up修饰来调用window-hscroll（获取窗口的hscroll值）以及set-window-hscroll（设置）：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defadvice</span> <span style="color: #A6E22E;">scroll-up</span> <span style="color: #66D9EF;">(</span>before remember-for-unscroll
+                             activate compile<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Remember where we started from, for 'unscroll'."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>not <span style="color: #E6DB74;">(</span>eq last-command 'scroll-up<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+      <span style="color: #A6E22E;">(</span><span style="color: #F92672;">setq</span> unscroll-point <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span>
+            unscroll-window-start <span style="color: #E6DB74;">(</span>window-start<span style="color: #E6DB74;">)</span>
+            unscroll-hscroll <span style="color: #E6DB74;">(</span>window-hscroll<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">unscroll</span> <span style="color: #66D9EF;">()</span>
+  <span style="color: #75715E;">"Revert to 'unscroll-point' and 'unscroll-window-start'."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>goto-char unscroll-point<span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>set-window-start nil unscroll-window-start<span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>set-window-hscroll nil unscroll-hscroll<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+注意在这个scroll-up修饰的版本中，progn的使用：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">progn</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">setq</span> ...<span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">setq</span> ...<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+被合并成了一个setq，里面包含了多个“变量-值”对。这是一种简化写法，setq可以包含任意数量的变量。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc85dee6" class="outline-3">
+<h3 id="orgc85dee6"><span class="section-number-3">3.4</span> 错误检查</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+假如用户在调用任何scroll-up之前调用了unscroll会发生什么呢？变量unscroll-point，unscroll-window-start，以及unscroll-scroll将会包含他们的默认值，也就是nil。这个值在传递给函数goto-char，set-window-start以及set-window-scroll时是不合适的。当goto-char被调用时，unscroll的触发将会返回如下错误：“Wrong type argument: integer-or-maker-p, nil”。这表示一个函数需要接收一个数字或者标记（满足断言integer-or-marker-p），而收到的却是nil。（标记在本章前面的部分介绍过了。）<br />
+</p>
+
+<p>
+为避免用户被这些神秘的错误信息所折磨，在调用goto-char之前进行一个简单的检查并且生成一个更可读的错误信息是一个好主意：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> <span style="color: #66D9EF;">(</span>not unscroll-point<span style="color: #66D9EF;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">&#22914;&#26524;unscroll-point&#30340;&#20540;&#20026;nil</span>
+    <span style="color: #66D9EF;">(</span><span style="color: #FD971F; font-weight: bold; font-style: italic; text-decoration: underline;">error</span> <span style="color: #E6DB74;">"Cannot unscroll yet"</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+当错误发生时，unscroll将会被终止并且提示“Cannot unscroll yet”。<br />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org96286e7" class="outline-2">
+<h2 id="org96286e7"><span class="section-number-2">4</span> 归纳出更一般的解决方法</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+当我们想要按C-b时按到C-v是很常见的一种情况。这也就是我们设计unscroll函数的原因。现在让我们来研究同样容易发生的想按下M-b（backward-word）却按下了M-v（scroll-down）。这是同样的问题，但也有点不一样。如果unscroll能够回撤任何方向的滚动就好了。<br />
+</p>
+
+<p>
+最直接的方法是像修饰scroll-down那样修饰scroll-up：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defadvice</span> <span style="color: #A6E22E;">scroll-down</span> <span style="color: #66D9EF;">(</span>before remember-for-unscroll
+                               activate compile<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Remember where we started from, for 'unscroll'."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>not <span style="color: #E6DB74;">(</span>eq last-command 'scroll-down<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+      <span style="color: #A6E22E;">(</span><span style="color: #F92672;">setq</span> unscroll-point <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span>
+            unscroll-window-start <span style="color: #E6DB74;">(</span>window-start<span style="color: #E6DB74;">)</span>
+            unscroll-hscroll <span style="color: #E6DB74;">(</span>window-hscroll<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+（注意这两个函数，scroll-up和scroll-down，它们的修饰的名称，也就是remember-for-unscroll，可以一样，而且不会冲突。）<br />
+</p>
+
+<p>
+现在我们必须决定当错误的C-v和错误的M-v同时发生时unscroll如何运作。换句话说，假设你错误的按下了C-v C-v M-v。它是应该恢复到M-v之前的位置呢，还是应该恢复到最初的C-v之前？<br />
+</p>
+
+<p>
+我选择后者。但是这意味着对于scroll-up（以及scroll-down）的修饰，我们需要同时检测scroll-up和scroll-down。<br />
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defadvice</span> <span style="color: #A6E22E;">scroll-up</span> <span style="color: #66D9EF;">(</span>before remember-for-unscroll
+                             activate compile<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Remember where we started from, for 'unscroll'."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>not <span style="color: #E6DB74;">(</span><span style="color: #F92672;">or</span> <span style="color: #FD971F;">(</span>eq last-command 'scroll-up<span style="color: #FD971F;">)</span>
+               <span style="color: #FD971F;">(</span>eq last-command 'scroll-down<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+      <span style="color: #A6E22E;">(</span><span style="color: #F92672;">setq</span> unscroll-point <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span>
+            unscroll-window-start <span style="color: #E6DB74;">(</span>window-start<span style="color: #E6DB74;">)</span>
+            unscroll-hscroll <span style="color: #E6DB74;">(</span>window-hscroll<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defadvice</span> <span style="color: #A6E22E;">scroll-down</span> <span style="color: #66D9EF;">(</span>before remember-for-unscroll
+                               activate compile<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Remember where we started from, for 'unscroll'.'"</span>
+        <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>not <span style="color: #E6DB74;">(</span><span style="color: #F92672;">or</span> <span style="color: #FD971F;">(</span>eq last-command 'scroll-up<span style="color: #FD971F;">)</span>
+                <span style="color: #FD971F;">(</span>eq last-command 'scroll-down<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+        <span style="color: #A6E22E;">(</span><span style="color: #F92672;">setq</span> unscroll-point <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span>
+                unscroll-window-start <span style="color: #E6DB74;">(</span>window-start<span style="color: #E6DB74;">)</span>
+                unscroll-hscroll <span style="color: #E6DB74;">(</span>window-hscroll<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+
+<p>
+让我们花一点时间来确保你理解表达式<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> <span style="color: #66D9EF;">(</span>not <span style="color: #A6E22E;">(</span><span style="color: #F92672;">or</span> <span style="color: #E6DB74;">(</span>eq last-command 'scroll-up<span style="color: #E6DB74;">)</span>
+             <span style="color: #E6DB74;">(</span>eq last-command 'scorll-down<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
+    <span style="color: #66D9EF;">(</span><span style="color: #F92672;">setq</span> ...<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+阅读这段表达式最好的方法是一级一级的向里阅读。从这里开始<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> <span style="color: #66D9EF;">(</span>not ...<span style="color: #66D9EF;">)</span>
+    <span style="color: #66D9EF;">(</span><span style="color: #F92672;">setq</span> ...<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+“如果为假，则设置一些变量。”下面更进一步：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> <span style="color: #66D9EF;">(</span>not <span style="color: #A6E22E;">(</span><span style="color: #F92672;">or</span> ...<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
+    <span style="color: #66D9EF;">(</span><span style="color: #F92672;">setq</span> ...<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+“如果所有条件都为假，则设置一些变量。”最后，<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> <span style="color: #66D9EF;">(</span>not <span style="color: #A6E22E;">(</span><span style="color: #F92672;">or</span> <span style="color: #E6DB74;">(</span>eq last-command 'scroll-up<span style="color: #E6DB74;">)</span>
+             <span style="color: #E6DB74;">(</span>eq last-command 'scorll-down<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
+    <span style="color: #66D9EF;">(</span><span style="color: #F92672;">setq</span> ...<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+表示，“如果last-command不是scroll-up并且last-command不是scroll-down，那么设置一些变量。”<br />
+</p>
+
+<p>
+假设之后你希望更多的命令也按照这种方式来修饰；例如scroll-left和scroll-right：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defadvice</span> <span style="color: #A6E22E;">scroll-up</span> <span style="color: #66D9EF;">(</span>before remember-for-unscroll
+                             activate compile<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Remember where we started from, for 'unscroll'. "</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>not <span style="color: #E6DB74;">(</span><span style="color: #F92672;">or</span> <span style="color: #FD971F;">(</span>eq last-command 'scroll-up<span style="color: #FD971F;">)</span>
+               <span style="color: #FD971F;">(</span>eq last-command 'scroll-down<span style="color: #FD971F;">)</span>
+               <span style="color: #FD971F;">(</span>eq last-command 'scroll-left<span style="color: #FD971F;">)</span> <span style="color: #75715E;">;</span><span style="color: #75715E;">new</span>
+               <span style="color: #FD971F;">(</span>eq last-command 'scroll-right<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span> <span style="color: #75715E;">;</span><span style="color: #75715E;">new</span>
+      <span style="color: #A6E22E;">(</span><span style="color: #F92672;">setq</span> unscroll-point <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span>
+            unscroll-window-start <span style="color: #E6DB74;">(</span>window-start<span style="color: #E6DB74;">)</span>
+            unscroll-hscroll <span style="color: #E6DB74;">(</span>window-hscroll<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defadvice</span> <span style="color: #A6E22E;">scroll-down</span> <span style="color: #66D9EF;">(</span>before remember-for-unscroll
+                               activate compile<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Remember where we started from, for 'unscroll'."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>not <span style="color: #E6DB74;">(</span><span style="color: #F92672;">or</span> <span style="color: #FD971F;">(</span>eq last-command 'scroll-up<span style="color: #FD971F;">)</span>
+               <span style="color: #FD971F;">(</span>eq last-command 'scroll-down<span style="color: #FD971F;">)</span>
+               <span style="color: #FD971F;">(</span>eq last-command 'scroll-left<span style="color: #FD971F;">)</span> <span style="color: #75715E;">;</span><span style="color: #75715E;">new</span>
+               <span style="color: #FD971F;">(</span>eq last-command 'scroll-right<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span> <span style="color: #75715E;">;</span><span style="color: #75715E;">new</span>
+      <span style="color: #A6E22E;">(</span><span style="color: #F92672;">setq</span> unscroll-point <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span>
+            unscroll-window-start <span style="color: #E6DB74;">(</span>window-start<span style="color: #E6DB74;">)</span>
+            unscroll-hscroll <span style="color: #E6DB74;">(</span>window-hscroll<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defadvice</span> <span style="color: #A6E22E;">scroll-left</span> <span style="color: #66D9EF;">(</span>before remember-for-unscroll
+                               activate compile<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Remember where we started from, for 'unscroll'."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>not <span style="color: #E6DB74;">(</span><span style="color: #F92672;">or</span> <span style="color: #FD971F;">(</span>eq last-command 'scroll-up<span style="color: #FD971F;">)</span>
+               <span style="color: #FD971F;">(</span>eq last-command 'scroll-down<span style="color: #FD971F;">)</span>
+               <span style="color: #FD971F;">(</span>eq last-command 'scroll-left<span style="color: #FD971F;">)</span>
+               <span style="color: #FD971F;">(</span>eq last-command 'scroll-right<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+      <span style="color: #A6E22E;">(</span><span style="color: #F92672;">setq</span> unscroll-point <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span>
+            unscroll-window-start <span style="color: #E6DB74;">(</span>window-start<span style="color: #E6DB74;">)</span>
+            unscroll-hscroll <span style="color: #E6DB74;">(</span>window-hscroll<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defadvice</span> <span style="color: #A6E22E;">scroll-right</span> <span style="color: #66D9EF;">(</span>before remember-for-unscroll
+                                activate compile<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Remember where we started from, for 'unscroll'."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>not <span style="color: #E6DB74;">(</span><span style="color: #F92672;">or</span> <span style="color: #FD971F;">(</span>eq last-command 'scroll-up<span style="color: #FD971F;">)</span>
+               <span style="color: #FD971F;">(</span>eq last-command 'scroll-down<span style="color: #FD971F;">)</span>
+               <span style="color: #FD971F;">(</span>eq last-command 'scroll-left<span style="color: #FD971F;">)</span>
+               <span style="color: #FD971F;">(</span>eq last-command 'scroll-right<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+      <span style="color: #A6E22E;">(</span><span style="color: #F92672;">setq</span> unscroll-point <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span>
+            unscroll-window-start <span style="color: #E6DB74;">(</span>window-start<span style="color: #E6DB74;">)</span>
+            unscroll-hscroll <span style="color: #E6DB74;">(</span>window-hscroll<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这样写不仅繁琐且容易出错，而且对于每个我们需要回撤的新命令，每个之前写过的回撤命令都需要加入对于新的last-command的检测。<br />
+</p>
+</div>
+
+<div id="outline-container-orgd3685ae" class="outline-3">
+<h3 id="orgd3685ae"><span class="section-number-3">4.1</span> 使用this-command</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+有两种方法可以改善这种情况。第一种，既然每个修饰都差不多，我们可以把它们提取一下：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">unscroll-maybe-remember</span> <span style="color: #66D9EF;">()</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>not <span style="color: #E6DB74;">(</span><span style="color: #F92672;">or</span> <span style="color: #FD971F;">(</span>eq last-command 'scroll-up<span style="color: #FD971F;">)</span>
+               <span style="color: #FD971F;">(</span>eq last-command 'scroll-down<span style="color: #FD971F;">)</span>
+               <span style="color: #FD971F;">(</span>eq last-command 'scroll-left<span style="color: #FD971F;">)</span>
+               <span style="color: #FD971F;">(</span>eq last-command 'scroll-right<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+      <span style="color: #A6E22E;">(</span><span style="color: #F92672;">setq</span> unscroll-point <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span>
+            unscroll-window-start <span style="color: #E6DB74;">(</span>window-start<span style="color: #E6DB74;">)</span>
+            unscroll-hscroll <span style="color: #E6DB74;">(</span>window-hscroll<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defadvice</span> <span style="color: #A6E22E;">scroll-up</span> <span style="color: #66D9EF;">(</span>before remember-for-unscroll
+                             activate compile<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Remember where we started from, for 'unscroll'."</span>
+  <span style="color: #66D9EF;">(</span>unscroll-maybe-remember<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defadvice</span> <span style="color: #A6E22E;">scroll-down</span> <span style="color: #66D9EF;">(</span>before remember-for-unscroll
+                               activate compile<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"'Remember where we started from, for 'unscroll'."</span>
+  <span style="color: #66D9EF;">(</span>unscroll-maybe-remember<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defadvice</span> <span style="color: #A6E22E;">scroll-left</span> <span style="color: #66D9EF;">(</span>before remember-for-unscroll
+                               activate compile<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Remember where we started from, for 'unscroll'."</span>
+  <span style="color: #66D9EF;">(</span>unscroll-maybe-remember<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defadvice</span> <span style="color: #A6E22E;">scroll-right</span> <span style="color: #66D9EF;">(</span>before remember-for-unscroll
+                                activate compile<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Remember where we started from, for 'unscroll'."</span>
+  <span style="color: #66D9EF;">(</span>unscroll-maybe-remember<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+第二种，不去检测n种可能的last-command值，我们可以使用一个单独的变量来保存每种情况的last-command值。<br />
+</p>
+
+<p>
+当前用户触发的命令的名称会保存在变量this-command中。实际上，last-command的值是这样得到的：当Emacs执行一个命令时，this-command保存着命令的名字；当执行完成时，Emacs会将this-command的值赋给last-command。<br />
+</p>
+
+<p>
+当命令执行时，它会改变this-command的值。当下个命令执行时，这个值会保存在last-command中。<br />
+</p>
+
+<p>
+让我们选择一个符号来代表所有可回撤的命令：例如，unscrollable。现在我们可以修改一下unscroll-maybe-remeber：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">unscroll-maybe-remember</span> <span style="color: #66D9EF;">()</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">setq</span> this-command 'unscrollable<span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>not <span style="color: #E6DB74;">(</span>eq last-command 'unscrollable<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+      <span style="color: #A6E22E;">(</span><span style="color: #F92672;">setq</span> unscroll-point <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span>
+            unscroll-window-start <span style="color: #E6DB74;">(</span>window-start<span style="color: #E6DB74;">)</span>
+            unscroll-hscroll <span style="color: #E6DB74;">(</span>window-hscroll<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+调用这个函数的命令会将this-command设置为unscrollable。现在我们只需要检测一个变量而不必检测四种不同情况的last-command（也许还会更多）了。<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8eae50d" class="outline-3">
+<h3 id="org8eae50d"><span class="section-number-3">4.2</span> 符号属性</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+我们改进版的unscroll-maybe-remeber工作的非常好，但是（你可能已经预料到了）我们还是可以做一些改进。首先就是变量this-command和last-command并不是只有我们自己使用。它们对于Emacs Lisp解释器很重要，而Emacs的其他功能也依赖于这两个值。而我们知道，有一些使用了这些滚动函数的Emacs特性并没有修改this-commandh和last-command。而且，我们更想要一个专有的值来标识所有可回滚的命令。<br />
+</p>
+
+<p>
+这里我们引入好用的符号属性（symbol properties）。Emacs Lisp符号不只用来保存函数定义，它还有一组关联的属性列表。属性列表是一组键值映射。每个名字是一个Lisp符号，每个值可以是任意Lisp表达式。<br />
+</p>
+
+<p>
+属性使用put函数来保存，使用get函数来读取。因此，如果我们将17保存在符号a-symbol的some-property的属性中：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>put 'a-symbol 'some-property 17<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+那么<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>get 'a-symbol 'some-property<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+将返回17 。如果我们从一个符号读取一个并不存在的属性，则返回nil。<br />
+</p>
+
+<p>
+我们可以将unscrollable作为一个属性，而不是作为一个储存this-command和last-command的值的变量。我们可以将支持返回的命令的unscrollable属性设为t：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>put 'scroll-up 'unscrollable t<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span>put 'scroll-down 'unscrollable t<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span>put 'scroll-left 'unscrollable t<span style="color: #AE81FF;">)</span>
+<span style="color: #AE81FF;">(</span>put 'scroll-right 'unscrollable t<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+这只需要在调用unscroll-maybe-remember之前执行一次就行了。<br />
+</p>
+
+<p>
+现在如果x是scroll-up，scroll-down，scroll-left，scroll-right之中的一个的话则(get x unscrollable)会返回t。对于其他的符号，因为unscrollable属性默认未定义，所以结果为nil。<br />
+</p>
+
+<p>
+现在我们可以将unscroll-maybe-remember中的<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> <span style="color: #66D9EF;">(</span>not <span style="color: #A6E22E;">(</span>eq last-command 'unscrollable<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span> ...<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+修改为<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> <span style="color: #66D9EF;">(</span>not <span style="color: #A6E22E;">(</span>get last-command 'unscrollable<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span> ...<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+而且我们还可以停止将unscrollable赋值给this-command：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">unscroll-maybe-remember</span> <span style="color: #66D9EF;">()</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>not <span style="color: #E6DB74;">(</span>get last-command 'unscrollable<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+      <span style="color: #A6E22E;">(</span><span style="color: #F92672;">setq</span> unscroll-point <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span>
+            unscroll-window-start <span style="color: #E6DB74;">(</span>window-start<span style="color: #E6DB74;">)</span>
+            unscroll-hscroll <span style="color: #E6DB74;">(</span>window-hscroll<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf6d6134" class="outline-3">
+<h3 id="orgf6d6134"><span class="section-number-3">4.3</span> 标记</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+我们能否将这段代码改的更好呢？假设你不小心按下了几次scroll-down然后你想unscroll。但是在你这么做之前，你发现了一些你想要修改的代码，然后你进行了修改。然后你再unscroll。这时屏幕并没有被正确的恢复！<br />
+</p>
+
+<p>
+这是因为编辑buffer中前面的文字将会改变所有后面的文字的位置。添加或者删除n个字符将会对所有后续的字符位置添加或减少n。因此unscroll-point和unscroll-window-start所保存的值都会被影响n（如果n为0，那么你很幸运）。<br />
+</p>
+
+<p>
+使用标记（marker）而不是unscroll-point和unscroll-window-start的绝对位置将会是一个很好的选择。标记是一种就像数字一样用来保存buffer位置的特殊对象。但是如果由于插入或者删除造成了buffer位置的更改，那么标记也会跟着更改。<br />
+</p>
+
+<p>
+既然我们要将unscroll-point和unscroll-window-start修改为标记，我们就不需要将他们初始化为nil了。我们可以使用make-marker来将它们初始化为空的标记对象：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">unscrollfpoint</span> <span style="color: #66D9EF;">(</span>make-marker<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Cursor position for next call to 'unscroll'."</span><span style="color: #AE81FF;">)</span>
+
+<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">unscroll-window-start</span> <span style="color: #66D9EF;">(</span>make-marker<span style="color: #66D9EF;">)</span>
+  <span style="color: #75715E;">"Window start for next call to ''unscroll'."</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+函数set-marker被用来设置标记的位置。<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">unscroll-maybe-remember</span> <span style="color: #66D9EF;">()</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>not <span style="color: #E6DB74;">(</span>get last-command 'unscrollable<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
+      <span style="color: #A6E22E;">(</span><span style="color: #F92672;">progn</span>
+        <span style="color: #E6DB74;">(</span>set-marker unscroll-point <span style="color: #FD971F;">(</span>point<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span>
+        <span style="color: #E6DB74;">(</span>set-marker unscroll-window-start <span style="color: #FD971F;">(</span>window-start<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span>
+        <span style="color: #E6DB74;">(</span><span style="color: #F92672;">setq</span> unscroll-hscroll <span style="color: #FD971F;">(</span>window-hscroll<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+<p>
+progn又回来了，因为setq被拆分成了几个不同的函数调用。我们不对unscroll-hscroll使用标记，因为它的值并不是buffer位置。<br />
+</p>
+
+<p>
+我们并不需要重写unscroll，因为goto-char和set-window-start的参数不管是标记还是数字都会很好的工作。所以前面的定义（为了方便这里在贴一次）还是能够工作：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">unscroll</span> <span style="color: #66D9EF;">()</span>
+  <span style="color: #75715E;">"Revert to 'unscroll-point' and 'unscroll-window-start'."</span>
+  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span><span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>goto-char unscroll-point<span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>set-window-start nil unscroll-window-start<span style="color: #66D9EF;">)</span>
+  <span style="color: #66D9EF;">(</span>set-window-hscroll nil unscroll-hscroll<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org51b4e45" class="outline-3">
+<h3 id="org51b4e45"><span class="section-number-3">4.4</span> 附录：关于效率</h3>
+<div class="outline-text-3" id="text-4-4">
+<p>
+当我们定义unscroll-point和unscroll-marker时，我们创建了空的符号对象并且在每次调用unscroll-remember时复用它们，而不是每次都创建新的并且扔掉旧的。这是一种优化。这并不仅仅是说我们应该尽可能的避免这种对象创建的消耗，更多的是因为标记要比其他变量的消耗更大。每次buffer做出修改的时候标记都会跟着修改。弃用的标记最终会被垃圾回收器回收掉，但是直到那时它都会降低编辑buffer的速度。<br />
+</p>
+
+<p>
+通常，如果你想要弃用一个标记对象m（即你不需要再使用它的值了），这么做将会是很好的选择：<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>set-marker m nil<span style="color: #AE81FF;">)</span>
+</pre>
+</div>
+
+
+<p>
+<a id="orga9ff30e"></a>[16]. 虽然在<a href="./2.html">第二章</a>，我们使用了defalias将scroll-ahead和scroll-behind替代了scroll-up和scroll-down，本章我们依然使用它们之前的名称。<br />
+<a id="org3653236"></a>[17]. 如果你认为not的行为看起来跟null很像，你是对的&#x2013;它们就是同一个函数。它们其中一个就是另一个的别名。你使用哪个只是一个可读性方面的问题。当要检测一个列表是否为空列表时使用null。当要对一个值取反的时候使用not。<br />
+</p>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
