@@ -1,5 +1,5 @@
 #+TITLE: 自定义Emacs
-#+OPTIONS: \n:\n ^:nil
+#+SETUPFILE: ./resource/template.org
 
 * 在本章：
 *Backspace和Delete*

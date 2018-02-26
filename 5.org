@@ -1,5 +1,5 @@
 #+TITLE: Lisp文件
-#+OPTIONS: \n:\n ^:nil
+#+SETUPFILE: ./resource/template.org
 
 * 在本章：
 *创建Lisp文件*

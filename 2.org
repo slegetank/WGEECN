@@ -1,5 +1,5 @@
 #+TITLE: 简单的新命令
-#+OPTIONS: \n:\n ^:nil
+#+SETUPFILE: ./resource/template.org
 
 * 在本章：
 *游历窗口*
@@ -240,7 +240,7 @@ nil的另一个功能就是区分列表是否正确。这将在[[file:./6.org][�
 
 在这个版本中，交互声明中的字母并不是小写的p了，而是大写的P；而other-window的参数变成了(- (prefix-numeric-value n))，而不是(- (or n 1))。
 
-大写的P表示“当以交互的方式调用时，将前置参数保持为原始形式（raw form）并将其赋值给n”。前置参数的原始形式是Emacs使用的一种内部数据结构，用于在触发命令之前记录用户提供的前置信息。（查看[[附录：原始的前置参数][附录：原始的前置参数]]得到更多关于原始前置参数数据结构的细节。）函数prefix-numeric-value可以将像(interactive "p")那样将数据结构转换为一个数字。而且，如果other-window-backward以非交互的方式调用（因此n就不再是一个原始形式的前置参数），prefix-numeric-value还是会做正确的事情--也就是说，如果n是数字则直接返回n，如果n为nil则返回1。
+大写的P表示“当以交互的方式调用时，将前置参数保持为原始形式（raw form）并将其赋值给n”。前置参数的原始形式是Emacs使用的一种内部数据结构，用于在触发命令之前记录用户提供的前置信息。（查看[[补充：原始的前置参数][补充：原始的前置参数]]得到更多关于原始前置参数数据结构的细节。）函数prefix-numeric-value可以将像(interactive "p")那样将数据结构转换为一个数字。而且，如果other-window-backward以非交互的方式调用（因此n就不再是一个原始形式的前置参数），prefix-numeric-value还是会做正确的事情--也就是说，如果n是数字则直接返回n，如果n为nil则返回1。
 
 可以说，这个定义并不比我们前面定义的other-window-backward的功能更强大。但是这个版本更“Emacs-Lisp-like”，因为它的代码重用性更好。它使用内建的函数prefix-numeric-value而不是重复定义函数的行为。
 

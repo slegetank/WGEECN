@@ -1,5 +1,5 @@
 #+TITLE: 主模式
-#+OPTIONS: \n:\n ^:nil
+#+SETUPFILE: ./resource/template.org
 
 * 在本章：
 *我的Quips文件*

@@ -1,5 +1,5 @@
 #+TITLE: 一个综合示例
-#+OPTIONS: \n:\n ^:nil
+#+SETUPFILE: ./resource/template.org
 
 * 在本章：
 *纽约时报规则*

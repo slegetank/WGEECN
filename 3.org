@@ -1,5 +1,5 @@
 #+TITLE: 协作命令
-#+OPTIONS: \n:\n ^:nil
+#+SETUPFILE: ./resource/template.org
 
 * 在本章：
 *症状*

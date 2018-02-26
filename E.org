@@ -1,5 +1,5 @@
 #+TITLE: 附录E 获取以及编译Emacs
-#+OPTIONS: \n:\n ^:nil
+#+SETUPFILE: ./resource/template.org
 
 * 在本章：
 *获取包*

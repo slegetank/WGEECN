@@ -1,5 +1,5 @@
 #+TITLE: 附录A 总结
-#+OPTIONS: \n:\n ^:nil
+#+SETUPFILE: ./resource/template.org
 
 现在你可以开始你的Emacs Lisp编程生涯了。我花费了多年的经验才学会了本书中讨论的技术和工具。
 

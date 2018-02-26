@@ -1,5 +1,5 @@
 #+TITLE: 附录D 分享你的代码
-#+OPTIONS: \n:\n ^:nil
+#+SETUPFILE: ./resource/template.org
 
 * 在本章：
 *准备源文件*

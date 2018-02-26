@@ -1,5 +1,5 @@
 #+TITLE: 搜索和修改Buffers
-#+OPTIONS: \n:\n ^:nil
+#+SETUPFILE: ./resource/template.org
 
 * 在本章：
 *插入当前时间*

@@ -1,5 +1,5 @@
 #+TITLE: 附录B Lisp快速参考
-#+OPTIONS: \n:\n ^:nil
+#+SETUPFILE: ./resource/template.org
 
 * 在本章：
 *基础*

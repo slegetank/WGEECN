@@ -1,5 +1,5 @@
 #+TITLE: 子模式
-#+OPTIONS: \n:\n ^:nil
+#+SETUPFILE: ./resource/template.org
 
 * 在本章：
 *段落填充*
