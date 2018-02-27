@@ -635,10 +635,17 @@ switch-to-buffer这样修饰之后，Emacs将不会回应我切换到不存在�
 | 没有前置参数                    | nil                      | 1        |
 
 <<2-8>>[8]. 如果你像[[file:/1.org][第一章]]中描述的那样修改了help-command的绑定，那么describe-key的按键绑定是M-? k；否则是C-h k。
+
 <<2-9>>[9]. “parameter”与“argument”有什么不同呢？这两个概念通常可以替换使用，但是技术上来讲，“parameter”是指函数定义中的形参，而“argument”是指函数调用时传入的实参。argument的值会传递给parameter。
+
 <<2-10>>[10]. 再一次，如果你已经把help-command的绑定到M-?那么就是M-? f。从这开始，我将假设你修改过了，或者你至少应该理解我的做法。
+
 <<2-11>>[11]. 要查看interactive的code letter，按下M-? f interactive RET。
+
 <<2-12>>[12]. 实际上Emacs也不允许你把任何值赋给nil。
+
 <<2-13>>[13]. “lambda演算”是一套用于研究函数及其参数的数学形式。某种意义上来说它是Lisp（以及其他很多语言）的理论基础。单词“lambda”只是一个希腊语中的单词，并没有什么特殊的含义。
+
 <<2-14>>[14]. 这并不是绝对正确的。其他的代码可以搜索find-file-hooks列表的内容并且执行里面的所有函数。这里的意思是这个函数相对于defun的显式声明来说隐藏起来了。
+
 <<2-15>>[15]. 请自己试一下：M-: (file-symlink-p nil) RET。

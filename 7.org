@@ -463,6 +463,9 @@ start和end指向buffer改变发生之后的位置。len指向与改变发生之
 考虑到效率因素，通常应该避免将函数放到after-change-hooks里，特别是像refill这种复杂的函数。如果你的电脑够快，你可能注意不到每次按键执行这个函数的时间消耗；否则，你可能会发现你的Emacs变得反应缓慢。在下一章，我们将会找到一种方式来加速它。
 
 <<7-27>>[27]. 除了我列出的这几个外还有很多其他的主模式。他们能用来编辑HTML文件、LATEX文件、ASCII文件、troff文件、二进制文件、目录等等等等。而且，主模式也用来实现许多例如新闻阅读或者网页浏览这种非编辑特性。试着输入M-x finder-by-keyword RET来浏览Emacs具有的模式和其他插件。
+
 <<7-28>>[28]. 函数和变量的名称可以相同；它们不会冲突。
+
 <<7-29>>[29]. 有的读者可能已经会指出当调用fill-paragraph的时候会改变buffer，而这会导致after-change-functions再次执行，再次递归的触发refill并且可能会导致无限循环，或者说是无限递归。说的不错，但是Emacs会在after-change-functions中的函数执行时重置它来避免这个问题。
+
 <<7-30>>[30]. 要了解更多关于语法表的细节，执行describe-functions查看modify-syntax-entry。
