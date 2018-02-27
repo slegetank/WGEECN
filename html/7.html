@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-02-26 Mon 23:44 -->
+<!-- 2018-02-27 Tue 09:37 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>子模式</title>
@@ -257,25 +257,25 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org422dd07">1. 在本章：</a></li>
-<li><a href="#org0f9acc4">2. 段落填充</a></li>
-<li><a href="#orge89c2da">3. 模式</a></li>
-<li><a href="#orgb441260">4. 定义子模式</a></li>
-<li><a href="#orge1dcc56">5. Mode Meat</a>
+<li><a href="#orgd289e56">1. 在本章：</a></li>
+<li><a href="#org07c72a1">2. 段落填充</a></li>
+<li><a href="#orga8e893c">3. 模式</a></li>
+<li><a href="#org2e2ccd2">4. 定义子模式</a></li>
+<li><a href="#orgee15b6d">5. Mode Meat</a>
 <ul>
-<li><a href="#org0bbefd7">5.1. Naive的首次尝试</a></li>
-<li><a href="#org93c65b9">5.2. 限制refill</a></li>
-<li><a href="#org92a07a2">5.3. 小调整</a></li>
-<li><a href="#org54291bb">5.4. 排除不希望的重排</a></li>
-<li><a href="#orgcd18964">5.5. 尾空格</a></li>
+<li><a href="#org35021d0">5.1. Naive的首次尝试</a></li>
+<li><a href="#orga8cd29f">5.2. 限制refill</a></li>
+<li><a href="#org5fbfd3f">5.3. 小调整</a></li>
+<li><a href="#orgd7d5e41">5.4. 排除不希望的重排</a></li>
+<li><a href="#org2994f9e">5.5. 尾空格</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org422dd07" class="outline-2">
-<h2 id="org422dd07"><span class="section-number-2">1</span> 在本章：</h2>
+<div id="outline-container-orgd289e56" class="outline-2">
+<h2 id="orgd289e56"><span class="section-number-2">1</span> 在本章：</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <b>段落填充</b><br />
@@ -298,8 +298,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org0f9acc4" class="outline-2">
-<h2 id="org0f9acc4"><span class="section-number-2">2</span> 段落填充</h2>
+<div id="outline-container-org07c72a1" class="outline-2">
+<h2 id="org07c72a1"><span class="section-number-2">2</span> 段落填充</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 填充一个段落是将段落中所有行的长度变得适当的过程。每行的长度都应该大概相等并且不会越过右边距（right margin）。过长的行应该在词之间的空格处进行拆分。短行应该用后面行的文字进行填充。填充有时还包括左右对齐（justification），也就是通过在每一行添加空格来使得左右边距相等。<br />
@@ -328,15 +328,15 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orge89c2da" class="outline-2">
-<h2 id="orge89c2da"><span class="section-number-2">3</span> 模式</h2>
+<div id="outline-container-orga8e893c" class="outline-2">
+<h2 id="orga8e893c"><span class="section-number-2">3</span> 模式</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Emacs使用模式这个概念来封装一系列编辑行为。换句话说，使用不同的模式，Emacs在buffers里的表现是不同的。举一个小例子，在Text模式中TAB键插入一个ASCII的制表符，而在Emacs Lisp模式中这将会通过插入或者删除空格来将代码缩进到正确的列上。再举一个例子，当你在Emacs Lisp模式的buffer里执行命令indent-for-comment时，你将会得到一个以Lisp注释符“;”开头的空注释。而当你在C模式的buffer里，你得到的是C语言的注释/* */。<br />
 </p>
 
 <p>
-每个buffer总是属于一个主模式（major mode）。主模式指定了buffer用于某种特定类型的编辑行为，例如Text、Lisp或者C。名为Fundamental的主模式并不为特定类型的编辑存在，你可以认为它是一种空模式。通常buffer的主模式的选择是根据你访问的文件的名称，或者buffer中的一些设置进行的。你可以通过执行模式的命令来改变主模式，例如text-mode、emacs-lisp-mode、或者c-mode。[<a href="#orgf79238e">27</a>]当你这么做之后，buffer就使用新的主模式替换之前的模式了。<br />
+每个buffer总是属于一个主模式（major mode）。主模式指定了buffer用于某种特定类型的编辑行为，例如Text、Lisp或者C。名为Fundamental的主模式并不为特定类型的编辑存在，你可以认为它是一种空模式。通常buffer的主模式的选择是根据你访问的文件的名称，或者buffer中的一些设置进行的。你可以通过执行模式的命令来改变主模式，例如text-mode、emacs-lisp-mode、或者c-mode。[<a href="#orga1a0468">27</a>]当你这么做之后，buffer就使用新的主模式替换之前的模式了。<br />
 </p>
 
 <p>
@@ -349,8 +349,8 @@ Emacs使用模式这个概念来封装一系列编辑行为。换句话说，使
 </div>
 </div>
 
-<div id="outline-container-orgb441260" class="outline-2">
-<h2 id="orgb441260"><span class="section-number-2">4</span> 定义子模式</h2>
+<div id="outline-container-org2e2ccd2" class="outline-2">
+<h2 id="org2e2ccd2"><span class="section-number-2">4</span> 定义子模式</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 在定义子模式时需要有下面这些步骤。<br />
@@ -367,7 +367,7 @@ Emacs使用模式这个概念来封装一系列编辑行为。换句话说，使
 </pre>
 </div></li>
 <li><p>
-定义一个名为name-mode的命令。[<a href="#org8847a74">28</a>]这个命令应该具有一个可选参数。如果不提供参数，它将打开或关闭模式。如果提供参数，且参数的prefix-numeric-value大于0则打开模式，否则关闭模式。也就是说，C-u M-x name-mode RET总是执行打开，而C-u - M-x name-mode RET总是关闭模式（查看<a href="2.html">第2章</a>中的<a href="2.html#MissingReference">补充：原始的前置参数</a>获得更多信息）。下面是开关Refill模式的命令定义：<br />
+定义一个名为name-mode的命令。[<a href="#orgfa68a53">28</a>]这个命令应该具有一个可选参数。如果不提供参数，它将打开或关闭模式。如果提供参数，且参数的prefix-numeric-value大于0则打开模式，否则关闭模式。也就是说，C-u M-x name-mode RET总是执行打开，而C-u - M-x name-mode RET总是关闭模式（查看<a href="2.html">第2章</a>中的<a href="2.html#MissingReference">补充：原始的前置参数</a>获得更多信息）。下面是开关Refill模式的命令定义：<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">refill-mode</span> <span style="color: #66D9EF;">(</span><span style="color: #66D9EF;">&amp;optional</span> arg<span style="color: #66D9EF;">)</span>
@@ -430,8 +430,8 @@ setq语句看起来有些奇怪，但这在子模式定义中是一种常见的�
 </div>
 </div>
 
-<div id="outline-container-orge1dcc56" class="outline-2">
-<h2 id="orge1dcc56"><span class="section-number-2">5</span> Mode Meat</h2>
+<div id="outline-container-orgee15b6d" class="outline-2">
+<h2 id="orgee15b6d"><span class="section-number-2">5</span> Mode Meat</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 现在我们有了基本结构，让我们开始定义Refill mode的内容。<br />
@@ -464,8 +464,8 @@ add-hook和remove-hook后面的参数保证了我们修改的只是buffer局部�
 </p>
 </div>
 
-<div id="outline-container-org0bbefd7" class="outline-3">
-<h3 id="org0bbefd7"><span class="section-number-3">5.1</span> Naive的首次尝试</h3>
+<div id="outline-container-org35021d0" class="outline-3">
+<h3 id="org35021d0"><span class="section-number-3">5.1</span> Naive的首次尝试</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 就像第四章中提到的，钩子变量after-change-functions有些特殊，因为其中的函数需要三个参数(普通的钩子函数通常不需要参数)。三个参数指明了在after-change-functions执行之前，buffer的改变发生的地方。<br />
@@ -491,13 +491,13 @@ start和end指向buffer改变发生之后的位置。len指向与改变发生之
 </div>
 
 <p>
-这种实现是非常不严谨的，因为每次按键都调用fill-paragraph代价太大了！它还有一个问题，就是每次向行尾添加一个空格时，fill-paragraph都会把它立即删除&#x2013;它会在缩进的时候自动把尾部空格删除掉&#x2013;因此，当你打字的时候，你将会花费最多的时间在行尾，唯一向两个单词间插入空格的方式就是先把两个单词打出来，likethis，然后向其中插入一个空格。但是这个尝试证明了我们的理论，并且给了我们一个可以对其进行改进的起点。[<a href="#orge3a39b1">29</a>]<br />
+这种实现是非常不严谨的，因为每次按键都调用fill-paragraph代价太大了！它还有一个问题，就是每次向行尾添加一个空格时，fill-paragraph都会把它立即删除&#x2013;它会在缩进的时候自动把尾部空格删除掉&#x2013;因此，当你打字的时候，你将会花费最多的时间在行尾，唯一向两个单词间插入空格的方式就是先把两个单词打出来，likethis，然后向其中插入一个空格。但是这个尝试证明了我们的理论，并且给了我们一个可以对其进行改进的起点。[<a href="#org54cbaa4">29</a>]<br />
 </p>
 </div>
 </div>
 
-<div id="outline-container-org93c65b9" class="outline-3">
-<h3 id="org93c65b9"><span class="section-number-3">5.2</span> 限制refill</h3>
+<div id="outline-container-orga8cd29f" class="outline-3">
+<h3 id="orga8cd29f"><span class="section-number-3">5.2</span> 限制refill</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 要优化refill，让我们先对问题进行一下分析。首先，是否每次整个段落都需要重排？<br />
@@ -617,8 +617,8 @@ Emacs
 </div>
 </div>
 
-<div id="outline-container-org92a07a2" class="outline-3">
-<h3 id="org92a07a2"><span class="section-number-3">5.3</span> 小调整</h3>
+<div id="outline-container-org5fbfd3f" class="outline-3">
+<h3 id="org5fbfd3f"><span class="section-number-3">5.3</span> 小调整</h3>
 <div class="outline-text-3" id="text-5-3">
 <p>
 好的，上面的只是基本的想法，还剩下许多事情要做。例如，当计算left时，如果前一行已经不在这个段落那么就没有必要再计算前一行了。所以我们应该得到行的开始以及前一行的开始，然后使用更大的那个值。<br />
@@ -794,7 +794,7 @@ Emacs
 </div>
 
 <p>
-对于每个语法类别，都有一个对应的code letter。[<a href="#orgc471b46">30</a>]空格是"whitespace"的code letter，所以上面的两行表示"跳过所有非空格"和"跳过所有空格"。<br />
+对于每个语法类别，都有一个对应的code letter。[<a href="#orge2e6a66">30</a>]空格是"whitespace"的code letter，所以上面的两行表示"跳过所有非空格"和"跳过所有空格"。<br />
 </p>
 
 <p>
@@ -838,8 +838,8 @@ Emacs
 </div>
 </div>
 
-<div id="outline-container-org54291bb" class="outline-3">
-<h3 id="org54291bb"><span class="section-number-3">5.4</span> 排除不希望的重排</h3>
+<div id="outline-container-orgd7d5e41" class="outline-3">
+<h3 id="orgd7d5e41"><span class="section-number-3">5.4</span> 排除不希望的重排</h3>
 <div class="outline-text-3" id="text-5-4">
 <p>
 在每次插入发生的时候我们并不需要重排段落。一个微小的并不会将任何文本推到右边界的插入并不会影响除它之外的任何其他行，所以如果当前改变是一次插入，并且start和end在同一行，并且行的末尾并没有超过右边界，那么我们没有必要调用fill-region。<br />
@@ -917,8 +917,8 @@ Emacs
 </div>
 </div>
 
-<div id="outline-container-orgcd18964" class="outline-3">
-<h3 id="orgcd18964"><span class="section-number-3">5.5</span> 尾空格</h3>
+<div id="outline-container-org2994f9e" class="outline-3">
+<h3 id="org2994f9e"><span class="section-number-3">5.5</span> 尾空格</h3>
 <div class="outline-text-3" id="text-5-5">
 <p>
 我们还是没有解决fill-region会删除每行最后尾部空格的问题，也就是当你进行编辑的时候，你需要输入likethis，然后将光标移动到中间再插入一个空格！<br />
@@ -981,10 +981,19 @@ Emacs
 </p>
 
 <p>
-<a id="orgf79238e"></a>[27]. 除了我列出的这几个外还有很多其他的主模式。他们能用来编辑HTML文件、LATEX文件、ASCII文件、troff文件、二进制文件、目录等等等等。而且，主模式也用来实现许多例如新闻阅读或者网页浏览这种非编辑特性。试着输入M-x finder-by-keyword RET来浏览Emacs具有的模式和其他插件。<br />
-<a id="org8847a74"></a>[28]. 函数和变量的名称可以相同；它们不会冲突。<br />
-<a id="orge3a39b1"></a>[29]. 有的读者可能已经会指出当调用fill-paragraph的时候会改变buffer，而这会导致after-change-functions再次执行，再次递归的触发refill并且可能会导致无限循环，或者说是无限递归。说的不错，但是Emacs会在after-change-functions中的函数执行时重置它来避免这个问题。<br />
-<a id="orgc471b46"></a>[30]. 要了解更多关于语法表的细节，执行describe-functions查看modify-syntax-entry。<br />
+<a id="orga1a0468"></a>[27]. 除了我列出的这几个外还有很多其他的主模式。他们能用来编辑HTML文件、LATEX文件、ASCII文件、troff文件、二进制文件、目录等等等等。而且，主模式也用来实现许多例如新闻阅读或者网页浏览这种非编辑特性。试着输入M-x finder-by-keyword RET来浏览Emacs具有的模式和其他插件。<br />
+</p>
+
+<p>
+<a id="orgfa68a53"></a>[28]. 函数和变量的名称可以相同；它们不会冲突。<br />
+</p>
+
+<p>
+<a id="org54cbaa4"></a>[29]. 有的读者可能已经会指出当调用fill-paragraph的时候会改变buffer，而这会导致after-change-functions再次执行，再次递归的触发refill并且可能会导致无限循环，或者说是无限递归。说的不错，但是Emacs会在after-change-functions中的函数执行时重置它来避免这个问题。<br />
+</p>
+
+<p>
+<a id="orge2e6a66"></a>[30]. 要了解更多关于语法表的细节，执行describe-functions查看modify-syntax-entry。<br />
 </p>
 </div>
 </div>

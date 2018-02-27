@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-02-26 Mon 23:43 -->
+<!-- 2018-02-27 Tue 09:36 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>自定义Emacs</title>
@@ -257,26 +257,26 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb0be89a">1. 在本章：</a></li>
-<li><a href="#orgf5d4d38">2. Backspace 和 Delete</a></li>
-<li><a href="#org13f7b41">3. Lisp</a></li>
-<li><a href="#orgef4ee74">4. 按键和字符串</a>
+<li><a href="#org622704f">1. 在本章：</a></li>
+<li><a href="#org9e5f26e">2. Backspace 和 Delete</a></li>
+<li><a href="#orgeac2fc0">3. Lisp</a></li>
+<li><a href="#orgc898d45">4. 按键和字符串</a>
 <ul>
-<li><a href="#orgf7fe52e">4.1. META键</a></li>
-<li><a href="#orgf6c2eea">4.2. 将按键绑定到命令上</a></li>
-<li><a href="#org385ff90">4.3. 字符串表示按键</a></li>
+<li><a href="#org27671de">4.1. META键</a></li>
+<li><a href="#orgd85d6c3">4.2. 将按键绑定到命令上</a></li>
+<li><a href="#orgab78ad7">4.3. 字符串表示按键</a></li>
 </ul>
 </li>
-<li><a href="#org43574d2">5. C-h绑定到什么</a></li>
-<li><a href="#orgc81afc8">6. C-h应该绑定到什么？</a></li>
-<li><a href="#org97154eb">7. 执行Lisp表达式</a></li>
-<li><a href="#org7de06e8">8. Apropos</a></li>
+<li><a href="#org02f463b">5. C-h绑定到什么</a></li>
+<li><a href="#orgbb0f5ee">6. C-h应该绑定到什么？</a></li>
+<li><a href="#org86bff57">7. 执行Lisp表达式</a></li>
+<li><a href="#orga9cf37d">8. Apropos</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgb0be89a" class="outline-2">
-<h2 id="orgb0be89a"><span class="section-number-2">1</span> 在本章：</h2>
+<div id="outline-container-org622704f" class="outline-2">
+<h2 id="org622704f"><span class="section-number-2">1</span> 在本章：</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <b>Backspace和Delete</b><br />
@@ -294,8 +294,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgf5d4d38" class="outline-2">
-<h2 id="orgf5d4d38"><span class="section-number-2">2</span> Backspace 和 Delete</h2>
+<div id="outline-container-org9e5f26e" class="outline-2">
+<h2 id="org9e5f26e"><span class="section-number-2">2</span> Backspace 和 Delete</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 想象你想要输入“Lisp”但却输成了“List”。要改正你的拼写，你是按下BACKSPACE键呢还是DELETE键？<br />
@@ -319,8 +319,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org13f7b41" class="outline-2">
-<h2 id="org13f7b41"><span class="section-number-2">3</span> Lisp</h2>
+<div id="outline-container-orgeac2fc0" class="outline-2">
+<h2 id="orgeac2fc0"><span class="section-number-2">3</span> Lisp</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 自从1950年以来已经产生了很多种不同形式的Lisp。最初它应用于人工智能，它很胜任这份工作，因为它允许符号运算，可以将代码作为数据处理，可以简化复杂数据结构的构建。但是Lisp可以做的要比一门AI语言多得多。它应用于非常广的问题处理上，这经常被计算机科学家忽视，而Emacs用户却知道的很清楚。Lisp不同于其他编程语言的特性有：<br />
@@ -328,7 +328,7 @@ for the JavaScript code in this tag.
 <ul class="org-ul">
 <li><p>
 括号前缀表示法<br />
-Lisp中的所有表达式和方法都由括号括起来[<a href="#org332cef5">1</a>]，方法名通常在参数之前。所以在其他语言中你通常会这么写：<br />
+Lisp中的所有表达式和方法都由括号括起来[<a href="#org3d41fe9">1</a>]，方法名通常在参数之前。所以在其他语言中你通常会这么写：<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-elisp">x + y
@@ -414,7 +414,7 @@ Lisp是一种垃圾回收的语言，这意味着Lisp会自动的回收你的程
 </p>
 
 <p>
-除了所有这些垃圾回收机制所具有的有点，它也有一个缺点：Emacs会不时的停下正在做的所有事情，向用户显示“Garbage collecting&#x2026;”。用户要等到垃圾回收结束才能继续使用Emacs[<a href="#org0248b91">2</a>]。这通常只会持续不到1s，但是却可能非常频繁。后面我们将会学到如何减少垃圾回收发生的实用技巧。<br />
+除了所有这些垃圾回收机制所具有的有点，它也有一个缺点：Emacs会不时的停下正在做的所有事情，向用户显示“Garbage collecting&#x2026;”。用户要等到垃圾回收结束才能继续使用Emacs[<a href="#orgd62b147">2</a>]。这通常只会持续不到1s，但是却可能非常频繁。后面我们将会学到如何减少垃圾回收发生的实用技巧。<br />
 </p></li>
 </ul>
 
@@ -428,15 +428,15 @@ Lisp是一种垃圾回收的语言，这意味着Lisp会自动的回收你的程
 </div>
 </div>
 
-<div id="outline-container-orgef4ee74" class="outline-2">
-<h2 id="orgef4ee74"><span class="section-number-2">4</span> 按键和字符串</h2>
+<div id="outline-container-orgc898d45" class="outline-2">
+<h2 id="orgc898d45"><span class="section-number-2">4</span> 按键和字符串</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 本章的目的是使所有触发BS的键同触发DEL的键能一样的工作。当然这将导致C-h不再触发帮助命令。你需要选择其他的键来使用帮助；我自己的方式是使用META-question-mark。<br />
 </p>
 </div>
-<div id="outline-container-orgf7fe52e" class="outline-3">
-<h3 id="orgf7fe52e"><span class="section-number-3">4.1</span> META键</h3>
+<div id="outline-container-org27671de" class="outline-3">
+<h3 id="org27671de"><span class="section-number-3">4.1</span> META键</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 META键的工作方式和CONTROL键以及SHIFT键一样，都是需要在按下其他键的同时按着它。这种键被称为修饰键（modifiers）。虽然不是所有键盘都有META键。有时ALT键起着同样的作用，但是也不是所有键盘都有ALT键。无论如何，你都不是必须使用META或者ALT。单次按键META-x总是可以使用两键序列ESC x来替代。（注意ESC不是修饰键&#x2013;你需要先按下ESC，松开手，再按下x键。）<br />
@@ -444,8 +444,8 @@ META键的工作方式和CONTROL键以及SHIFT键一样，都是需要在按下�
 </div>
 </div>
 
-<div id="outline-container-orgf6c2eea" class="outline-3">
-<h3 id="orgf6c2eea"><span class="section-number-3">4.2</span> 将按键绑定到命令上</h3>
+<div id="outline-container-orgd85d6c3" class="outline-3">
+<h3 id="orgd85d6c3"><span class="section-number-3">4.2</span> 将按键绑定到命令上</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 在Emacs里，每个按键都触发一条命令或者是一个触发命令的多键序列的一部分。就像我们将要看到的，命令是一种特殊的Lisp函数。使一个按键触发类似帮助这种命令的行为被称为绑定。我们需要执行一些Lisp代码来将按键绑定到命令上。global-set-key是一个用于做这件事的函数。<br />
@@ -469,8 +469,8 @@ META键的工作方式和CONTROL键以及SHIFT键一样，都是需要在按下�
 </div>
 </div>
 
-<div id="outline-container-org385ff90" class="outline-3">
-<h3 id="org385ff90"><span class="section-number-3">4.3</span> 字符串表示按键</h3>
+<div id="outline-container-orgab78ad7" class="outline-3">
+<h3 id="orgab78ad7"><span class="section-number-3">4.3</span> 字符串表示按键</h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
 在Emacs Lisp中有一些不同的方式来表示一个按键序列。最简单的是直接使用字符串。在Lisp中，字符串是一些被引号括起来的字符序列。<br />
@@ -505,7 +505,7 @@ META键的工作方式和CONTROL键以及SHIFT键一样，都是需要在按下�
 </p>
 
 <p>
-像META-question-mark这种特殊字符在字符串里使用特殊的标识符：“\M-?”来表示。虽然字符串里有四个字母，但Emacs会将此字符串读为META question-mark[<a href="#orge8e8ace">3</a>]。<br />
+像META-question-mark这种特殊字符在字符串里使用特殊的标识符：“\M-?”来表示。虽然字符串里有四个字母，但Emacs会将此字符串读为META question-mark[<a href="#orgceb1693">3</a>]。<br />
 </p>
 
 <p>
@@ -535,8 +535,8 @@ META键的工作方式和CONTROL键以及SHIFT键一样，都是需要在按下�
 </div>
 </div>
 
-<div id="outline-container-org43574d2" class="outline-2">
-<h2 id="org43574d2"><span class="section-number-2">5</span> C-h绑定到什么</h2>
+<div id="outline-container-org02f463b" class="outline-2">
+<h2 id="org02f463b"><span class="section-number-2">5</span> C-h绑定到什么</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 要找到帮助命令的符号，我们可以使用C-h b，这将会触发另一个名为describe-bindings的命令。这是帮助系统众多的命令之一。它会弹出一个列出所有有效键绑定的窗口。查找C-h，我们可以找到这一行：<br />
@@ -596,8 +596,8 @@ META键的工作方式和CONTROL键以及SHIFT键一样，都是需要在按下�
 </p>
 </div>
 </div>
-<div id="outline-container-orgc81afc8" class="outline-2">
-<h2 id="orgc81afc8"><span class="section-number-2">6</span> C-h应该绑定到什么？</h2>
+<div id="outline-container-orgbb0f5ee" class="outline-2">
+<h2 id="orgbb0f5ee"><span class="section-number-2">6</span> C-h应该绑定到什么？</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 既然我们已经将help-command绑定到M-?，下面我们需要给C-h绑定一些什么。使用前面所描述的同样的流程&#x2013;也就是说，触发命令describe-bindings（使用C-h b或者M-? b）&#x2013;我们发现DEL触发的命令是delete-backward-char。<br />
@@ -626,8 +626,8 @@ META键的工作方式和CONTROL键以及SHIFT键一样，都是需要在按下�
 </div>
 </div>
 
-<div id="outline-container-org97154eb" class="outline-2">
-<h2 id="org97154eb"><span class="section-number-2">7</span> 执行Lisp表达式</h2>
+<div id="outline-container-org86bff57" class="outline-2">
+<h2 id="org86bff57"><span class="section-number-2">7</span> 执行Lisp表达式</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 有几种方式来显式执行Lisp表达式。<br />
@@ -637,7 +637,7 @@ META键的工作方式和CONTROL键以及SHIFT键一样，都是需要在按下�
 <li>你可以将Lisp表达式放到一个文件里，然后载入这个文件。假设你把表达式放到文件rebind.el里。（Emacs Lisp文件的后缀名是.el）。你可以键入M-x load-file RET rebind.el RET以使Emacs来执行文件的内容。如果你把这些内容放到了.emacs里，你可以使用同样的方法来载入它。但是在你使用了Emacs一段时间后，你的.emacs将会变得越来越大，它的载入将会变得很慢。因此，你不会希望为了一点点改动就重新载入整个文件。因此我们可以使用下一种选择。<br /></li>
 
 <li><p>
-你可以使用命令eval-last-sexp，这绑定到了[<a href="#org81502ee">4</a>]C-x C-e上。（sexp[<a href="#org0cfd240">5</a>]是S表达式（S-expression）的简写，也就是符号表达式的简写，也就是Lisp表达式的另一种说法。）这个命令将执行光标左边的Lisp表达式。所以你要做的是将光标放到第一行的末尾：  <br />
+你可以使用命令eval-last-sexp，这绑定到了[<a href="#orgba12bee">4</a>]C-x C-e上。（sexp[<a href="#orgf6e3553">5</a>]是S表达式（S-expression）的简写，也就是符号表达式的简写，也就是Lisp表达式的另一种说法。）这个命令将执行光标左边的Lisp表达式。所以你要做的是将光标放到第一行的末尾：  <br />
 </p>
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\M-?"</span> 'help-command<span style="color: #AE81FF;">)</span> |
@@ -657,7 +657,7 @@ META键的工作方式和CONTROL键以及SHIFT键一样，都是需要在按下�
 </p></li>
 
 <li><p>
-你可以使用命令eval-expression，这绑定到了M-:[<a href="#org08cf4b3">6</a>]。这个命令在minibuffer（屏幕的底部）中提示你输入一个Lisp表达式，然后执行它并输出结果。Emacs的制作者认为eval-expression是少数一些对于初学者来说尝试使用会造成危险的命令之一。以我来看，这简直是胡说；不论如何，这个命令在初始时是被禁用的，所以当你尝试使用时，Emacs告诉你“You have typed M-:, invoking disabled command eval-expression.”。然后它会显示eval-expression的描述并且如下提示：<br />
+你可以使用命令eval-expression，这绑定到了M-:[<a href="#org355b99f">6</a>]。这个命令在minibuffer（屏幕的底部）中提示你输入一个Lisp表达式，然后执行它并输出结果。Emacs的制作者认为eval-expression是少数一些对于初学者来说尝试使用会造成危险的命令之一。以我来看，这简直是胡说；不论如何，这个命令在初始时是被禁用的，所以当你尝试使用时，Emacs告诉你“You have typed M-:, invoking disabled command eval-expression.”。然后它会显示eval-expression的描述并且如下提示：<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">You can now type
@@ -689,15 +689,15 @@ N to do nothing <span style="color: #AE81FF;">(</span>command remains disabled<s
 </div>
 </div>
 
-<div id="outline-container-org7de06e8" class="outline-2">
-<h2 id="org7de06e8"><span class="section-number-2">8</span> Apropos</h2>
+<div id="outline-container-orga9cf37d" class="outline-2">
+<h2 id="orga9cf37d"><span class="section-number-2">8</span> Apropos</h2>
 <div class="outline-text-2" id="text-8">
 <p>
 在结束第一个例子之前，让我们讨论一下Emacs的最重要的在线帮助特性，apropos。假设你同时拥有BS和DEL键，你希望BS删除光标前面的字符而DEL删除后面的。你现在知道了delete-backward-char用来完成前面的目的，但是你不知道什么命令完成后面的。你确信Emacs一定有这么一个命令。但是如何找到它呢？<br />
 </p>
 
 <p>
-答案是使用apropos命令，它允许你使用表达式来搜索所有已知的变量名和函数名。试试这么做[<a href="#org4149d43">7</a>]：<br />
+答案是使用apropos命令，它允许你使用表达式来搜索所有已知的变量名和函数名。试试这么做[<a href="#org255ceab">7</a>]：<br />
 </p>
 
 <div class="org-src-container">
@@ -781,31 +781,31 @@ Command: Delete the following N characters <span style="color: #AE81FF;">(</span
 </p>
 
 <p>
-<a id="org332cef5"></a>[1]. 批评者通常认为Lisp的括号是它标志性的缺点。他们认为，Lisp是“Lots of Infernal Stupid Parentheses”的简写（实际上是“List Processing”的简写）。以我来看，这个更简单的符号使得Lisp比其他语言更易读，而我希望你也这么认为。<br />
+<a id="org3d41fe9"></a>[1]. 批评者通常认为Lisp的括号是它标志性的缺点。他们认为，Lisp是“Lots of Infernal Stupid Parentheses”的简写（实际上是“List Processing”的简写）。以我来看，这个更简单的符号使得Lisp比其他语言更易读，而我希望你也这么认为。<br />
 </p>
 
 <p>
-<a id="org0248b91"></a>[2]. Emacs使用了一种标记-清扫的垃圾回收设计，是最简单的垃圾回收实现方式之一。有一些其他的实现方式会更少打扰用户；例如，一种称为“incremental”的方式在执行时不会使Emacs当机。不幸的是，Emacs没有使用这些方式。<br />
+<a id="orgd62b147"></a>[2]. Emacs使用了一种标记-清扫的垃圾回收设计，是最简单的垃圾回收实现方式之一。有一些其他的实现方式会更少打扰用户；例如，一种称为“incremental”的方式在执行时不会使Emacs当机。不幸的是，Emacs没有使用这些方式。<br />
 </p>
 
 <p>
-<a id="orge8e8ace"></a>[3]. 你可以使用length函数查看字符串的长度来确认这件事。如果你执行(length "\M-?")，结果为1。如何“执行”在本章的后面有介绍。<br />
+<a id="orgceb1693"></a>[3]. 你可以使用length函数查看字符串的长度来确认这件事。如果你执行(length "\M-?")，结果为1。如何“执行”在本章的后面有介绍。<br />
 </p>
 
 <p>
-<a id="org81502ee"></a>[4]. 技术上说，我们应该说按键被绑定到了命令上，而不是命令绑定到了按键上。（说按键“绑定到”了命令上正确的表示了这个按键序列只能做一件事&#x2013;触发这个命令。说命令“绑定”到了一个按键上则表示只有这个按键序列能够触发这个命令，而这并不是真的。）但是一般来说这种误用的“绑定到”并不会引起什么误会。<br />
+<a id="orgba12bee"></a>[4]. 技术上说，我们应该说按键被绑定到了命令上，而不是命令绑定到了按键上。（说按键“绑定到”了命令上正确的表示了这个按键序列只能做一件事&#x2013;触发这个命令。说命令“绑定”到了一个按键上则表示只有这个按键序列能够触发这个命令，而这并不是真的。）但是一般来说这种误用的“绑定到”并不会引起什么误会。<br />
 </p>
 
 <p>
-<a id="org0cfd240"></a>[5]. 遗憾地读作“sex pee.”。<br />
+<a id="orgf6e3553"></a>[5]. 遗憾地读作“sex pee.”。<br />
 </p>
 
 <p>
-<a id="org08cf4b3"></a>[6]. 这个按键绑定是19.29新引入的。在之前的版本，eval-expression默认绑定到M-ESC。<br />
+<a id="org355b99f"></a>[6]. 这个按键绑定是19.29新引入的。在之前的版本，eval-expression默认绑定到M-ESC。<br />
 </p>
 
 <p>
-<a id="org4149d43"></a>[7]. 所有的Emacs命令，不管它们绑定到了哪里（如果有的话），都可以通过M-x command-name RET来执行。自然，M-x自己也是一个绑定到按键上的命令，execute-extend-command，它会提示输入一个要执行的函数名。<br />
+<a id="org255ceab"></a>[7]. 所有的Emacs命令，不管它们绑定到了哪里（如果有的话），都可以通过M-x command-name RET来执行。自然，M-x自己也是一个绑定到按键上的命令，execute-extend-command，它会提示输入一个要执行的函数名。<br />
 </p>
 </div>
 </div>

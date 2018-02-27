@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-02-26 Mon 23:44 -->
+<!-- 2018-02-27 Tue 09:37 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>列表</title>
@@ -235,20 +235,20 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org3ee492f">1. 在本章：</a></li>
-<li><a href="#org68df8d4">2. 列表初探</a></li>
-<li><a href="#org2137fe6">3. 列表细节</a></li>
-<li><a href="#org1eec86a">4. 递归列表函数</a></li>
-<li><a href="#orgdc75ad9">5. 迭代列表函数</a></li>
-<li><a href="#org2fec308">6. 其他有用的列表函数</a></li>
-<li><a href="#orgf03b10a">7. 破坏性列表操作</a></li>
-<li><a href="#orgfcc85aa">8. 循环列表？！</a></li>
+<li><a href="#orga7dc6b3">1. 在本章：</a></li>
+<li><a href="#orgc60ad30">2. 列表初探</a></li>
+<li><a href="#orgbdb049e">3. 列表细节</a></li>
+<li><a href="#org3f80065">4. 递归列表函数</a></li>
+<li><a href="#org478f61e">5. 迭代列表函数</a></li>
+<li><a href="#orgb413251">6. 其他有用的列表函数</a></li>
+<li><a href="#org2c001bc">7. 破坏性列表操作</a></li>
+<li><a href="#org6fa12be">8. 循环列表？！</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org3ee492f" class="outline-2">
-<h2 id="org3ee492f"><span class="section-number-2">1</span> 在本章：</h2>
+<div id="outline-container-orga7dc6b3" class="outline-2">
+<h2 id="orga7dc6b3"><span class="section-number-2">1</span> 在本章：</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <b>列表初探</b><br />
@@ -266,8 +266,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org68df8d4" class="outline-2">
-<h2 id="org68df8d4"><span class="section-number-2">2</span> 列表初探</h2>
+<div id="outline-container-orgc60ad30" class="outline-2">
+<h2 id="orgc60ad30"><span class="section-number-2">2</span> 列表初探</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 就像我们已经看到的，Lisp中的列表就是一个括号包裹起来的0个或多个Lisp表达式的序列。列表可以嵌套；也就是说括号里的子表达式还可以包含一个或多个列表。下面是一些例子：<br />
@@ -284,7 +284,7 @@ for the JavaScript code in this tag.
 </p>
 
 <p>
-函数car和cdr[<a href="#org8c0cf0b">23</a>]用来访问列表的一部分：car得到列表的第一个元素，cdr得到列表剩下的元素（除第一个元素之外）。<br />
+函数car和cdr[<a href="#orgaad1aba">23</a>]用来访问列表的一部分：car得到列表的第一个元素，cdr得到列表剩下的元素（除第一个元素之外）。<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>car'<span style="color: #66D9EF;">(</span>abc<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; a
@@ -385,8 +385,8 @@ x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;"
 </div>
 </div>
 
-<div id="outline-container-org2137fe6" class="outline-2">
-<h2 id="org2137fe6"><span class="section-number-2">3</span> 列表细节</h2>
+<div id="outline-container-orgbdb049e" class="outline-2">
+<h2 id="orgbdb049e"><span class="section-number-2">3</span> 列表细节</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 这一章节将解释Lisp中列表的内部工作机制。既然大部分Lisp程序都会不同程度的使用列表，理解它们的工作机制是很有益处的。这会让你理解列表擅长做什么、不擅长什么。<br />
@@ -517,8 +517,8 @@ x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;"
 </div>
 </div>
 
-<div id="outline-container-org1eec86a" class="outline-2">
-<h2 id="org1eec86a"><span class="section-number-2">4</span> 递归列表函数</h2>
+<div id="outline-container-org3f80065" class="outline-2">
+<h2 id="org3f80065"><span class="section-number-2">4</span> 递归列表函数</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 传统的Lisp教材使用一系列简短的编程练习来阐明列表和cons cells的行为。让我们花一点时间看一下两个广为人知的例子，然后再往下进行。<br />
@@ -600,8 +600,8 @@ car不是一个列表。这时，我们只要简单的平铺cdr，(((b) c))，�
 </div>
 </div>
 
-<div id="outline-container-orgdc75ad9" class="outline-2">
-<h2 id="orgdc75ad9"><span class="section-number-2">5</span> 迭代列表函数</h2>
+<div id="outline-container-org478f61e" class="outline-2">
+<h2 id="org478f61e"><span class="section-number-2">5</span> 迭代列表函数</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 递归并不总是列表相关编程问题的正确解决方案。有时朴实直接的迭代也是需要的。在本例中，我们将会展示Emacs Lisp每次处理列表中一个元素的语法风格，有时这也被称为列表的“cdr-ing down”（因为每次迭代，列表都会因取其cdr而缩短）。<br />
@@ -635,8 +635,8 @@ car不是一个列表。这时，我们只要简单的平铺cdr，(((b) c))，�
 </div>
 </div>
 </div>
-<div id="outline-container-org2fec308" class="outline-2">
-<h2 id="org2fec308"><span class="section-number-2">6</span> 其他有用的列表函数</h2>
+<div id="outline-container-orgb413251" class="outline-2">
+<h2 id="orgb413251"><span class="section-number-2">6</span> 其他有用的列表函数</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 下面是其他一些Emacs定义的列表相关函数。<br />
@@ -723,7 +723,7 @@ assoc会帮助你以键值的方式使用列表。当列表的形式为<br />
 </div>
 
 <p>
-被称为association list，或者简写为assoc list[<a href="#org8d49523">24</a>]。函数assoc会找到列表中第一个的car为指定参数的子列表。所以：<br />
+被称为association list，或者简写为assoc list[<a href="#org838359e">24</a>]。函数assoc会找到列表中第一个的car为指定参数的子列表。所以：<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>assoc 'green
@@ -791,11 +791,11 @@ assoc会帮助你以键值的方式使用列表。当列表的形式为<br />
 </div>
 </div>
 
-<div id="outline-container-orgf03b10a" class="outline-2">
-<h2 id="orgf03b10a"><span class="section-number-2">7</span> 破坏性列表操作</h2>
+<div id="outline-container-org2c001bc" class="outline-2">
+<h2 id="org2c001bc"><span class="section-number-2">7</span> 破坏性列表操作</h2>
 <div class="outline-text-2" id="text-7">
 <p>
-目前为止，我们所看到的所有列表操作都是非破坏性的。例如，当你把一个对象cons到一个已存在的列表上时，结果是产生了一个全新的cons cell，它的cdr指向了原来未做改动的列表。任何其他引用之前列表的对象或变量都未受影响。同样的，append会创建一个新列表以及新cons cells来保存参数中列表的元素。它不会将x最后的cdr指向y，或者将y最后的cdr指向z，因为这样的话最后的nil指针就改变了。而这样的话就影响了x和y原来的使用。实际上append对这些列表分别创建了一个未命名的拷贝，如图6-5所示。注意z不需要拷贝；append总是直接使用最后一个参数[<a href="#org041dbdd">25</a>]。<br />
+目前为止，我们所看到的所有列表操作都是非破坏性的。例如，当你把一个对象cons到一个已存在的列表上时，结果是产生了一个全新的cons cell，它的cdr指向了原来未做改动的列表。任何其他引用之前列表的对象或变量都未受影响。同样的，append会创建一个新列表以及新cons cells来保存参数中列表的元素。它不会将x最后的cdr指向y，或者将y最后的cdr指向z，因为这样的话最后的nil指针就改变了。而这样的话就影响了x和y原来的使用。实际上append对这些列表分别创建了一个未命名的拷贝，如图6-5所示。注意z不需要拷贝；append总是直接使用最后一个参数[<a href="#orge535c41">25</a>]。<br />
 </p>
 
 <p>
@@ -898,7 +898,7 @@ alist-2 -&gt; <span style="color: #AE81FF;">(</span><span style="color: #66D9EF;
 </div>
 
 <p>
-这里引入setcar和setcdr[<a href="#org7ec5fa4">26</a>]。给出一个cons cell和一个新值，这两个函数会将cell的car或者cdr替换为新值。例如：<br />
+这里引入setcar和setcdr[<a href="#orgbf0a57b">26</a>]。给出一个cons cell和一个新值，这两个函数会将cell的car或者cdr替换为新值。例如：<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> x <span style="color: #66D9EF;">(</span>cons 'a 'b<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>a . b<span style="color: #AE81FF;">)</span>
@@ -948,8 +948,8 @@ x -&gt; <span style="color: #AE81FF;">(</span>a<span style="color: #AE81FF;">)</
 </div>
 </div>
 
-<div id="outline-container-orgfcc85aa" class="outline-2">
-<h2 id="orgfcc85aa"><span class="section-number-2">8</span> 循环列表？！</h2>
+<div id="outline-container-org6fa12be" class="outline-2">
+<h2 id="org6fa12be"><span class="section-number-2">8</span> 循环列表？！</h2>
 <div class="outline-text-2" id="text-8">
 <p>
 由于我们可以破坏性地修改我们创建的列表，我们就可以不受只用预定义元素构建列表的限制。列表可以引用自己的一部分！例如：<br />
@@ -1008,10 +1008,19 @@ x -&gt; <span style="color: #AE81FF;">(</span>a<span style="color: #AE81FF;">)</
 </div>
 
 <p>
-<a id="org8c0cf0b"></a>[23]. 读作“could-er”。这些名称是最初Lisp设计时电脑架构的历史遗留。<br />
-<a id="org8d49523"></a>[24]. 我一直找不到统一的读法到底应该是a-SOAK，a-SOASH或者a-SOCK list。这三种我都听到过。有些人会将其读作“a-list”来避免这个问题。<br />
-<a id="org041dbdd"></a>[25]. 因为是直接指向的，所以append的最后一个参数甚至不用是一个列表！自己试试看。<br />
-<a id="org7ec5fa4"></a>[26]. 也称为rplaca和rplacd，跟car和cdr的历史原因相同。<br />
+<a id="orgaad1aba"></a>[23]. 读作“could-er”。这些名称是最初Lisp设计时电脑架构的历史遗留。<br />
+</p>
+
+<p>
+<a id="org838359e"></a>[24]. 我一直找不到统一的读法到底应该是a-SOAK，a-SOASH或者a-SOCK list。这三种我都听到过。有些人会将其读作“a-list”来避免这个问题。<br />
+</p>
+
+<p>
+<a id="orge535c41"></a>[25]. 因为是直接指向的，所以append的最后一个参数甚至不用是一个列表！自己试试看。<br />
+</p>
+
+<p>
+<a id="orgbf0a57b"></a>[26]. 也称为rplaca和rplacd，跟car和cdr的历史原因相同。<br />
 </p>
 </div>
 </div>

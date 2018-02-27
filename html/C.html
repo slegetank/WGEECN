@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-02-26 Mon 23:44 -->
+<!-- 2018-02-27 Tue 09:37 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>附录C 调试和性能分析</title>
@@ -235,17 +235,17 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgec453e2">1. 在本章：</a></li>
-<li><a href="#org307ee55">2. 求值</a></li>
-<li><a href="#orga1dd481">3. 调试器</a></li>
-<li><a href="#org9f6224d">4. Edebug</a></li>
-<li><a href="#orgda85e96">5. 性能分析器</a></li>
+<li><a href="#orga4389c6">1. 在本章：</a></li>
+<li><a href="#org365173c">2. 求值</a></li>
+<li><a href="#org5060a11">3. 调试器</a></li>
+<li><a href="#orgaa393b5">4. Edebug</a></li>
+<li><a href="#org1760f76">5. 性能分析器</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgec453e2" class="outline-2">
-<h2 id="orgec453e2"><span class="section-number-2">1</span> 在本章：</h2>
+<div id="outline-container-orga4389c6" class="outline-2">
+<h2 id="orga4389c6"><span class="section-number-2">1</span> 在本章：</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <b>求值</b><br />
@@ -260,8 +260,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org307ee55" class="outline-2">
-<h2 id="org307ee55"><span class="section-number-2">2</span> 求值</h2>
+<div id="outline-container-org365173c" class="outline-2">
+<h2 id="org365173c"><span class="section-number-2">2</span> 求值</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 任何buffer中的Lisp表达式都可以被执行，只要把光标放到表达式的结尾然后按下C-x C-e（eval-last-sexp）。按键M-:（eval-expression）会在minibuffer中提示你输入一个要求值的Lisp表达式。你还可以调用eval-region和eval-current-buffer。<br />
@@ -277,8 +277,8 @@ Lisp表达式还能存储在文件里，然后通过load，load-file，load-libr
 </div>
 </div>
 
-<div id="outline-container-orga1dd481" class="outline-2">
-<h2 id="orga1dd481"><span class="section-number-2">3</span> 调试器</h2>
+<div id="outline-container-org5060a11" class="outline-2">
+<h2 id="org5060a11"><span class="section-number-2">3</span> 调试器</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Emacs Lisp有一个在指定情况下自动触发的内置调试模式。可以使用下面的手段进入调试器。<br />
@@ -373,8 +373,8 @@ Emacs Lisp有一个在指定情况下自动触发的内置调试模式。可以�
 </div>
 </div>
 
-<div id="outline-container-org9f6224d" class="outline-2">
-<h2 id="org9f6224d"><span class="section-number-2">4</span> Edebug</h2>
+<div id="outline-container-orgaa393b5" class="outline-2">
+<h2 id="orgaa393b5"><span class="section-number-2">4</span> Edebug</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Edebug是一个比上一部分讲到的工具更强大的调试环境。它允许你单步调试实际运行的Lisp程序。Edebug是一个完全由Lisp完成的惊艳的作品；它既是它的作者Daniel LaLiberate天赋的一种证明，也是Emacs Lisp强大表现力的一种证明&#x2013;Emacs Lisp提供了足够的对于其内部的访问能力来使这么一个工具变得可能。<br />
@@ -486,8 +486,8 @@ Edebug还有很多这里没有列出的能力，但是这些是最常用的功�
 </div>
 </div>
 
-<div id="outline-container-orgda85e96" class="outline-2">
-<h2 id="orgda85e96"><span class="section-number-2">5</span> 性能分析器</h2>
+<div id="outline-container-org1760f76" class="outline-2">
+<h2 id="org1760f76"><span class="section-number-2">5</span> 性能分析器</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 性能分析（Profiling）一个程序是找出它运行每一部分所花时间的过程，一般来说是为了提高效率。Barry Warsaw写了一个精巧的称为ELP的包来分析Emacs Lisp。<br />

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-02-26 Mon 23:43 -->
+<!-- 2018-02-27 Tue 09:36 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Writing GNU Emacs Extensions</title>
@@ -235,15 +235,15 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgcc8bade">1. 前言</a></li>
-<li><a href="#org65fbc28">2. 什么是Emacs？</a></li>
-<li><a href="#org16d759b">3. 本书的组织形式</a></li>
-<li><a href="#org61a6d26">4. 获取示例程序</a>
+<li><a href="#org18da93f">1. 前言</a></li>
+<li><a href="#orgec13f54">2. 什么是Emacs？</a></li>
+<li><a href="#orgd1b6a14">3. 本书的组织形式</a></li>
+<li><a href="#orgd42f79c">4. 获取示例程序</a>
 <ul>
-<li><a href="#orgd16612f">4.1. FTP</a></li>
+<li><a href="#orgefbf87c">4.1. FTP</a></li>
 </ul>
 </li>
-<li><a href="#org616d19e">5. 致谢</a></li>
+<li><a href="#org8a146c6">5. 致谢</a></li>
 </ul>
 </div>
 </div>
@@ -257,8 +257,8 @@ O'REILLY<br />
 好吧，我宁愿不去想这件事。<br />
 </p>
 
-<div id="outline-container-orgcc8bade" class="outline-2">
-<h2 id="orgcc8bade"><span class="section-number-2">1</span> 前言</h2>
+<div id="outline-container-org18da93f" class="outline-2">
+<h2 id="org18da93f"><span class="section-number-2">1</span> 前言</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 在你能够扩展Emacs之前，它已经是世界上功能最强大的文本编辑器了。它不仅能满足你平常所能想到的一切需求（段落排版，行居中对齐，正则搜索，将一整块文本设置为大写），不仅是它具有很多高级的特性（源代码中的括号匹配跳转，语法高亮，以及每个键位以及其他命令的在线帮助），而且它还具有许许多多你连做梦都想不到的特性。你可以使用Emacs来阅读和编写email以及浏览网页；你可以在里面使用FTP来自由的编写远程文件；你可以让它提醒你即将到来的会议、约会以及纪念日。假如这还不够的话，Emacs还可以陪你玩五子棋（大多数情况下它会赢）；它可以告诉你今天是玛雅历的哪一天；它甚至还能分解质因数。<br />
@@ -322,8 +322,8 @@ Montgomery EMACS, jove, epsilon, and MicroEMACS.
 </div>
 </div>
 
-<div id="outline-container-org65fbc28" class="outline-2">
-<h2 id="org65fbc28"><span class="section-number-2">2</span> 什么是Emacs？</h2>
+<div id="outline-container-orgec13f54" class="outline-2">
+<h2 id="orgec13f54"><span class="section-number-2">2</span> 什么是Emacs？</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 认为Emacs仅仅是一个可编程的文本编辑器是完全错误的。同样的说它是C语言编辑器也是不对的。虽然看起来很较真，但实际上编写C语言和编写文本是两种完全不同的工作，Emacs通过变成两个不同的编辑器来包容这种差异。当编写代码时，你不会关心段落结构。当编写文本时，你不会关心自动缩进。<br />
@@ -347,8 +347,8 @@ Emacs同时也是一个Lisp代码编辑器。它也是16进制数据文件的编
 </div>
 </div>
 
-<div id="outline-container-org16d759b" class="outline-2">
-<h2 id="org16d759b"><span class="section-number-2">3</span> 本书的组织形式</h2>
+<div id="outline-container-orgd1b6a14" class="outline-2">
+<h2 id="orgd1b6a14"><span class="section-number-2">3</span> 本书的组织形式</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 书中的每章都基于前一章。我建议你从前往后顺序读这本书；这样的话里面的所有安排就都变得有意义了。<br />
@@ -386,8 +386,8 @@ Emacs同时也是一个Lisp代码编辑器。它也是16进制数据文件的编
 </div>
 </div>
 
-<div id="outline-container-org61a6d26" class="outline-2">
-<h2 id="org61a6d26"><span class="section-number-2">4</span> 获取示例程序</h2>
+<div id="outline-container-orgd42f79c" class="outline-2">
+<h2 id="orgd42f79c"><span class="section-number-2">4</span> 获取示例程序</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 通过浏览器，你可以获取到示例：<br />
@@ -395,8 +395,8 @@ Emacs同时也是一个Lisp代码编辑器。它也是16进制数据文件的编
 </p>
 </div>
 
-<div id="outline-container-orgd16612f" class="outline-3">
-<h3 id="orgd16612f"><span class="section-number-3">4.1</span> FTP</h3>
+<div id="outline-container-orgefbf87c" class="outline-3">
+<h3 id="orgefbf87c"><span class="section-number-3">4.1</span> FTP</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 要使用FTP，你需要一台能直接访问网络的电脑。下面是一个例子，你需要输入的是其中粗体的部分：<br />
@@ -460,8 +460,8 @@ System V 系统需要下面的tar指令：<br />
 </div>
 </div>
 
-<div id="outline-container-org616d19e" class="outline-2">
-<h2 id="org616d19e"><span class="section-number-2">5</span> 致谢</h2>
+<div id="outline-container-org8a146c6" class="outline-2">
+<h2 id="org8a146c6"><span class="section-number-2">5</span> 致谢</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 感谢Nathaniel Borenstein，他帮助我驱散了对于C的执念并且教会了我欣赏这个世界上多姿多彩的编程语言。<br />

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-02-26 Mon 23:44 -->
+<!-- 2018-02-27 Tue 09:36 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>协作命令</title>
@@ -235,30 +235,30 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org3b74768">1. 在本章：</a></li>
-<li><a href="#orgab14264">2. 症状</a></li>
-<li><a href="#org5940df0">3. 解药</a>
+<li><a href="#org570683a">1. 在本章：</a></li>
+<li><a href="#org2dd82a7">2. 症状</a></li>
+<li><a href="#orgf1d4572">3. 解药</a>
 <ul>
-<li><a href="#org3d3a973">3.1. 声明变量</a></li>
-<li><a href="#org255934f">3.2. 保存和取出point</a></li>
-<li><a href="#org75705f2">3.3. 窗口内容</a></li>
-<li><a href="#orgc85dee6">3.4. 错误检查</a></li>
+<li><a href="#org4f4ea51">3.1. 声明变量</a></li>
+<li><a href="#org00b5b4a">3.2. 保存和取出point</a></li>
+<li><a href="#org7d3e1b3">3.3. 窗口内容</a></li>
+<li><a href="#org1fdcf58">3.4. 错误检查</a></li>
 </ul>
 </li>
-<li><a href="#org96286e7">4. 归纳出更一般的解决方法</a>
+<li><a href="#org5fda8ce">4. 归纳出更一般的解决方法</a>
 <ul>
-<li><a href="#orgd3685ae">4.1. 使用this-command</a></li>
-<li><a href="#org8eae50d">4.2. 符号属性</a></li>
-<li><a href="#orgf6d6134">4.3. 标记</a></li>
-<li><a href="#org51b4e45">4.4. 附录：关于效率</a></li>
+<li><a href="#org8be47d2">4.1. 使用this-command</a></li>
+<li><a href="#org47d3ab1">4.2. 符号属性</a></li>
+<li><a href="#orgcc9dd04">4.3. 标记</a></li>
+<li><a href="#orgda20e7a">4.4. 附录：关于效率</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org3b74768" class="outline-2">
-<h2 id="org3b74768"><span class="section-number-2">1</span> 在本章：</h2>
+<div id="outline-container-org570683a" class="outline-2">
+<h2 id="org570683a"><span class="section-number-2">1</span> 在本章：</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <b>症状</b><br />
@@ -272,8 +272,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgab14264" class="outline-2">
-<h2 id="orgab14264"><span class="section-number-2">2</span> 症状</h2>
+<div id="outline-container-org2dd82a7" class="outline-2">
+<h2 id="org2dd82a7"><span class="section-number-2">2</span> 症状</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 你正在编写一些复杂的Lisp代码。你非常专注，在头脑中努力的理清数据之间的微妙的联系然后将它们编写到屏幕上。你正在处理一个非常精妙的部分而这时你发现了左面的一个拼写错误。你希望按下C-b C-b C-b来回到那里对其修正，但是&#x2013;灾难发生了&#x2013;你按下了C-v C-v C-v，向下翻了三屏，最终停在了离你的代码几光年以外的地方。你试图找到在这个失误发生之前光标在哪里，以及为什么在那里，以及你正在那里做什么，这无疑打乱了你头脑中的思考。当你翻页，或者搜索，或者查找撤销列表来回到那里时，你已经忘了最初想要修正的那个拼写错误，最终这变成了一个bug，可能会花费你几个小时来找到它。<br />
@@ -285,11 +285,11 @@ Emacs在这个例子中没有起到帮助作用。它使你如此容易的在你
 </div>
 </div>
 
-<div id="outline-container-org5940df0" class="outline-2">
-<h2 id="org5940df0"><span class="section-number-2">3</span> 解药</h2>
+<div id="outline-container-orgf1d4572" class="outline-2">
+<h2 id="orgf1d4572"><span class="section-number-2">3</span> 解药</h2>
 <div class="outline-text-2" id="text-3">
 <p>
-假设我们可以这样修改C-v（scroll-up命令[<a href="#orga9ff30e">16</a>]），当我们按下它之后，Emacs认为，“可能用户是误按的C-v，所以我将记录一些‘撤销’的信息以备未来需要”。然后我们可以编写另一个函数，unscroll，它可以回滚最后一次的滚动。这样只要记住unscroll的按键绑定就能避免再次发生这种迷失。<br />
+假设我们可以这样修改C-v（scroll-up命令[<a href="#orgfbd84c3">16</a>]），当我们按下它之后，Emacs认为，“可能用户是误按的C-v，所以我将记录一些‘撤销’的信息以备未来需要”。然后我们可以编写另一个函数，unscroll，它可以回滚最后一次的滚动。这样只要记住unscroll的按键绑定就能避免再次发生这种迷失。<br />
 </p>
 
 <p>
@@ -301,8 +301,8 @@ Emacs在这个例子中没有起到帮助作用。它使你如此容易的在你
 </p>
 </div>
 
-<div id="outline-container-org3d3a973" class="outline-3">
-<h3 id="org3d3a973"><span class="section-number-3">3.1</span> 声明变量</h3>
+<div id="outline-container-org4f4ea51" class="outline-3">
+<h3 id="org4f4ea51"><span class="section-number-3">3.1</span> 声明变量</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 我们将以建立一个保存“撤销”信息的全局变量unscorll-to开始，它保存了unscroll应该将光标移动到的位置。我们将使用defvar来声明变量。<br />
@@ -351,8 +351,8 @@ Emacs在这个例子中没有起到帮助作用。它使你如此容易的在你
 </div>
 </div>
 
-<div id="outline-container-org255934f" class="outline-3">
-<h3 id="org255934f"><span class="section-number-3">3.2</span> 保存和取出point</h3>
+<div id="outline-container-org00b5b4a" class="outline-3">
+<h3 id="org00b5b4a"><span class="section-number-3">3.2</span> 保存和取出point</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 让我们定义一个变量来存储scroll-up队列的最初位置，即最初光标在文本中的位置。光标在文本中的位置被称为point，其值就是从buffer开始位置计算（从1开始）有多少个字符。point的值可以由函数point得到。<br />
@@ -372,8 +372,8 @@ Emacs在这个例子中没有起到帮助作用。它使你如此容易的在你
 </p>
 
 <ol class="org-ol">
-<li>函数eq告诉我们它的两个参数是否相等。本例中，参数是last-command变量的值，以及符号scroll-up。last-command的值是最后一次用户触发的命令的符号（在本章后面的部分<a href="#orgd3685ae">使用this-command</a>中也能看到）。<br /></li>
-<li>eq的返回值被传递给not，这会对它的参数的布尔值取反。如果nil传给not，那么返回t。如果其他值传给not，则返回nil。[<a href="#org3653236">17</a>]<br /></li>
+<li>函数eq告诉我们它的两个参数是否相等。本例中，参数是last-command变量的值，以及符号scroll-up。last-command的值是最后一次用户触发的命令的符号（在本章后面的部分<a href="#org8be47d2">使用this-command</a>中也能看到）。<br /></li>
+<li>eq的返回值被传递给not，这会对它的参数的布尔值取反。如果nil传给not，那么返回t。如果其他值传给not，则返回nil。[<a href="#orgd200d21">17</a>]<br /></li>
 <li>如果not的返回值是t，即last-command的值并不是scroll-up，那么变量unscroll-to的的值将被设置为当前的point值。<br /></li>
 </ol>
 
@@ -394,8 +394,8 @@ Emacs在这个例子中没有起到帮助作用。它使你如此容易的在你
 </div>
 </div>
 
-<div id="outline-container-org75705f2" class="outline-3">
-<h3 id="org75705f2"><span class="section-number-3">3.3</span> 窗口内容</h3>
+<div id="outline-container-org7d3e1b3" class="outline-3">
+<h3 id="org7d3e1b3"><span class="section-number-3">3.3</span> 窗口内容</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 对于这个解决方案有一些不完美的地方。在一次unscroll之后，光标确实返回到了正确的地方，但这时屏幕却看起来和按下C-v之前不一样了。例如，我在按下C-v C-v C-v之前可能正在屏幕的底部编辑一行代码。在我调用unscroll之后，虽然光标确实回到了之前的位置，但是那一行可能显示到了窗口的中间。<br />
@@ -495,8 +495,8 @@ Emacs在这个例子中没有起到帮助作用。它使你如此容易的在你
 </div>
 </div>
 
-<div id="outline-container-orgc85dee6" class="outline-3">
-<h3 id="orgc85dee6"><span class="section-number-3">3.4</span> 错误检查</h3>
+<div id="outline-container-org1fdcf58" class="outline-3">
+<h3 id="org1fdcf58"><span class="section-number-3">3.4</span> 错误检查</h3>
 <div class="outline-text-3" id="text-3-4">
 <p>
 假如用户在调用任何scroll-up之前调用了unscroll会发生什么呢？变量unscroll-point，unscroll-window-start，以及unscroll-scroll将会包含他们的默认值，也就是nil。这个值在传递给函数goto-char，set-window-start以及set-window-scroll时是不合适的。当goto-char被调用时，unscroll的触发将会返回如下错误：“Wrong type argument: integer-or-maker-p, nil”。这表示一个函数需要接收一个数字或者标记（满足断言integer-or-marker-p），而收到的却是nil。（标记在本章前面的部分介绍过了。）<br />
@@ -518,8 +518,8 @@ Emacs在这个例子中没有起到帮助作用。它使你如此容易的在你
 </div>
 </div>
 
-<div id="outline-container-org96286e7" class="outline-2">
-<h2 id="org96286e7"><span class="section-number-2">4</span> 归纳出更一般的解决方法</h2>
+<div id="outline-container-org5fda8ce" class="outline-2">
+<h2 id="org5fda8ce"><span class="section-number-2">4</span> 归纳出更一般的解决方法</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 当我们想要按C-b时按到C-v是很常见的一种情况。这也就是我们设计unscroll函数的原因。现在让我们来研究同样容易发生的想按下M-b（backward-word）却按下了M-v（scroll-down）。这是同样的问题，但也有点不一样。如果unscroll能够回撤任何方向的滚动就好了。<br />
@@ -670,8 +670,8 @@ Emacs在这个例子中没有起到帮助作用。它使你如此容易的在你
 </p>
 </div>
 
-<div id="outline-container-orgd3685ae" class="outline-3">
-<h3 id="orgd3685ae"><span class="section-number-3">4.1</span> 使用this-command</h3>
+<div id="outline-container-org8be47d2" class="outline-3">
+<h3 id="org8be47d2"><span class="section-number-3">4.1</span> 使用this-command</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 有两种方法可以改善这种情况。第一种，既然每个修饰都差不多，我们可以把它们提取一下：<br />
@@ -739,8 +739,8 @@ Emacs在这个例子中没有起到帮助作用。它使你如此容易的在你
 </div>
 </div>
 
-<div id="outline-container-org8eae50d" class="outline-3">
-<h3 id="org8eae50d"><span class="section-number-3">4.2</span> 符号属性</h3>
+<div id="outline-container-org47d3ab1" class="outline-3">
+<h3 id="org47d3ab1"><span class="section-number-3">4.2</span> 符号属性</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 我们改进版的unscroll-maybe-remeber工作的非常好，但是（你可能已经预料到了）我们还是可以做一些改进。首先就是变量this-command和last-command并不是只有我们自己使用。它们对于Emacs Lisp解释器很重要，而Emacs的其他功能也依赖于这两个值。而我们知道，有一些使用了这些滚动函数的Emacs特性并没有修改this-commandh和last-command。而且，我们更想要一个专有的值来标识所有可回滚的命令。<br />
@@ -819,8 +819,8 @@ Emacs在这个例子中没有起到帮助作用。它使你如此容易的在你
 </div>
 </div>
 
-<div id="outline-container-orgf6d6134" class="outline-3">
-<h3 id="orgf6d6134"><span class="section-number-3">4.3</span> 标记</h3>
+<div id="outline-container-orgcc9dd04" class="outline-3">
+<h3 id="orgcc9dd04"><span class="section-number-3">4.3</span> 标记</h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
 我们能否将这段代码改的更好呢？假设你不小心按下了几次scroll-down然后你想unscroll。但是在你这么做之前，你发现了一些你想要修改的代码，然后你进行了修改。然后你再unscroll。这时屏幕并没有被正确的恢复！<br />
@@ -878,8 +878,8 @@ progn又回来了，因为setq被拆分成了几个不同的函数调用。我�
 </div>
 </div>
 
-<div id="outline-container-org51b4e45" class="outline-3">
-<h3 id="org51b4e45"><span class="section-number-3">4.4</span> 附录：关于效率</h3>
+<div id="outline-container-orgda20e7a" class="outline-3">
+<h3 id="orgda20e7a"><span class="section-number-3">4.4</span> 附录：关于效率</h3>
 <div class="outline-text-3" id="text-4-4">
 <p>
 当我们定义unscroll-point和unscroll-marker时，我们创建了空的符号对象并且在每次调用unscroll-remember时复用它们，而不是每次都创建新的并且扔掉旧的。这是一种优化。这并不仅仅是说我们应该尽可能的避免这种对象创建的消耗，更多的是因为标记要比其他变量的消耗更大。每次buffer做出修改的时候标记都会跟着修改。弃用的标记最终会被垃圾回收器回收掉，但是直到那时它都会降低编辑buffer的速度。<br />
@@ -895,8 +895,11 @@ progn又回来了，因为setq被拆分成了几个不同的函数调用。我�
 
 
 <p>
-<a id="orga9ff30e"></a>[16]. 虽然在<a href="./2.html">第二章</a>，我们使用了defalias将scroll-ahead和scroll-behind替代了scroll-up和scroll-down，本章我们依然使用它们之前的名称。<br />
-<a id="org3653236"></a>[17]. 如果你认为not的行为看起来跟null很像，你是对的&#x2013;它们就是同一个函数。它们其中一个就是另一个的别名。你使用哪个只是一个可读性方面的问题。当要检测一个列表是否为空列表时使用null。当要对一个值取反的时候使用not。<br />
+<a id="orgfbd84c3"></a>[16]. 虽然在<a href="./2.html">第二章</a>，我们使用了defalias将scroll-ahead和scroll-behind替代了scroll-up和scroll-down，本章我们依然使用它们之前的名称。<br />
+</p>
+
+<p>
+<a id="orgd200d21"></a>[17]. 如果你认为not的行为看起来跟null很像，你是对的&#x2013;它们就是同一个函数。它们其中一个就是另一个的别名。你使用哪个只是一个可读性方面的问题。当要检测一个列表是否为空列表时使用null。当要对一个值取反的时候使用not。<br />
 </p>
 </div>
 </div>

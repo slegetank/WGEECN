@@ -9,7 +9,7 @@
           (goto-char (point-min))
           (replace-regexp "file:resource" "file:../resource" )
           ;; export
-          (let* ((file (org-export-output-file-name ".html" nil "html"))
+          (let ((file (org-export-output-file-name ".html" nil "html"))
                  (org-export-coding-system org-html-coding-system))
             (org-export-to-file 'html file))
           (set-buffer-modified-p nil)

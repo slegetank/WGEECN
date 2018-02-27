@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-02-26 Mon 23:44 -->
+<!-- 2018-02-27 Tue 09:37 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>求值和纠错</title>
@@ -235,20 +235,20 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orge7f3a56">1. 在本章：</a></li>
-<li><a href="#org6b0e0de">2. 有限版本的save-excursion</a></li>
-<li><a href="#org02f1092">3. eval</a></li>
-<li><a href="#org223376c">4. 宏函数</a></li>
-<li><a href="#orgf28944e">5. 反引用和去引用(Backquote and Unquote)</a></li>
-<li><a href="#orgeb2b91c">6. 返回值</a></li>
-<li><a href="#orgb88437c">7. 优雅的失败</a></li>
-<li><a href="#org7dc9c95">8. 点标记</a></li>
+<li><a href="#org388fb3e">1. 在本章：</a></li>
+<li><a href="#org5879fcd">2. 有限版本的save-excursion</a></li>
+<li><a href="#orga8d3912">3. eval</a></li>
+<li><a href="#org0d5972a">4. 宏函数</a></li>
+<li><a href="#org4b6e371">5. 反引用和去引用(Backquote and Unquote)</a></li>
+<li><a href="#org640d227">6. 返回值</a></li>
+<li><a href="#org9b690cc">7. 优雅的失败</a></li>
+<li><a href="#org176738c">8. 点标记</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orge7f3a56" class="outline-2">
-<h2 id="orge7f3a56"><span class="section-number-2">1</span> 在本章：</h2>
+<div id="outline-container-org388fb3e" class="outline-2">
+<h2 id="org388fb3e"><span class="section-number-2">1</span> 在本章：</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <b>有限版本的save-excursion</b><br />
@@ -274,8 +274,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org6b0e0de" class="outline-2">
-<h2 id="org6b0e0de"><span class="section-number-2">2</span> 有限版本的save-excursion</h2>
+<div id="outline-container-org5879fcd" class="outline-2">
+<h2 id="org5879fcd"><span class="section-number-2">2</span> 有限版本的save-excursion</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 save-excursion的目的是在执行完一些Lisp表达式之后恢复"point"的值；但这并不是它所有的能力。它也会恢复"mark"的值，恢复Emacs对于哪个buffer是当前buffer的认知。对于refill来说这过于强大了；毕竟，我们只改变了point的值。我们并没有切换buffer或者移动mark。<br />
@@ -315,8 +315,8 @@ save-excursion的目的是在执行完一些Lisp表达式之后恢复"point"的�
 </div>
 </div>
 
-<div id="outline-container-org02f1092" class="outline-2">
-<h2 id="org02f1092"><span class="section-number-2">3</span> eval</h2>
+<div id="outline-container-orga8d3912" class="outline-2">
+<h2 id="orga8d3912"><span class="section-number-2">3</span> eval</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 我们可以通过引用来绕过这个问题：<br />
@@ -358,15 +358,15 @@ x -&gt; <span style="color: #AE81FF;">(</span>+ 3 5<span style="color: #AE81FF;"
 </div>
 </div>
 
-<div id="outline-container-org223376c" class="outline-2">
-<h2 id="org223376c"><span class="section-number-2">4</span> 宏函数</h2>
+<div id="outline-container-org0d5972a" class="outline-2">
+<h2 id="org0d5972a"><span class="section-number-2">4</span> 宏函数</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 虽然limited-save-excursion在给参数加上引用符之后就正常工作了，但是这对于调用者来说很繁琐，而且这会导致它不能成为save-excursion的合格替代者(毕竟save-excursion并没有这个限制)。<br />
 </p>
 
 <p>
-我们可以实现一种称为宏函数(macro function)[<a href="#org6bc2934">31</a>]的特殊函数，它的参数都是默认被引用的。也就是说，当宏函数执行时，它的参数在它获得控制权之前都是不会被执行的。作为替代的，宏函数会产生一些值，通常是其参数的重新排列，然后这些值会被执行。<br />
+我们可以实现一种称为宏函数(macro function)[<a href="#org71d3ab2">31</a>]的特殊函数，它的参数都是默认被引用的。也就是说，当宏函数执行时，它的参数在它获得控制权之前都是不会被执行的。作为替代的，宏函数会产生一些值，通常是其参数的重新排列，然后这些值会被执行。<br />
 </p>
 
 <p>
@@ -415,8 +415,8 @@ x -&gt; 18
 </div>
 </div>
 
-<div id="outline-container-orgf28944e" class="outline-2">
-<h2 id="orgf28944e"><span class="section-number-2">5</span> 反引用和去引用(Backquote and Unquote)</h2>
+<div id="outline-container-org4b6e371" class="outline-2">
+<h2 id="org4b6e371"><span class="section-number-2">5</span> 反引用和去引用(Backquote and Unquote)</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 既然limited-save-excursion必须是一个宏函数，我们所要做的就是想象出limited-save-excursion如何展开。让我们开始：<br />
@@ -494,7 +494,7 @@ subexpr1 subexpr2 ...
 </p>
 
 <p>
-记得'expr吗，它会展开成(quote expr)？好吧，还有一个`expr，它将会展开成(backquote expr)。[<a href="#orgcf66d60">32</a>]反引用(backquote)跟引用(quote)很像，即对反引用表达式求值的结果仍然是表达式本身：<br />
+记得'expr吗，它会展开成(quote expr)？好吧，还有一个`expr，它将会展开成(backquote expr)。[<a href="#org5220f3f">32</a>]反引用(backquote)跟引用(quote)很像，即对反引用表达式求值的结果仍然是表达式本身：<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">`<span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;">)</span>
@@ -589,8 +589,8 @@ subexpr1 subexpr2 ...
 </div>
 </div>
 
-<div id="outline-container-orgeb2b91c" class="outline-2">
-<h2 id="orgeb2b91c"><span class="section-number-2">6</span> 返回值</h2>
+<div id="outline-container-org640d227" class="outline-2">
+<h2 id="org640d227"><span class="section-number-2">6</span> 返回值</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 要完成limited-save-excursion我们还有很多事情要做。比如，它并没有返回subexprs的最后一个表达式，而save-excursion会。limited-save-excursion返回了并没有什么帮助的(goto-char orig-point)的值，也就是orig-point的值，因为goto-char会返回它的参数。而当你希望使用这个值的时候，这显然是不正确的：<br />
@@ -654,7 +654,7 @@ subexpr1 subexpr2 ...
 </p>
 
 <p>
-对于这个问题的解决方法是使用let*代替let。当使用let*时，就没有了这种不确定性：vals的执行顺序就是它们在代码中所写的顺序。[<a href="#org2aa605c">33</a>]而且，每个var都会在对应的val求值之后马上赋值，所以vali可以引用从var1到vari-1之间的值。<br />
+对于这个问题的解决方法是使用let*代替let。当使用let*时，就没有了这种不确定性：vals的执行顺序就是它们在代码中所写的顺序。[<a href="#orge053b7d">33</a>]而且，每个var都会在对应的val求值之后马上赋值，所以vali可以引用从var1到vari-1之间的值。<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defmacro</span> <span style="color: #A6E22E;">limited-save-excursion</span> <span style="color: #66D9EF;">(</span><span style="color: #66D9EF;">&amp;rest</span> subexprs<span style="color: #66D9EF;">)</span>
@@ -737,8 +737,8 @@ subexpr1 subexpr2 ...
 </div>
 </div>
 
-<div id="outline-container-orgb88437c" class="outline-2">
-<h2 id="orgb88437c"><span class="section-number-2">7</span> 优雅的失败</h2>
+<div id="outline-container-org9b690cc" class="outline-2">
+<h2 id="org9b690cc"><span class="section-number-2">7</span> 优雅的失败</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 当Emacs中发生错误时，当前的计算将会终止而Emacs会返回到上层的主循环，在那里它会等待按键或者其他输入。当执行limited-save-excursion子表达式发生错误时，整个limited-save-excursion将会在调用goto-char之前终止，而point的值将会变为未知的一个值而不会恢复。但是真正的save-excursion即使在错误发生时也可以正确的恢复point(以及mark和当前buffer)。这是怎么做到的？<br />
@@ -780,8 +780,8 @@ unwind-protect的一个好的特性是在非错误的情况下，它的返回值
 </div>
 </div>
 
-<div id="outline-container-org7dc9c95" class="outline-2">
-<h2 id="org7dc9c95"><span class="section-number-2">8</span> 点标记</h2>
+<div id="outline-container-org176738c" class="outline-2">
+<h2 id="org176738c"><span class="section-number-2">8</span> 点标记</h2>
 <div class="outline-text-2" id="text-8">
 <p>
 在最后对于limited-save-excursion的改进里，我们将会把point记录为一个标记，而非一个数字，就像我们在unscroll中所定义的那样(参照<a href="3.html">第三章</a><a href="3.html#MissingReference">标记</a>部分)：也就是说，对于子表达式的执行可能会使保存的buffer位置变得不准确，因为文本可能已经被插入或删除掉了。<br />
@@ -830,9 +830,15 @@ unwind-protect的一个好的特性是在非错误的情况下，它的返回值
 </p>
 
 <p>
-<a id="org6bc2934"></a>[31]. 不要把宏函数与键盘宏混淆，也就是Emacs的名字（“editor macros”）的来源。<br />
-<a id="orgcf66d60"></a>[32]. 这个表达式是Emacs 19.29新引入的。在之前的版本里，它们必须像函数调用一样触发，例如：(` expr)。<br />
-<a id="org2aa605c"></a>[33]. 如果let如此模糊而let*这么清晰，那么为什么不只用let*呢？答案是：let在某些情况下跟高效。而且，有时你就是会需要在任何vars存在之前就计算出所有的vals。通常，你应该使用let除非你确实需要let*&#x2013;当然你应该能够想到，不恰当地选择使用它们是常见的程序异常来源之一。<br />
+<a id="org71d3ab2"></a>[31]. 不要把宏函数与键盘宏混淆，也就是Emacs的名字（“editor macros”）的来源。<br />
+</p>
+
+<p>
+<a id="org5220f3f"></a>[32]. 这个表达式是Emacs 19.29新引入的。在之前的版本里，它们必须像函数调用一样触发，例如：(` expr)。<br />
+</p>
+
+<p>
+<a id="orge053b7d"></a>[33]. 如果let如此模糊而let*这么清晰，那么为什么不只用let*呢？答案是：let在某些情况下跟高效。而且，有时你就是会需要在任何vars存在之前就计算出所有的vals。通常，你应该使用let除非你确实需要let*&#x2013;当然你应该能够想到，不恰当地选择使用它们是常见的程序异常来源之一。<br />
 </p>
 </div>
 </div>

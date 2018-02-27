@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-02-26 Mon 23:44 -->
+<!-- 2018-02-27 Tue 09:37 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>主模式</title>
@@ -257,20 +257,20 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgef97f16">1. 在本章：</a></li>
-<li><a href="#org7e207e1">2. 我的Quips文件</a></li>
-<li><a href="#orgc229101">3. 主模式框架</a></li>
-<li><a href="#org0ad0b7b">4. 改变段落的定义</a></li>
-<li><a href="#org0680462">5. Quip命令</a></li>
-<li><a href="#org0832f8c">6. 键位表</a></li>
-<li><a href="#org0f7d19f">7. Narrowing</a></li>
-<li><a href="#orgcc7377e">8. 继承模式</a></li>
+<li><a href="#org566d501">1. 在本章：</a></li>
+<li><a href="#orgec45c64">2. 我的Quips文件</a></li>
+<li><a href="#org3871fba">3. 主模式框架</a></li>
+<li><a href="#org97a3ce7">4. 改变段落的定义</a></li>
+<li><a href="#orge648501">5. Quip命令</a></li>
+<li><a href="#orga4f236b">6. 键位表</a></li>
+<li><a href="#org838d7f1">7. Narrowing</a></li>
+<li><a href="#orga3b844f">8. 继承模式</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgef97f16" class="outline-2">
-<h2 id="orgef97f16"><span class="section-number-2">1</span> 在本章：</h2>
+<div id="outline-container-org566d501" class="outline-2">
+<h2 id="org566d501"><span class="section-number-2">1</span> 在本章：</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <b>我的Quips文件</b><br />
@@ -288,8 +288,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org7e207e1" class="outline-2">
-<h2 id="org7e207e1"><span class="section-number-2">2</span> 我的Quips文件</h2>
+<div id="outline-container-orgec45c64" class="outline-2">
+<h2 id="orgec45c64"><span class="section-number-2">2</span> 我的Quips文件</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 多年来我一直从互联网上收集一些风趣的谚语，并且使用老牌UNIX程序fortune所使用的格式将它们存储在一个称为Quips的文件里。每个谚语都会使用一行包含%%的行开始。下面是一个例子：<br />
@@ -325,13 +325,13 @@ I like a man who grins when he fights.
 </p>
 
 <p>
-很显然我需要一个新的编辑模式，一个能够避免这么多不方便的模式。问题是，这应该是一个主模式还是子模式呢？前面说过主模式不能跟其他主模式共存，而子模式可以与主模式以及其他激活的子模式独立的激活和关闭。在这个例子中，对于编辑模式的需求来源于数据格式本身，因此我们需要一个主模式而不是子模式。这种数据格式的文件总是需要这个而不是别的主模式。例如，你不会希望使用一个编辑Lisp的主模式再额外使用一个编辑谚语的子模式。[<a href="#org7eaafca">34</a>]<br />
+很显然我需要一个新的编辑模式，一个能够避免这么多不方便的模式。问题是，这应该是一个主模式还是子模式呢？前面说过主模式不能跟其他主模式共存，而子模式可以与主模式以及其他激活的子模式独立的激活和关闭。在这个例子中，对于编辑模式的需求来源于数据格式本身，因此我们需要一个主模式而不是子模式。这种数据格式的文件总是需要这个而不是别的主模式。例如，你不会希望使用一个编辑Lisp的主模式再额外使用一个编辑谚语的子模式。[<a href="#orgfaa21ac">34</a>]<br />
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgc229101" class="outline-2">
-<h2 id="orgc229101"><span class="section-number-2">3</span> 主模式框架</h2>
+<div id="outline-container-org3871fba" class="outline-2">
+<h2 id="org3871fba"><span class="section-number-2">3</span> 主模式框架</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 定义主模式有如下步骤。<br />
@@ -348,7 +348,7 @@ I like a man who grins when he fights.
 </pre>
 </div></li>
 <li><p>
-如果需要的话，定义一个模式关联的键位表(keymap)(参照本章后面的<a href="#org0832f8c">键位表</a>章节)。将它赋值给一个名为name-mode-map的变量。像下面这样定义一个模式的键位表：<br />
+如果需要的话，定义一个模式关联的键位表(keymap)(参照本章后面的<a href="#orga4f236b">键位表</a>章节)。将它赋值给一个名为name-mode-map的变量。像下面这样定义一个模式的键位表：<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">name-mode-map</span> nil
@@ -430,11 +430,11 @@ I like a man who grins when he fights.
 </div>
 </div>
 
-<div id="outline-container-org0ad0b7b" class="outline-2">
-<h2 id="org0ad0b7b"><span class="section-number-2">4</span> 改变段落的定义</h2>
+<div id="outline-container-org97a3ce7" class="outline-2">
+<h2 id="org97a3ce7"><span class="section-number-2">4</span> 改变段落的定义</h2>
 <div class="outline-text-2" id="text-4">
 <p>
-首先，我们必须使得包含%%的行不能被认为是段落的一部分。这意味着我们必须更改变量paragraph-separate，它的值是一个用来描述用于分隔段落的行的正则表达式。我们还要修改paragraph-start，一个用来描述段落开头或者分隔段落的行的正则表达式。[<a href="#org981896e">35</a>]<br />
+首先，我们必须使得包含%%的行不能被认为是段落的一部分。这意味着我们必须更改变量paragraph-separate，它的值是一个用来描述用于分隔段落的行的正则表达式。我们还要修改paragraph-start，一个用来描述段落开头或者分隔段落的行的正则表达式。[<a href="#orgada43a7">35</a>]<br />
 </p>
 
 <p>
@@ -442,7 +442,7 @@ Emacs使用paragraph-start和paragraph-separate中的正则表达式来匹配行
 </p>
 
 <p>
-在Text模式中paragraph-start的值是"[ \t\n\<sup>L</sup>]"，这表示如果一行以空格、tab、新行[<a href="#org5f707ce">36</a>]或者Control-L(ASCII中的"formfeed"符)开头，那么这行要么是段落的第一行，要么是分隔段落的行。<br />
+在Text模式中paragraph-start的值是"[ \t\n\<sup>L</sup>]"，这表示如果一行以空格、tab、新行[<a href="#orga59d99d">36</a>]或者Control-L(ASCII中的"formfeed"符)开头，那么这行要么是段落的第一行，要么是分隔段落的行。<br />
 </p>
 
 <p>
@@ -477,8 +477,8 @@ paragraph-start表示“%%或者空格、tab、换行或者control-L”。paragr
 </div>
 </div>
 
-<div id="outline-container-org0680462" class="outline-2">
-<h2 id="org0680462"><span class="section-number-2">5</span> Quip命令</h2>
+<div id="outline-container-orge648501" class="outline-2">
+<h2 id="orge648501"><span class="section-number-2">5</span> Quip命令</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 Quip模式还需要做什么呢？<br />
@@ -508,7 +508,7 @@ Quip模式还需要做什么呢？<br />
 </p>
 <ul class="org-ul">
 <li>backward-page和forward-page，通常绑定到C-x [和C-x ]上，允许每次移动一条谚语<br /></li>
-<li>narrow-to-page，绑定在C-x n p上，通过narrow操作来只编辑一条谚语（参照本章中的<a href="#org0f7d19f">Narrowing</a>章节）<br /></li>
+<li>narrow-to-page，绑定在C-x n p上，通过narrow操作来只编辑一条谚语（参照本章中的<a href="#org838d7f1">Narrowing</a>章节）<br /></li>
 <li>what-page查看当前的谚语是第几条<br /></li>
 </ul>
 
@@ -518,8 +518,8 @@ Quip模式还需要做什么呢？<br />
 </div>
 </div>
 
-<div id="outline-container-org0832f8c" class="outline-2">
-<h2 id="org0832f8c"><span class="section-number-2">6</span> 键位表</h2>
+<div id="outline-container-orga4f236b" class="outline-2">
+<h2 id="orga4f236b"><span class="section-number-2">6</span> 键位表</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 不幸的是，这些命令的名字－－backward-page和forward-page以及其他的命令－－使得这些方法在Quip模式中变得易于混淆，因为我们操作的是谚语而不是页面。因此这么做是明智的：<br />
@@ -578,7 +578,7 @@ Quip模式还需要做什么呢？<br />
 </p>
 
 <p>
-任何时候，都可能有多个键位表同时处于激活状态。前面提到的全局键位表（global keymap）总是处于激活状态。它会被包含着当前buffer主模式的特定按键的局部键位表所覆盖。而局部键位表又会被处于激活状态的子模式的键位表里的记录所覆盖。[<a href="#orgaf77e60">37</a>]<br />
+任何时候，都可能有多个键位表同时处于激活状态。前面提到的全局键位表（global keymap）总是处于激活状态。它会被包含着当前buffer主模式的特定按键的局部键位表所覆盖。而局部键位表又会被处于激活状态的子模式的键位表里的记录所覆盖。[<a href="#orga56b704">37</a>]<br />
 </p>
 
 <p>
@@ -609,7 +609,7 @@ Quip模式还需要做什么呢？<br />
 </p>
 
 <p>
-每次调用define-key都会向quip-mode-map添加一条新的记录。当按键定义包含多于一个按键（就像本章中所有例子所展示的那样），define-key将会自动根据需要创建嵌套表。[<a href="#orgf89ac28">38</a>]<br />
+每次调用define-key都会向quip-mode-map添加一条新的记录。当按键定义包含多于一个按键（就像本章中所有例子所展示的那样），define-key将会自动根据需要创建嵌套表。[<a href="#orge04b3a0">38</a>]<br />
 </p>
 
 <p>
@@ -681,11 +681,11 @@ Quip模式还需要做什么呢？<br />
 </div>
 </div>
 
-<div id="outline-container-org0f7d19f" class="outline-2">
-<h2 id="org0f7d19f"><span class="section-number-2">7</span> Narrowing</h2>
+<div id="outline-container-org838d7f1" class="outline-2">
+<h2 id="org838d7f1"><span class="section-number-2">7</span> Narrowing</h2>
 <div class="outline-text-2" id="text-7">
 <p>
-你可能已经很熟悉Emacs的narrowing概念了。我们可以定义一个buffer的区域并且将buffer narrow到这个区域。Emacs通过隐藏前面和后面的文字而使得整个buffer好像只有这个区域。所有的编辑操作，以及大部分的Lisp函数，都会被限制到这个区域内（虽然当文件保存的时候，所有的改动都会被保存而不管是否存在narrowing），直到用户使用widen来取消narrowing，widen通常被绑定到C-x n w[<a href="#orge3555a1">39</a>]。所以narrow-to-quip满足“将用户的编辑操作限制到一条谚语”这个需求。<br />
+你可能已经很熟悉Emacs的narrowing概念了。我们可以定义一个buffer的区域并且将buffer narrow到这个区域。Emacs通过隐藏前面和后面的文字而使得整个buffer好像只有这个区域。所有的编辑操作，以及大部分的Lisp函数，都会被限制到这个区域内（虽然当文件保存的时候，所有的改动都会被保存而不管是否存在narrowing），直到用户使用widen来取消narrowing，widen通常被绑定到C-x n w[<a href="#orga942c2f">39</a>]。所以narrow-to-quip满足“将用户的编辑操作限制到一条谚语”这个需求。<br />
 </p>
 
 <p>
@@ -717,8 +717,8 @@ Emacs Lisp代码必须要根据buffer是否处于narrow状态做处理。大多�
 </div>
 </div>
 
-<div id="outline-container-orgcc7377e" class="outline-2">
-<h2 id="orgcc7377e"><span class="section-number-2">8</span> 继承模式</h2>
+<div id="outline-container-orga3b844f" class="outline-2">
+<h2 id="orga3b844f"><span class="section-number-2">8</span> 继承模式</h2>
 <div class="outline-text-2" id="text-8">
 <p>
 我们现在已经满足了除“它应该与Text模式大概相似”之外的所有要求了。实现的方法之一就是在初始化Quip模式的时候调用text-mode；然后再执行Quip模式自己的特定配置。我们可以使用copy-keymap而不是使用make-sparse-map来创建quip-mode-map以利用text-mode的特性。<br />
@@ -806,12 +806,27 @@ define-derived-mode的语法是<br />
 </p>
 
 <p>
-<a id="org7eaafca"></a>[34]. 在其他的一些情况下选择主模式还是子模式就没这么清晰了。<br />
-<a id="org981896e"></a>[35]. 并没有专门用来匹配段落开始的正则变量。作为替代的，段落的开始就是符合paragraph-start但是不符合paragraph-separate的行。<br />
-<a id="org5f707ce"></a>[36]. 以一个新行“开始”的行当然是一个空行。<br />
-<a id="orgaf77e60"></a>[37]. 可以使用一个称为overriding-local-map的变量稍微更改一下这个优先级，但是这只在非常少数的情况下才有用。<br />
-<a id="orgf89ac28"></a>[38]. 函数current-global-map会返回当前的全局键位表。（有可能通过use-global-keymap改变了全局表，虽然这很少出现。）因此，(global-set-key &#x2026;)等价于(define-key (current-global-map) &#x2026;)。<br />
-<a id="orge3555a1"></a>[39]. Narrowing不会嵌套。如果将buffer narrow到了一个区域，然后再把这个区域narrow到更小的区域，C-x n w仍然会恢复到整个buffer（也就是说，它不会恢复到前一次narrowing）。<br />
+<a id="orgfaa21ac"></a>[34]. 在其他的一些情况下选择主模式还是子模式就没这么清晰了。<br />
+</p>
+
+<p>
+<a id="orgada43a7"></a>[35]. 并没有专门用来匹配段落开始的正则变量。作为替代的，段落的开始就是符合paragraph-start但是不符合paragraph-separate的行。<br />
+</p>
+
+<p>
+<a id="orga59d99d"></a>[36]. 以一个新行“开始”的行当然是一个空行。<br />
+</p>
+
+<p>
+<a id="orga56b704"></a>[37]. 可以使用一个称为overriding-local-map的变量稍微更改一下这个优先级，但是这只在非常少数的情况下才有用。<br />
+</p>
+
+<p>
+<a id="orge04b3a0"></a>[38]. 函数current-global-map会返回当前的全局键位表。（有可能通过use-global-keymap改变了全局表，虽然这很少出现。）因此，(global-set-key &#x2026;)等价于(define-key (current-global-map) &#x2026;)。<br />
+</p>
+
+<p>
+<a id="orga942c2f"></a>[39]. Narrowing不会嵌套。如果将buffer narrow到了一个区域，然后再把这个区域narrow到更小的区域，C-x n w仍然会恢复到整个buffer（也就是说，它不会恢复到前一次narrowing）。<br />
 </p>
 </div>
 </div>

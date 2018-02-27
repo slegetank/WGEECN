@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-02-26 Mon 23:44 -->
+<!-- 2018-02-27 Tue 09:37 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>附录B Lisp快速参考</title>
@@ -257,41 +257,41 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org7768ca2">1. 在本章：</a></li>
-<li><a href="#org7106358">2. 基础</a></li>
-<li><a href="#org7d8dfdd">3. 数据类型</a>
+<li><a href="#orgfe1b0f9">1. 在本章：</a></li>
+<li><a href="#org83b4b88">2. 基础</a></li>
+<li><a href="#org57cde67">3. 数据类型</a>
 <ul>
-<li><a href="#org3e3baa3">3.1. 数字</a></li>
-<li><a href="#orgf0e0c29">3.2. 字符</a></li>
-<li><a href="#org4f4d608">3.3. 字符串</a></li>
-<li><a href="#orgc8721de">3.4. 符号</a></li>
-<li><a href="#org94c6501">3.5. 列表</a></li>
-<li><a href="#orgcfdaf7e">3.6. 向量</a></li>
-<li><a href="#org75d60d0">3.7. 序列（Sequences）和数组（Arrays）</a></li>
+<li><a href="#org8c28334">3.1. 数字</a></li>
+<li><a href="#orgfe9a1b7">3.2. 字符</a></li>
+<li><a href="#org45afb71">3.3. 字符串</a></li>
+<li><a href="#org3d5f5ae">3.4. 符号</a></li>
+<li><a href="#orgbe708a4">3.5. 列表</a></li>
+<li><a href="#org6e5eef6">3.6. 向量</a></li>
+<li><a href="#orgc5b89c0">3.7. 序列（Sequences）和数组（Arrays）</a></li>
 </ul>
 </li>
-<li><a href="#org4fcc104">4. 控制结构</a>
+<li><a href="#org2166331">4. 控制结构</a>
 <ul>
-<li><a href="#org0eee249">4.1. 变量</a></li>
-<li><a href="#org6abbfdd">4.2. 顺序</a></li>
-<li><a href="#org0eca761">4.3. 条件</a></li>
-<li><a href="#orgf59eab5">4.4. 循环</a></li>
-<li><a href="#org8224d9e">4.5. 函数调用</a></li>
-<li><a href="#org5da89c1">4.6. 字面数据</a></li>
+<li><a href="#orgd82fb77">4.1. 变量</a></li>
+<li><a href="#org342cbbe">4.2. 顺序</a></li>
+<li><a href="#org4b408be">4.3. 条件</a></li>
+<li><a href="#org56e4fb8">4.4. 循环</a></li>
+<li><a href="#org2c2f4a6">4.5. 函数调用</a></li>
+<li><a href="#org421f574">4.6. 字面数据</a></li>
 </ul>
 </li>
-<li><a href="#org95f2c7e">5. 代码对象</a>
+<li><a href="#orgecf966c">5. 代码对象</a>
 <ul>
-<li><a href="#org0bdaaf4">5.1. 函数</a></li>
-<li><a href="#orgdad8944">5.2. 宏函数</a></li>
+<li><a href="#org6025963">5.1. 函数</a></li>
+<li><a href="#org67565ad">5.2. 宏函数</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org7768ca2" class="outline-2">
-<h2 id="org7768ca2"><span class="section-number-2">1</span> 在本章：</h2>
+<div id="outline-container-orgfe1b0f9" class="outline-2">
+<h2 id="orgfe1b0f9"><span class="section-number-2">1</span> 在本章：</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <b>基础</b><br />
@@ -306,8 +306,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org7106358" class="outline-2">
-<h2 id="org7106358"><span class="section-number-2">2</span> 基础</h2>
+<div id="outline-container-org83b4b88" class="outline-2">
+<h2 id="org83b4b88"><span class="section-number-2">2</span> 基础</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Lisp表达式是一个可以被计算的数据单位。表达式可能由子表达式构成，就像列表或者向量。<br />
@@ -331,12 +331,12 @@ Emacs Lisp（不像其他方言）是大小写敏感的。<br />
 </div>
 </div>
 
-<div id="outline-container-org7d8dfdd" class="outline-2">
-<h2 id="org7d8dfdd"><span class="section-number-2">3</span> 数据类型</h2>
+<div id="outline-container-org57cde67" class="outline-2">
+<h2 id="org57cde67"><span class="section-number-2">3</span> 数据类型</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org3e3baa3" class="outline-3">
-<h3 id="org3e3baa3"><span class="section-number-3">3.1</span> 数字</h3>
+<div id="outline-container-org8c28334" class="outline-3">
+<h3 id="org8c28334"><span class="section-number-3">3.1</span> 数字</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 Emacs Lisp支持整数和浮点数。它们的写法与你想的没什么两样：一个10进制的有一个可选负号以及一个可选小数点的字符串。有一些可以操作数字的函数：<br />
@@ -391,8 +391,8 @@ Emacs Lisp支持整数和浮点数。它们的写法与你想的没什么两样�
 </div>
 </div>
 
-<div id="outline-container-orgf0e0c29" class="outline-3">
-<h3 id="orgf0e0c29"><span class="section-number-3">3.2</span> 字符</h3>
+<div id="outline-container-orgfe9a1b7" class="outline-3">
+<h3 id="orgfe9a1b7"><span class="section-number-3">3.2</span> 字符</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 在Emacs Lisp中问号用来指代单独的字符。例如，?a表示小写的a。有些特殊字符，特别是用来起始其他Lisp表达式种类的那些，需要使用问号-反斜杠来转义，例如?\"，?\(和?\)。有些特殊字符可以使用反斜杠和字符构成。例如，?\t表示tab，而?\n表示换行符。<br />
@@ -420,8 +420,8 @@ Emacs Lisp支持整数和浮点数。它们的写法与你想的没什么两样�
 </div>
 </div>
 
-<div id="outline-container-org4f4d608" class="outline-3">
-<h3 id="org4f4d608"><span class="section-number-3">3.3</span> 字符串</h3>
+<div id="outline-container-org45afb71" class="outline-3">
+<h3 id="org45afb71"><span class="section-number-3">3.3</span> 字符串</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 字符串是一个字符的序列，写法上用双括号包裹起来，"like this"。如果字符串中存在双引号或者反斜杠，它必须用反斜杠进行转义，"\"Like this,\" he said."。字符串是自运算的。<br />
@@ -497,8 +497,8 @@ Emacs，作为一个文本编辑器，有许多操作字符串的函数。下面
 </div>
 </div>
 
-<div id="outline-container-orgc8721de" class="outline-3">
-<h3 id="orgc8721de"><span class="section-number-3">3.4</span> 符号</h3>
+<div id="outline-container-org3d5f5ae" class="outline-3">
+<h3 id="org3d5f5ae"><span class="section-number-3">3.4</span> 符号</h3>
 <div class="outline-text-3" id="text-3-4">
 <p>
 符号是能够有一些与之关联的数据的名称。符号的名字是一个由字符组成的序列，它看起来不能像是数字，字符串，列表，向量，或者其他Lisp数据类型。<br />
@@ -590,8 +590,8 @@ Emacs，作为一个文本编辑器，有许多操作字符串的函数。下面
 </div>
 </div>
 
-<div id="outline-container-org94c6501" class="outline-3">
-<h3 id="org94c6501"><span class="section-number-3">3.5</span> 列表</h3>
+<div id="outline-container-orgbe708a4" class="outline-3">
+<h3 id="orgbe708a4"><span class="section-number-3">3.5</span> 列表</h3>
 <div class="outline-text-3" id="text-3-5">
 <p>
 列表是Lisp的基础。一个列表是0个或多个其他Lisp表达式（也包括其他列表）的序列。列表的写法是用空格分隔它的子表达式；最外面用一个括号括起来。<br />
@@ -691,8 +691,8 @@ Lisp中的函数调用也用列表来表示。当执行的时候，列表中的�
 </div>
 </div>
 
-<div id="outline-container-orgcfdaf7e" class="outline-3">
-<h3 id="orgcfdaf7e"><span class="section-number-3">3.6</span> 向量</h3>
+<div id="outline-container-org6e5eef6" class="outline-3">
+<h3 id="org6e5eef6"><span class="section-number-3">3.6</span> 向量</h3>
 <div class="outline-text-3" id="text-3-6">
 <p>
 与列表一样，向量也是由0到多个子表达式构成的，写法上把小括号换成中括号。但是不像列表，向量的元素可以随机的访问（不必从头遍历访问内部的数据）。向量是自运算的。<br />
@@ -744,8 +744,8 @@ Lisp中的函数调用也用列表来表示。当执行的时候，列表中的�
 </div>
 </div>
 
-<div id="outline-container-org75d60d0" class="outline-3">
-<h3 id="org75d60d0"><span class="section-number-3">3.7</span> 序列（Sequences）和数组（Arrays）</h3>
+<div id="outline-container-orgc5b89c0" class="outline-3">
+<h3 id="orgc5b89c0"><span class="section-number-3">3.7</span> 序列（Sequences）和数组（Arrays）</h3>
 <div class="outline-text-3" id="text-3-7">
 <p>
 有些Emacs Lisp数据类型是有联系的。字符串和向量都属于数组。数组是一个数据元素的线性集合，它允许对于其元素的随机访问。字符串是字符组成的数组，而向量是由任意表达式组成的数组。函数aref和aset用来操作数组，这对于字符串和向量都有效。<br />
@@ -782,12 +782,12 @@ Lisp中的函数调用也用列表来表示。当执行的时候，列表中的�
 </div>
 </div>
 
-<div id="outline-container-org4fcc104" class="outline-2">
-<h2 id="org4fcc104"><span class="section-number-2">4</span> 控制结构</h2>
+<div id="outline-container-org2166331" class="outline-2">
+<h2 id="org2166331"><span class="section-number-2">4</span> 控制结构</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org0eee249" class="outline-3">
-<h3 id="org0eee249"><span class="section-number-3">4.1</span> 变量</h3>
+<div id="outline-container-orgd82fb77" class="outline-3">
+<h3 id="orgd82fb77"><span class="section-number-3">4.1</span> 变量</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 要引用一个变量只需要使用它的名字（一个符号）。要给变量赋值，使用setq。<br />
@@ -815,8 +815,8 @@ x -&gt; 17 <span style="color: #75715E;">; </span><span style="color: #75715E;">
 </div>
 </div>
 
-<div id="outline-container-org6abbfdd" class="outline-3">
-<h3 id="org6abbfdd"><span class="section-number-3">4.2</span> 顺序</h3>
+<div id="outline-container-org342cbbe" class="outline-3">
+<h3 id="org342cbbe"><span class="section-number-3">4.2</span> 顺序</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 要在只允许一个表达式的地方执行多个表达式，使用progn。<br />
@@ -836,8 +836,8 @@ x -&gt; 17 <span style="color: #75715E;">; </span><span style="color: #75715E;">
 </div>
 </div>
 
-<div id="outline-container-org0eca761" class="outline-3">
-<h3 id="org0eca761"><span class="section-number-3">4.3</span> 条件</h3>
+<div id="outline-container-org4b408be" class="outline-3">
+<h3 id="org4b408be"><span class="section-number-3">4.3</span> 条件</h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
 Emacs Lisp中有两种条件表达式：if和cond。<br />
@@ -950,8 +950,8 @@ Emacs Lisp中有两种条件表达式：if和cond。<br />
 </div>
 </div>
 
-<div id="outline-container-orgf59eab5" class="outline-3">
-<h3 id="orgf59eab5"><span class="section-number-3">4.4</span> 循环</h3>
+<div id="outline-container-org56e4fb8" class="outline-3">
+<h3 id="org56e4fb8"><span class="section-number-3">4.4</span> 循环</h3>
 <div class="outline-text-3" id="text-4-4">
 <p>
 Emacs Lisp有一个循环函数，while。<br />
@@ -967,8 +967,8 @@ Emacs Lisp有一个循环函数，while。<br />
 </div>
 </div>
 
-<div id="outline-container-org8224d9e" class="outline-3">
-<h3 id="org8224d9e"><span class="section-number-3">4.5</span> 函数调用</h3>
+<div id="outline-container-org2c2f4a6" class="outline-3">
+<h3 id="org2c2f4a6"><span class="section-number-3">4.5</span> 函数调用</h3>
 <div class="outline-text-3" id="text-4-5">
 <p>
 要调用一个函数就是编写一个列表，它的第一个元素是函数名，剩下的元素是这个函数的参数。<br />
@@ -983,8 +983,8 @@ Emacs Lisp有一个循环函数，while。<br />
 </div>
 </div>
 
-<div id="outline-container-org5da89c1" class="outline-3">
-<h3 id="org5da89c1"><span class="section-number-3">4.6</span> 字面数据</h3>
+<div id="outline-container-org421f574" class="outline-3">
+<h3 id="org421f574"><span class="section-number-3">4.6</span> 字面数据</h3>
 <div class="outline-text-3" id="text-4-6">
 <p>
 要使一个字面数据不受控制结构管辖&#x2013;例如，避免对它求值&#x2013;使用'引用（quote）它。<br />
@@ -1017,12 +1017,12 @@ Emacs Lisp有一个循环函数，while。<br />
 </div>
 </div>
 
-<div id="outline-container-org95f2c7e" class="outline-2">
-<h2 id="org95f2c7e"><span class="section-number-2">5</span> 代码对象</h2>
+<div id="outline-container-orgecf966c" class="outline-2">
+<h2 id="orgecf966c"><span class="section-number-2">5</span> 代码对象</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-org0bdaaf4" class="outline-3">
-<h3 id="org0bdaaf4"><span class="section-number-3">5.1</span> 函数</h3>
+<div id="outline-container-org6025963" class="outline-3">
+<h3 id="org6025963"><span class="section-number-3">5.1</span> 函数</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 函数是下面这种形式的一个列表：<br />
@@ -1062,8 +1062,8 @@ Emacs Lisp有一个循环函数，while。<br />
 </div>
 </div>
 
-<div id="outline-container-orgdad8944" class="outline-3">
-<h3 id="orgdad8944"><span class="section-number-3">5.2</span> 宏函数</h3>
+<div id="outline-container-org67565ad" class="outline-3">
+<h3 id="org67565ad"><span class="section-number-3">5.2</span> 宏函数</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 宏函数是一个像lambda表达式一样的列表，但是并不使用lambda创建，而是使用macro。当宏执行时，它的参数不会被计算。相反的，它们被用作字面形式来计算出一个新的Lisp表达式。然后这这个表达式会被求值。<br />

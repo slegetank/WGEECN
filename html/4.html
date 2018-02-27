@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-02-26 Mon 23:44 -->
+<!-- 2018-02-27 Tue 09:36 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>搜索和修改Buffers</title>
@@ -257,37 +257,37 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org3ce3140">1. 在本章：</a></li>
-<li><a href="#orgdb0d950">2. 插入当前时间</a>
+<li><a href="#org4bdc02c">1. 在本章：</a></li>
+<li><a href="#org50f666a">2. 插入当前时间</a>
 <ul>
-<li><a href="#org6458f0c">2.1. 用户选项和文档字符串</a></li>
-<li><a href="#orgbeb7437">2.2. 更多的星号魔法</a></li>
+<li><a href="#org7455f79">2.1. 用户选项和文档字符串</a></li>
+<li><a href="#orgf93adf4">2.2. 更多的星号魔法</a></li>
 </ul>
 </li>
-<li><a href="#org02d1ce1">3. 记录戳(Writestamps)</a>
+<li><a href="#org7843edb">3. 记录戳(Writestamps)</a>
 <ul>
-<li><a href="#orgab50291">3.1. 更新记录戳</a></li>
-<li><a href="#org8595be5">3.2. 归纳更一般的记录戳</a></li>
-<li><a href="#org21f36f0">3.3. 正则表达式</a></li>
-<li><a href="#orgf9d5025">3.4. 正则引用</a></li>
-<li><a href="#org6834f59">3.5. 有限搜索</a></li>
-<li><a href="#org074915c">3.6. 更强大的正则能力</a></li>
+<li><a href="#org513207f">3.1. 更新记录戳</a></li>
+<li><a href="#org92349f4">3.2. 归纳更一般的记录戳</a></li>
+<li><a href="#org68322a6">3.3. 正则表达式</a></li>
+<li><a href="#org114d28b">3.4. 正则引用</a></li>
+<li><a href="#org0083f5b">3.5. 有限搜索</a></li>
+<li><a href="#org1e6effb">3.6. 更强大的正则能力</a></li>
 </ul>
 </li>
-<li><a href="#org07fb0fd">4. 修改戳</a>
+<li><a href="#orgbe2d1fb">4. 修改戳</a>
 <ul>
-<li><a href="#org1409d97">4.1. 简单的方式#1</a></li>
-<li><a href="#orgf6bd485">4.2. 简单的方式#2</a></li>
-<li><a href="#org90220dc">4.3. 聪明的方式</a></li>
-<li><a href="#orgf6c2342">4.4. 一个小Bug</a></li>
+<li><a href="#org7518445">4.1. 简单的方式#1</a></li>
+<li><a href="#orgbfd5d37">4.2. 简单的方式#2</a></li>
+<li><a href="#org9123a4e">4.3. 聪明的方式</a></li>
+<li><a href="#org1c3cb6a">4.4. 一个小Bug</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org3ce3140" class="outline-2">
-<h2 id="org3ce3140"><span class="section-number-2">1</span> 在本章：</h2>
+<div id="outline-container-org4bdc02c" class="outline-2">
+<h2 id="org4bdc02c"><span class="section-number-2">1</span> 在本章：</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <b>插入当前时间</b><br />
@@ -301,8 +301,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgdb0d950" class="outline-2">
-<h2 id="orgdb0d950"><span class="section-number-2">2</span> 插入当前时间</h2>
+<div id="outline-container-org50f666a" class="outline-2">
+<h2 id="org50f666a"><span class="section-number-2">2</span> 插入当前时间</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 当你编辑一个文件时插入当前的日期或者时间有时是很有用的。例如，在我写这一章的时候，是1996年8月18日星期五的晚上10点半。几天前，我在编辑一个Emacs Lisp代码文件时，我将注释<br />
@@ -329,7 +329,7 @@ for the JavaScript code in this tag.
 </p>
 
 <p>
-如果你知道函数current-time-string返回今天的日期和时间字符串，那么插入当前时间的命令是很简单的：[<a href="#org350d022">18</a>]<br />
+如果你知道函数current-time-string返回今天的日期和时间字符串，那么插入当前时间的命令是很简单的：[<a href="#org5507d95">18</a>]<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">insert-current-time</span> <span style="color: #66D9EF;">()</span>
@@ -340,7 +340,7 @@ for the JavaScript code in this tag.
 </div>
 
 <p>
-本章后面的章节<a href="#orgbeb7437">更多的星号魔法</a>将会解释(interactive "*")和insert的含义。<br />
+本章后面的章节<a href="#orgf93adf4">更多的星号魔法</a>将会解释(interactive "*")和insert的含义。<br />
 </p>
 
 <p>
@@ -364,8 +364,8 @@ for the JavaScript code in this tag.
 </p>
 </div>
 
-<div id="outline-container-org6458f0c" class="outline-3">
-<h3 id="org6458f0c"><span class="section-number-3">2.1</span> 用户选项和文档字符串</h3>
+<div id="outline-container-org7455f79" class="outline-3">
+<h3 id="org7455f79"><span class="section-number-3">2.1</span> 用户选项和文档字符串</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 首先我们定义变量。<br />
@@ -399,7 +399,7 @@ for the JavaScript code in this tag.
 
 <p>
   （需要使用Lisp语法来设置值）。<br />
-  而用户选项可以通过M-x edit-options RET[<a href="#orgcb972f5">19</a>]激活option-editing模式来进行编辑。<br />
+  而用户选项可以通过M-x edit-options RET[<a href="#org92ce2f5">19</a>]激活option-editing模式来进行编辑。<br />
 </p>
 <ul class="org-ul">
 <li><p>
@@ -437,8 +437,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgbeb7437" class="outline-3">
-<h3 id="orgbeb7437"><span class="section-number-3">2.2</span> 更多的星号魔法</h3>
+<div id="outline-container-orgf93adf4" class="outline-3">
+<h3 id="orgf93adf4"><span class="section-number-3">2.2</span> 更多的星号魔法</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 前面我们定义了用来控制insert-time和insert-date的变量，下面就是这两个简单函数的定义。<br />
@@ -481,16 +481,16 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org02d1ce1" class="outline-2">
-<h2 id="org02d1ce1"><span class="section-number-2">3</span> 记录戳(Writestamps)</h2>
+<div id="outline-container-org7843edb" class="outline-2">
+<h2 id="org7843edb"><span class="section-number-2">3</span> 记录戳(Writestamps)</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 以一种可配置的格式自动插入当前的时间和日期是非常简洁并且可能超过了大多数编辑器的功能，但是这并不是太有用。很显然更有用的能力是将一个记录戳（文件最后修改的日期、时间）保存在文件里。每次文件保存时记录戳会自动更新。<br />
 </p>
 </div>
 
-<div id="outline-container-orgab50291" class="outline-3">
-<h3 id="orgab50291"><span class="section-number-3">3.1</span> 更新记录戳</h3>
+<div id="outline-container-org513207f" class="outline-3">
+<h3 id="org513207f"><span class="section-number-3">3.1</span> 更新记录戳</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 首先我们要做的是每次文件保存时自动执行我们的writestamp-updating代码。就像我们在<a href="./2.html">第二章</a>的章节<a href="2.html#MissingReference">钩子</a>中看到的，把代码跟某些常用动作（例如保存文件）关联的最好方式就是将函数添加到一个钩子变量里。使用M-x apropos RET hook RET，我们可以找到四个可能的钩子变量：after-save-hook, local-write-file-hooks, write-contents-hooks以及write-file-hooks。<br />
@@ -533,7 +533,7 @@ The end. WRITESTAMP<span style="color: #AE81FF;">(</span><span style="color: #66
 </p>
 
 <p>
-现在，假设文件里已经有了一些记录戳，[<a href="#org0e3cce4">20</a>]我们可以在保存文件时这么更新它们：<br />
+现在，假设文件里已经有了一些记录戳，[<a href="#orgad0e899">20</a>]我们可以在保存文件时这么更新它们：<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>add-hook 'local-write-file-hooks 'update-writestamps<span style="color: #AE81FF;">)</span>
@@ -687,8 +687,8 @@ update-writestamps在save-excursion调用之后的最后一个表达式，是一
 </div>
 </div>
 
-<div id="outline-container-org8595be5" class="outline-3">
-<h3 id="org8595be5"><span class="section-number-3">3.2</span> 归纳更一般的记录戳</h3>
+<div id="outline-container-org92349f4" class="outline-3">
+<h3 id="org92349f4"><span class="section-number-3">3.2</span> 归纳更一般的记录戳</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 我们实现的记录戳工作了，但是仍然有一些问题。首先，我们的记录戳字符串“WRITESTAMP((”和“))”对于用户来说非常的缺乏美感并且不灵活。第二，用户可能并不希望使用insert-date来插入记录戳。<br />
@@ -776,8 +776,8 @@ update-writestamps在save-excursion调用之后的最后一个表达式，是一
 </div>
 </div>
 
-<div id="outline-container-org21f36f0" class="outline-3">
-<h3 id="org21f36f0"><span class="section-number-3">3.3</span> 正则表达式</h3>
+<div id="outline-container-org68322a6" class="outline-3">
+<h3 id="org68322a6"><span class="section-number-3">3.3</span> 正则表达式</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 假设用户选择“Written:”和“.”作为writestamp-prefix和writestamp-suffix的值，那么记录戳看起来将会是这样的：“Written: 19 Aug 1996.”。这是一个很有可能的用户选择，但是字符串“Written:”并不像“WRITESTAMP((”这么特殊。换句话说，文件中很有可能包含其他“Written:”字符串而它并不是一个记录戳。当updatewritestamps搜索writestamp-prefix时，它将会找到其中一个，然后它会搜索后缀，删掉它们之间所有的东西。更糟糕的是，这种异常删除的发生几乎是不可察的，因为当文件保存之后它就可能发生。<br />
@@ -821,7 +821,7 @@ f. 其他正则中的元字符，例如*和.在方括号中作为普通字符存
 a. 星号*，匹配0或多个x<br />
 b. 加号+，匹配1或多个x<br />
 c. 问号？，匹配0或1个x<br />
-所以a*表示a, aa, aaa甚至空字符串（0个a）；[<a href="#org2bc6974">21</a>]a+匹配a, aa, aaa,但是不能为空；a?匹配空字符串和a。可以注意到x+等同于xx*。<br /></li>
+所以a*表示a, aa, aaa甚至空字符串（0个a）；[<a href="#org91968e4">21</a>]a+匹配a, aa, aaa,但是不能为空；a?匹配空字符串和a。可以注意到x+等同于xx*。<br /></li>
 <li>正则表达式<sup>x匹配任何行首x所匹配的值</sup>。<br />
 x$匹配任何行尾x匹配的值。<br />
 这表示<sup>x</sup>$匹配一行只包含x的值。而你也可以把x去掉；^$匹配不包含任何字符的行。<br /></li>
@@ -850,8 +850,8 @@ g. \&gt;值匹配单词结束处的空字符串。<br /></li>
 </div>
 </div>
 
-<div id="outline-container-orgf9d5025" class="outline-3">
-<h3 id="orgf9d5025"><span class="section-number-3">3.4</span> 正则引用</h3>
+<div id="outline-container-org114d28b" class="outline-3">
+<h3 id="org114d28b"><span class="section-number-3">3.4</span> 正则引用</h3>
 <div class="outline-text-3" id="text-3-4">
 <p>
 现在我们知道了如何使用正则表达式，看起来搜索行首的writestamp-prefix只需要在它前面加一个（^）而行尾的writestamp-suffix只需要在后面加一个$，就像这样：<br />
@@ -916,8 +916,8 @@ g. \&gt;值匹配单词结束处的空字符串。<br /></li>
 </div>
 </div>
 
-<div id="outline-container-org6834f59" class="outline-3">
-<h3 id="org6834f59"><span class="section-number-3">3.5</span> 有限搜索</h3>
+<div id="outline-container-org0083f5b" class="outline-3">
+<h3 id="org0083f5b"><span class="section-number-3">3.5</span> 有限搜索</h3>
 <div class="outline-text-3" id="text-3-5">
 <p>
 让我们编写while循环的body来完成新版本的update-writestamp。在re-search-forward完成后，我们需要知道当前行是否以writestamp-suffix结束。但是我们不能简单的这么写<br />
@@ -1004,8 +1004,8 @@ g. \&gt;值匹配单词结束处的空字符串。<br /></li>
 </div>
 </div>
 
-<div id="outline-container-org074915c" class="outline-3">
-<h3 id="org074915c"><span class="section-number-3">3.6</span> 更强大的正则能力</h3>
+<div id="outline-container-org1e6effb" class="outline-3">
+<h3 id="org1e6effb"><span class="section-number-3">3.6</span> 更强大的正则能力</h3>
 <div class="outline-text-3" id="text-3-6">
 <p>
 我们已经把我们最初的update-writestamps转换成了正则的形式，但是却并没有真正的展现出正则强大的能力。实际上，上面那长长的用于找到记录戳，检测同一行内的记录戳后缀，然后将其替换的代码可以被简化为下面的两个表达式：<br />
@@ -1098,8 +1098,8 @@ g. \&gt;值匹配单词结束处的空字符串。<br /></li>
 </div>
 </div>
 </div>
-<div id="outline-container-org07fb0fd" class="outline-2">
-<h2 id="org07fb0fd"><span class="section-number-2">4</span> 修改戳</h2>
+<div id="outline-container-orgbe2d1fb" class="outline-2">
+<h2 id="orgbe2d1fb"><span class="section-number-2">4</span> 修改戳</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 好的，时间戳（timestamps）挺有用，而记录戳（writestamps）也不错，但是修改戳（modifystamps）可能更有用。一个修改戳是一个记录着文件最后修改时间的记录戳，这可能和文件最后存储到磁盘上的时间不一样。例如，如果你访问了一个文件并且在没做任何修改的情况下将其保存在磁盘上，你就不应该更新修改戳。<br />
@@ -1110,8 +1110,8 @@ g. \&gt;值匹配单词结束处的空字符串。<br /></li>
 </p>
 </div>
 
-<div id="outline-container-org1409d97" class="outline-3">
-<h3 id="org1409d97"><span class="section-number-3">4.1</span> 简单的方式#1</h3>
+<div id="outline-container-org7518445" class="outline-3">
+<h3 id="org7518445"><span class="section-number-3">4.1</span> 简单的方式#1</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 Emacs有一个称为first-change-hook的钩子变量。每当buffer自保存之后第一次被修改，变量中的函数将会被调用。使用这个钩子来实现修改戳只是把我们之前的update-writestamps函数从local-write-file-hooks变为first-change-hook。当然，我们还要把它的名字改为update-modifystamps，并且引入一些新的变量&#x2013;modifystamp-format，modifystamp-prefix，以及modifystamp-suffix&#x2013;而不影响原来记录戳的那些变量。update-modifystamps需要使用这些新的变量。<br />
@@ -1169,8 +1169,8 @@ add-hook中的nil参数只是一个占位符。我们只关注最后一个参数
 </div>
 </div>
 
-<div id="outline-container-orgf6bd485" class="outline-3">
-<h3 id="orgf6bd485"><span class="section-number-3">4.2</span> 简单的方式#2</h3>
+<div id="outline-container-orgbfd5d37" class="outline-3">
+<h3 id="orgbfd5d37"><span class="section-number-3">4.2</span> 简单的方式#2</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 这一次我们再次使用local-write-file-hooks，但是我们只在buffer-modified-p返回true的时候才调用update-modifystamps，也就是说只在当前buffer被改动的情况下才调用它：<br />
@@ -1190,8 +1190,8 @@ add-hook中的nil参数只是一个占位符。我们只关注最后一个参数
 </div>
 </div>
 
-<div id="outline-container-org90220dc" class="outline-3">
-<h3 id="org90220dc"><span class="section-number-3">4.3</span> 聪明的方式</h3>
+<div id="outline-container-org9123a4e" class="outline-3">
+<h3 id="org9123a4e"><span class="section-number-3">4.3</span> 聪明的方式</h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
 理论上，我们可以在每次更改buffer之后调用update-modifystamps，但是实际中在每次按键之后都搜索整个文件并且对其进行修改是代价昂贵的一件事。但是每次buffer更改之后将时间记录下来就不那么难以接受。然后，当buffer保存到文件时，记录的时间就可以用来计算修改戳中的时间了。<br />
@@ -1296,8 +1296,8 @@ maybe-update-modifystamps中仍然存在很大的问题。在阅读下一部分�
 </div>
 </div>
 
-<div id="outline-container-orgf6c2342" class="outline-3">
-<h3 id="orgf6c2342"><span class="section-number-3">4.4</span> 一个小Bug</h3>
+<div id="outline-container-org1c3cb6a" class="outline-3">
+<h3 id="org1c3cb6a"><span class="section-number-3">4.4</span> 一个小Bug</h3>
 <div class="outline-text-3" id="text-4-4">
 <p>
 缺陷是每次update-modifystamps重写修改戳时，会引起buffer的改变，这又回造成last-change-time的改变！这样只有第一次修改戳会被正确的修改。后续的修改戳会是一个与文件储存的时间相近的时间而不是最后一次修改的时间。<br />
@@ -1368,10 +1368,19 @@ let创建了一个临时变量after-change-functions，用来在调用let体中�
 </p>
 
 <p>
-<a id="org350d022"></a>[18]. 如何找到它呢？当然是通过M-x apropos RET time RET。<br />
-<a id="orgcb972f5"></a>[19]. 在Emacs 20.1中，在本身编写时还没发布，将会引入一个全新的用于编辑用户选项的称为“customize”的系统。将用户选项加入到“customize”中需要使用特殊的函数defgroup和defcustom。<br />
-<a id="org0e3cce4"></a>[20]. 插入记录戳与插入日期或者时间很类似。编写这么一个函数就留给读者作为练习了。<br />
-<a id="org2bc6974"></a>[21]. *在正则表达式中被计算机科学家称为“Kleene Closure”。<br />
+<a id="org5507d95"></a>[18]. 如何找到它呢？当然是通过M-x apropos RET time RET。<br />
+</p>
+
+<p>
+<a id="org92ce2f5"></a>[19]. 在Emacs 20.1中，在本身编写时还没发布，将会引入一个全新的用于编辑用户选项的称为“customize”的系统。将用户选项加入到“customize”中需要使用特殊的函数defgroup和defcustom。<br />
+</p>
+
+<p>
+<a id="orgad0e899"></a>[20]. 插入记录戳与插入日期或者时间很类似。编写这么一个函数就留给读者作为练习了。<br />
+</p>
+
+<p>
+<a id="org91968e4"></a>[21]. *在正则表达式中被计算机科学家称为“Kleene Closure”。<br />
 </p>
 </div>
 </div>

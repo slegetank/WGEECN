@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-02-26 Mon 23:43 -->
+<!-- 2018-02-27 Tue 09:36 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>简单的新命令</title>
@@ -235,34 +235,34 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org5dfa2ee">1. 在本章：</a></li>
-<li><a href="#org28d3bab">2. 游历窗口</a>
+<li><a href="#org480c6ce">1. 在本章：</a></li>
+<li><a href="#org6aabed6">2. 游历窗口</a>
 <ul>
-<li><a href="#orgb3097b9">2.1. 定义other-window-backward</a></li>
-<li><a href="#orgf1c3666">2.2. 为other-window-backward添加参数</a></li>
-<li><a href="#org4dc2454">2.3. 可选参数</a></li>
-<li><a href="#org9383103">2.4. 简化代码</a></li>
-<li><a href="#org006c1f6">2.5. 逻辑表达式</a></li>
-<li><a href="#orgcdfd404">2.6. 最好的other-window-backward</a></li>
+<li><a href="#org77f2c50">2.1. 定义other-window-backward</a></li>
+<li><a href="#orge955045">2.2. 为other-window-backward添加参数</a></li>
+<li><a href="#org9da79e7">2.3. 可选参数</a></li>
+<li><a href="#org8da8112">2.4. 简化代码</a></li>
+<li><a href="#org18bbe9a">2.5. 逻辑表达式</a></li>
+<li><a href="#orgebcd05d">2.6. 最好的other-window-backward</a></li>
 </ul>
 </li>
-<li><a href="#orgac6d35e">3. 逐行滚动</a></li>
-<li><a href="#org143147a">4. 其他光标和文本移动命令</a></li>
-<li><a href="#org4a8d34f">5. 处理符号链接</a>
+<li><a href="#org2ef2efb">3. 逐行滚动</a></li>
+<li><a href="#orga7ff197">4. 其他光标和文本移动命令</a></li>
+<li><a href="#org18fcccf">5. 处理符号链接</a>
 <ul>
-<li><a href="#org818f9a6">5.1. 钩子</a></li>
-<li><a href="#orgfb0d843">5.2. 匿名函数</a></li>
-<li><a href="#orgcd1586e">5.3. 处理符号链接</a></li>
+<li><a href="#org6b80612">5.1. 钩子</a></li>
+<li><a href="#orgac3ec35">5.2. 匿名函数</a></li>
+<li><a href="#orgba37884">5.3. 处理符号链接</a></li>
 </ul>
 </li>
-<li><a href="#org8012ca5">6. 修饰Buffer切换</a></li>
-<li><a href="#org1159b46">7. 补充：原始的前置参数</a></li>
+<li><a href="#org3979040">6. 修饰Buffer切换</a></li>
+<li><a href="#orga3d13a1">7. 补充：原始的前置参数</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org5dfa2ee" class="outline-2">
-<h2 id="org5dfa2ee"><span class="section-number-2">1</span> 在本章：</h2>
+<div id="outline-container-org480c6ce" class="outline-2">
+<h2 id="org480c6ce"><span class="section-number-2">1</span> 在本章：</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <b>游历窗口</b><br />
@@ -279,8 +279,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org28d3bab" class="outline-2">
-<h2 id="org28d3bab"><span class="section-number-2">2</span> 游历窗口</h2>
+<div id="outline-container-org6aabed6" class="outline-2">
+<h2 id="org6aabed6"><span class="section-number-2">2</span> 游历窗口</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 当我最初使用Emacs时，我对于C-x o很满意，也就是other-window。它将光标从一个窗口移动到另一个。如果我想把光标移动回前一个，我必须使用-1作为参数执行other-window，这需要输入C-u -1 C-x o，这太繁琐了。而同样繁琐的另一种方案是不停C-x o直到我逛遍所有窗口最终回到前一个窗口。<br />
@@ -291,7 +291,7 @@ for the JavaScript code in this tag.
 </p>
 
 <p>
-我使用帮助命令describe-key[<a href="#orge42522d">8</a>]来查看C-x C-n和C-x C-p是否已经绑定到其他按键了。我发现C-x C-p已经绑定到了set-goal-column，而C-x C-p绑定到了mark-page。将他们绑定到“下一个窗口”和“上一个窗口”将会覆盖他们默认的绑定。而因为这并不是我经常使用的命令，所以我并不介意覆盖他们。如果我需要的话可以使用M-x来触发他们。<br />
+我使用帮助命令describe-key[<a href="#org8a85c6c">8</a>]来查看C-x C-n和C-x C-p是否已经绑定到其他按键了。我发现C-x C-p已经绑定到了set-goal-column，而C-x C-p绑定到了mark-page。将他们绑定到“下一个窗口”和“上一个窗口”将会覆盖他们默认的绑定。而因为这并不是我经常使用的命令，所以我并不介意覆盖他们。如果我需要的话可以使用M-x来触发他们。<br />
 </p>
 
 <p>
@@ -307,8 +307,8 @@ for the JavaScript code in this tag.
 </p>
 </div>
 
-<div id="outline-container-orgb3097b9" class="outline-3">
-<h3 id="orgb3097b9"><span class="section-number-3">2.1</span> 定义other-window-backward</h3>
+<div id="outline-container-org77f2c50" class="outline-3">
+<h3 id="org77f2c50"><span class="section-number-3">2.1</span> 定义other-window-backward</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 既然知道了给other-window传递一个参数-1可以使光标移动到上一个窗口，那么我们可以定义一个新的命令other-window-backward，如下所示：<br />
@@ -327,7 +327,7 @@ for the JavaScript code in this tag.
 <ol class="org-ol">
 <li>Lisp函数的定义以defun开始。<br /></li>
 <li>下面跟着要定义的函数名称；这里使用other-window-backward。<br /></li>
-<li>下面跟着函数的参数列表[<a href="#orgf83530d">9</a>]。这个函数没有参数，所以我们使用了一个空列表。<br /></li>
+<li>下面跟着函数的参数列表[<a href="#orgb519d87">9</a>]。这个函数没有参数，所以我们使用了一个空列表。<br /></li>
 <li>字符串”Select the previous window.”是这个新函数的文档字符串，或者叫做docstring。任何Lisp函数定义都可以有一个文档字符串。Emacs将会在使用命令describe-function(M-? f)或者apropos展示在线帮助时显示这个字符串。<br /></li>
 <li>下一行(interactive)很特殊。这表示这个函数是一个交互式命令。在Emacs里，命令表示一个可以交互执行的Lisp函数，这表示它可以通过按键绑定或者通过M-x command-name来进行触发。并不是所有Lisp函数都是命令，但所有命令都是Lisp函数。<br />
 任何Lisp函数，包括交互命令，可以被其他Lisp代码使用(function arg &#x2026;)语法来进行调用。<br />
@@ -337,7 +337,7 @@ for the JavaScript code in this tag.
 </ol>
 
 <p>
-执行defun表达式用来定义函数。现在我们可以在Lisp程序中通过(other-window-backward)来调用它；或者通过输入M-x other-window-backward RET来调用它；也可以通过M-? f other-window-backward RET[<a href="#orgd631f89">10</a>]来查看帮助。现在我们唯一需要做的就是绑定：<br />
+执行defun表达式用来定义函数。现在我们可以在Lisp程序中通过(other-window-backward)来调用它；或者通过输入M-x other-window-backward RET来调用它；也可以通过M-? f other-window-backward RET[<a href="#org37504d1">10</a>]来查看帮助。现在我们唯一需要做的就是绑定：<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>global-set-key <span style="color: #E6DB74;">"\C-x \C-p"</span> 'other-window-backward<span style="color: #AE81FF;">)</span>
@@ -346,8 +346,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgf1c3666" class="outline-3">
-<h3 id="orgf1c3666"><span class="section-number-3">2.2</span> 为other-window-backward添加参数</h3>
+<div id="outline-container-orge955045" class="outline-3">
+<h3 id="orge955045"><span class="section-number-3">2.2</span> 为other-window-backward添加参数</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 这个按键绑定已经能满足我们的需求了，但是我们还需要进行一点点改进。当使用C-x o（或者我们现在可以使用C-x C-n）来调用other-window时，你可以使用一个数字n作为参数来改变它的行为。如果使用了n，other-window可以跳过很多窗口。例如，C-u 2 C-x C-n表示“移动到当前窗口后面的第二个窗口”。就像我们已经看到的，n可以是一个负数来向回跳n个窗口。因此给other-window-backward添加一个参数来跳过窗口是很自然的想法。而现在，other-window-backward只能每次向后跳一次。<br />
@@ -373,7 +373,7 @@ for the JavaScript code in this tag.
 </p>
 
 <p>
-interactive的参数描述了这个函数如何获取参数。当命令不需要参数时，那么interactive也没有参数，就像我们一开始other-window-backward中所示的那样。当命令需要参数时，interactive也有了一个参数：一个字母构成的字符串，每个字母描述一个参数。例子中的字母p表示“如果有前置参数，将它解释为一个数字，如果没有前置参数，就将参数默认设为1。”[<a href="#org2844e8f">11</a>]在命令触发时参数n将接收这个值。所以如果用户输入C-u 7 C-x C-p，n就是7 。如果输入C-x C-p，则n是1 。当然你也可以在Lisp代码中调用other-window-backward，例如(other-window-backward 4)。<br />
+interactive的参数描述了这个函数如何获取参数。当命令不需要参数时，那么interactive也没有参数，就像我们一开始other-window-backward中所示的那样。当命令需要参数时，interactive也有了一个参数：一个字母构成的字符串，每个字母描述一个参数。例子中的字母p表示“如果有前置参数，将它解释为一个数字，如果没有前置参数，就将参数默认设为1。”[<a href="#orgc96b5c4">11</a>]在命令触发时参数n将接收这个值。所以如果用户输入C-u 7 C-x C-p，n就是7 。如果输入C-x C-p，则n是1 。当然你也可以在Lisp代码中调用other-window-backward，例如(other-window-backward 4)。<br />
 </p>
 
 <p>
@@ -390,8 +390,8 @@ interactive的参数描述了这个函数如何获取参数。当命令不需要
 </div>
 </div>
 
-<div id="outline-container-org4dc2454" class="outline-3">
-<h3 id="org4dc2454"><span class="section-number-3">2.3</span> 可选参数</h3>
+<div id="outline-container-org9da79e7" class="outline-3">
+<h3 id="org9da79e7"><span class="section-number-3">2.3</span> 可选参数</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 我们还可以对other-window-backward做出另一个改进，即当调用函数的时候参数n是可选的，也就是当交互触发的时候前置参数也是可选的。它应该能够在不提供参数（other-window-backward）时触发默认行为（即(other-window-backward 1)）。就像这样实现：<br />
@@ -466,7 +466,7 @@ interactive的参数描述了这个函数如何获取参数。当命令不需要
 </div>
 
 <p>
-虽然这两种写法都可以。同样的，不要试图将任何新的值赋给nil，[<a href="#orgedf38e6">12</a>]虽然它看起来是一个合法的变量名称。<br />
+虽然这两种写法都可以。同样的，不要试图将任何新的值赋给nil，[<a href="#org6984430">12</a>]虽然它看起来是一个合法的变量名称。<br />
 </p></li>
 </ol>
 
@@ -480,8 +480,8 @@ nil的另一个功能就是区分列表是否正确。这将在<a href="./6.html
 </div>
 </div>
 
-<div id="outline-container-org9383103" class="outline-3">
-<h3 id="org9383103"><span class="section-number-3">2.4</span> 简化代码</h3>
+<div id="outline-container-org8da8112" class="outline-3">
+<h3 id="org8da8112"><span class="section-number-3">2.4</span> 简化代码</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 就像前面提到的，表达式<br />
@@ -539,8 +539,8 @@ nil的另一个功能就是区分列表是否正确。这将在<a href="./6.html
 </div>
 </div>
 
-<div id="outline-container-org006c1f6" class="outline-3">
-<h3 id="org006c1f6"><span class="section-number-3">2.5</span> 逻辑表达式</h3>
+<div id="outline-container-org18bbe9a" class="outline-3">
+<h3 id="org18bbe9a"><span class="section-number-3">2.5</span> 逻辑表达式</h3>
 <div class="outline-text-3" id="text-2-5">
 <p>
 另一个Lisp程序员的常用技巧甚至可以使这个表达式更简单：<br />
@@ -634,8 +634,8 @@ nil的另一个功能就是区分列表是否正确。这将在<a href="./6.html
 </div>
 </div>
 
-<div id="outline-container-orgcdfd404" class="outline-3">
-<h3 id="orgcdfd404"><span class="section-number-3">2.6</span> 最好的other-window-backward</h3>
+<div id="outline-container-orgebcd05d" class="outline-3">
+<h3 id="orgebcd05d"><span class="section-number-3">2.6</span> 最好的other-window-backward</h3>
 <div class="outline-text-3" id="text-2-6">
 <p>
 回到other-window-backward。使用我们自己整理过的other-window调用，现在函数的定义看起来是这样的：<br />
@@ -664,7 +664,7 @@ nil的另一个功能就是区分列表是否正确。这将在<a href="./6.html
 </p>
 
 <p>
-大写的P表示“当以交互的方式调用时，将前置参数保持为原始形式（raw form）并将其赋值给n”。前置参数的原始形式是Emacs使用的一种内部数据结构，用于在触发命令之前记录用户提供的前置信息。（查看<a href="#org1159b46">补充：原始的前置参数</a>得到更多关于原始前置参数数据结构的细节。）函数prefix-numeric-value可以将像(interactive "p")那样将数据结构转换为一个数字。而且，如果other-window-backward以非交互的方式调用（因此n就不再是一个原始形式的前置参数），prefix-numeric-value还是会做正确的事情&#x2013;也就是说，如果n是数字则直接返回n，如果n为nil则返回1。<br />
+大写的P表示“当以交互的方式调用时，将前置参数保持为原始形式（raw form）并将其赋值给n”。前置参数的原始形式是Emacs使用的一种内部数据结构，用于在触发命令之前记录用户提供的前置信息。（查看<a href="#orga3d13a1">补充：原始的前置参数</a>得到更多关于原始前置参数数据结构的细节。）函数prefix-numeric-value可以将像(interactive "p")那样将数据结构转换为一个数字。而且，如果other-window-backward以非交互的方式调用（因此n就不再是一个原始形式的前置参数），prefix-numeric-value还是会做正确的事情&#x2013;也就是说，如果n是数字则直接返回n，如果n为nil则返回1。<br />
 </p>
 
 <p>
@@ -678,8 +678,8 @@ nil的另一个功能就是区分列表是否正确。这将在<a href="./6.html
 </div>
 </div>
 
-<div id="outline-container-orgac6d35e" class="outline-2">
-<h2 id="orgac6d35e"><span class="section-number-2">3</span> 逐行滚动</h2>
+<div id="outline-container-org2ef2efb" class="outline-2">
+<h2 id="org2ef2efb"><span class="section-number-2">3</span> 逐行滚动</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 在我使用Emacs之前，我习惯了一些编辑器上存在而Emacs上并没有的特性。自然我很怀念这些功能并且决定找回他们。这其中的一个例子是使用一个键来向上、向下滚屏。<br />
@@ -768,8 +768,8 @@ C-z的在X系统下默认绑定是iconify-or-deiconify-frame，在终端的绑�
 </div>
 </div>
 
-<div id="outline-container-org143147a" class="outline-2">
-<h2 id="org143147a"><span class="section-number-2">4</span> 其他光标和文本移动命令</h2>
+<div id="outline-container-orga7ff197" class="outline-2">
+<h2 id="orga7ff197"><span class="section-number-2">4</span> 其他光标和文本移动命令</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 下面是另外一些绑定到合理键位的简单命令。<br />
@@ -829,8 +829,8 @@ C-z的在X系统下默认绑定是iconify-or-deiconify-frame，在终端的绑�
 </div>
 </div>
 
-<div id="outline-container-org4a8d34f" class="outline-2">
-<h2 id="org4a8d34f"><span class="section-number-2">5</span> 处理符号链接</h2>
+<div id="outline-container-org18fcccf" class="outline-2">
+<h2 id="org18fcccf"><span class="section-number-2">5</span> 处理符号链接</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 目前为止，我们写的函数都非常简单。本质上，他们都只是重新排列了一下参数来调用其他已经存在的函数。现在让我们看看需要我们更多编程工作的示例。<br />
@@ -860,8 +860,8 @@ C-z的在X系统下默认绑定是iconify-or-deiconify-frame，在终端的绑�
 </p>
 </div>
 
-<div id="outline-container-org818f9a6" class="outline-3">
-<h3 id="org818f9a6"><span class="section-number-3">5.1</span> 钩子</h3>
+<div id="outline-container-org6b80612" class="outline-3">
+<h3 id="org6b80612"><span class="section-number-3">5.1</span> 钩子</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 当我希望Emacs在我访问某个文件时将其对应的buffer变为只读，我必须告诉Emacs“当我访问这个文件时执行一段特定的Lisp代码”。访问文件的动作应该触发一段我写的代码。这时钩子（hooks）就出场了。<br />
@@ -931,15 +931,15 @@ progn表达式会顺序执行内部的表达式并且返回最后执行的语句
 </div>
 </div>
 
-<div id="outline-container-orgfb0d843" class="outline-3">
-<h3 id="orgfb0d843"><span class="section-number-3">5.2</span> 匿名函数</h3>
+<div id="outline-container-orgac3ec35" class="outline-3">
+<h3 id="orgac3ec35"><span class="section-number-3">5.2</span> 匿名函数</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 当你使用defun定义函数的时候，你给了函数一个可以在任何地方调用的名字。但是对于那些并不需要在任何地方都被调用的函数呢？假如它只需要在一个地方生效呢？可以说，read-only-if-symlink仅需要在find-file-hooks的列表里执行；实际上，在find-file-hooks之外的地方调用它甚至并不是什么好事。<br />
 </p>
 
 <p>
-我们可以在不指定名称的情况下定义函数。这种函数被称为匿名函数。我们使用Lisp的关键词lambda[<a href="#org002611d">13</a>]来定义，除了不指定函数名外，它的作用跟defun一模一样。<br />
+我们可以在不指定名称的情况下定义函数。这种函数被称为匿名函数。我们使用Lisp的关键词lambda[<a href="#orga35e3f5">13</a>]来定义，除了不指定函数名外，它的作用跟defun一模一样。<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-elisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">lambda</span> <span style="color: #66D9EF;">()</span>
@@ -964,7 +964,7 @@ lambda后面的空括号是匿名函数的参数列表。这个函数没有参�
 </div>
 
 <p>
-这样就只有add-hook可以访问它了。[<a href="#org594d06b">14</a>]<br />
+这样就只有add-hook可以访问它了。[<a href="#orge27896f">14</a>]<br />
 </p>
 
 <p>
@@ -981,8 +981,8 @@ lambda后面的空括号是匿名函数的参数列表。这个函数没有参�
 </div>
 </div>
 
-<div id="outline-container-orgcd1586e" class="outline-3">
-<h3 id="orgcd1586e"><span class="section-number-3">5.3</span> 处理符号链接</h3>
+<div id="outline-container-orgba37884" class="outline-3">
+<h3 id="orgba37884"><span class="section-number-3">5.3</span> 处理符号链接</h3>
 <div class="outline-text-3" id="text-5-3">
 <p>
 当Emacs提醒我在编辑符号链接时，我可能希望打开链接的目标文件来作为当前buffer的内容；我也可能希望"clobber"符号链接（将符号链接文件替换为所指向的真实文件）然后再访问它。下面是这两个的实现方式：<br />
@@ -1026,7 +1026,7 @@ lambda后面的空括号是匿名函数的参数列表。这个函数没有参�
 </div>
 
 <p>
-（我将其他内容省略掉以强调这个if结构。）因为buffer-file-name可能为空（当前buffer可能没有访问任何文件&#x2013;例如，*scratch* buffer），所以这是必要的，而传递nil给file-symlink-p将会触发错误，“Wrong type argument: stringp,nil”。[<a href="#org7aec7d6">15</a>]这个错误表示一个函数的参数应该是字符串&#x2013;一个符合stringp断言的对象&#x2013;但是却得到了nil。visit-target-instead和clobber-symlink都会触发这个错误信息，所以我们自己来检测buffer-file-name是不是nil。如果是nil，那么“else”子句里我们会使用error函数生成一个可读性更好的错误信息&#x2013;“Not visiting a file”。当error函数被调用时，当前的命令会被终止，Emacs将会返回到它的最顶层来等待用户的下一个输入。<br />
+（我将其他内容省略掉以强调这个if结构。）因为buffer-file-name可能为空（当前buffer可能没有访问任何文件&#x2013;例如，*scratch* buffer），所以这是必要的，而传递nil给file-symlink-p将会触发错误，“Wrong type argument: stringp,nil”。[<a href="#org030b6cc">15</a>]这个错误表示一个函数的参数应该是字符串&#x2013;一个符合stringp断言的对象&#x2013;但是却得到了nil。visit-target-instead和clobber-symlink都会触发这个错误信息，所以我们自己来检测buffer-file-name是不是nil。如果是nil，那么“else”子句里我们会使用error函数生成一个可读性更好的错误信息&#x2013;“Not visiting a file”。当error函数被调用时，当前的命令会被终止，Emacs将会返回到它的最顶层来等待用户的下一个输入。<br />
 </p>
 
 <p>
@@ -1147,8 +1147,8 @@ lambda后面的空括号是匿名函数的参数列表。这个函数没有参�
 </div>
 </div>
 
-<div id="outline-container-org8012ca5" class="outline-2">
-<h2 id="org8012ca5"><span class="section-number-2">6</span> 修饰Buffer切换</h2>
+<div id="outline-container-org3979040" class="outline-2">
+<h2 id="org3979040"><span class="section-number-2">6</span> 修饰Buffer切换</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 让我们以一个例子总结本章，这个例子将会引入一个称为修饰（advice）的非常有用的Lisp工具。<br />
@@ -1276,8 +1276,8 @@ switch-to-buffer这样修饰之后，Emacs将不会回应我切换到不存在�
 </div>
 </div>
 
-<div id="outline-container-org1159b46" class="outline-2">
-<h2 id="org1159b46"><span class="section-number-2">7</span> 补充：原始的前置参数</h2>
+<div id="outline-container-orga3d13a1" class="outline-2">
+<h2 id="orga3d13a1"><span class="section-number-2">7</span> 补充：原始的前置参数</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 变量current-prefix-arg总是保存着最后的“原始”前置参数，跟你从(interactive "P")中取到的一样。<br />
@@ -1335,14 +1335,35 @@ switch-to-buffer这样修饰之后，Emacs将不会回应我切换到不存在�
 </table>
 
 <p>
-<a id="orge42522d"></a>[8]. 如果你像<a href="file:///1.html">第一章</a>中描述的那样修改了help-command的绑定，那么describe-key的按键绑定是M-? k；否则是C-h k。<br />
-<a id="orgf83530d"></a>[9]. “parameter”与“argument”有什么不同呢？这两个概念通常可以替换使用，但是技术上来讲，“parameter”是指函数定义中的形参，而“argument”是指函数调用时传入的实参。argument的值会传递给parameter。<br />
-<a id="orgd631f89"></a>[10]. 再一次，如果你已经把help-command的绑定到M-?那么就是M-? f。从这开始，我将假设你修改过了，或者你至少应该理解我的做法。<br />
-<a id="org2844e8f"></a>[11]. 要查看interactive的code letter，按下M-? f interactive RET。<br />
-<a id="orgedf38e6"></a>[12]. 实际上Emacs也不允许你把任何值赋给nil。<br />
-<a id="org002611d"></a>[13]. “lambda演算”是一套用于研究函数及其参数的数学形式。某种意义上来说它是Lisp（以及其他很多语言）的理论基础。单词“lambda”只是一个希腊语中的单词，并没有什么特殊的含义。<br />
-<a id="org594d06b"></a>[14]. 这并不是绝对正确的。其他的代码可以搜索find-file-hooks列表的内容并且执行里面的所有函数。这里的意思是这个函数相对于defun的显式声明来说隐藏起来了。<br />
-<a id="org7aec7d6"></a>[15]. 请自己试一下：M-: (file-symlink-p nil) RET。<br />
+<a id="org8a85c6c"></a>[8]. 如果你像<a href="file:///1.html">第一章</a>中描述的那样修改了help-command的绑定，那么describe-key的按键绑定是M-? k；否则是C-h k。<br />
+</p>
+
+<p>
+<a id="orgb519d87"></a>[9]. “parameter”与“argument”有什么不同呢？这两个概念通常可以替换使用，但是技术上来讲，“parameter”是指函数定义中的形参，而“argument”是指函数调用时传入的实参。argument的值会传递给parameter。<br />
+</p>
+
+<p>
+<a id="org37504d1"></a>[10]. 再一次，如果你已经把help-command的绑定到M-?那么就是M-? f。从这开始，我将假设你修改过了，或者你至少应该理解我的做法。<br />
+</p>
+
+<p>
+<a id="orgc96b5c4"></a>[11]. 要查看interactive的code letter，按下M-? f interactive RET。<br />
+</p>
+
+<p>
+<a id="org6984430"></a>[12]. 实际上Emacs也不允许你把任何值赋给nil。<br />
+</p>
+
+<p>
+<a id="orga35e3f5"></a>[13]. “lambda演算”是一套用于研究函数及其参数的数学形式。某种意义上来说它是Lisp（以及其他很多语言）的理论基础。单词“lambda”只是一个希腊语中的单词，并没有什么特殊的含义。<br />
+</p>
+
+<p>
+<a id="orge27896f"></a>[14]. 这并不是绝对正确的。其他的代码可以搜索find-file-hooks列表的内容并且执行里面的所有函数。这里的意思是这个函数相对于defun的显式声明来说隐藏起来了。<br />
+</p>
+
+<p>
+<a id="org030b6cc"></a>[15]. 请自己试一下：M-: (file-symlink-p nil) RET。<br />
 </p>
 </div>
 </div>
