@@ -38,7 +38,7 @@ Emacs Lisp文件名通常以.el为后缀，所以作为开始，让我们创建t
   (defun update-modifystamps (time) ...)
 #+END_SRC
 
-先不要加入add-hook和make-local-hook。我们后面再来关注他们。现在，你需要注意的是当编写Lisp文件的时候，它应该能在任意时机被加载，甚至加载多次，而并不会带来你不希望的副总用。一个这种副作用的例子是，假如你不希望当前buffer的after-change-functions变为局部变量，而又把(make-local-hook 'after-change-functions)加入了到timestamp.el中。
+先不要加入add-hook和make-local-hook。我们后面再来关注他们。现在，你需要注意的是当编写Lisp文件的时候，它应该能在任意时机被加载，甚至加载多次，而并不会带来你不希望的副作用。一个这种副作用的例子是，假如你不希望当前buffer的after-change-functions变为局部变量，而又把(make-local-hook 'after-change-functions)加入了到timestamp.el中。
 
 * 加载文件
 当把代码写入到timestamp.el中后，我们必须进行配置，以使我们在需要的时候能够正确的访问到它们。这是通过加载（loading）完成的，也就是使Emacs读取和执行它的内容。在Emacs中有许多方式来加载Lisp文件：交互式的（interactively）、非交互式的（non-interactively）、明确的（explicitly）、模糊的（implicitly）、以及使用或者不使用路径搜索（pathsearching）的。
