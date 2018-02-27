@@ -3,7 +3,7 @@
     (dolist (org-name org-files nil)
       (message "Export %s ..." org-name)
       (let ((org-path (format "../%s" org-name)))
-        (with-current-buffer (or (find-buffer-visiting org-path) (find-file org-path))
+        (with-current-buffer (or (find-buffer-visiting org-name) (find-file org-path))
           (setq local-enable-local-variables nil)
           ;; modify relative path
           (goto-char (point-min))
