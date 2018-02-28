@@ -587,14 +587,14 @@ lambda后面的空括号是匿名函数的参数列表。这个函数没有参�
 
 又一次，我们使用了前置修饰修改了switch-to-buffer的交互声明。但是这次，我们使用了一种未见过的形式调用interactive：我们传递了一个列表作为参数给它，而不是一个字母组成的字符串。
 
-当interactive的参数不是字符串而是一些表达式时，这个表达式会进行运算得到一个参数列表传递给函数。所以在这个例子中我们调用了list，它使用下面这段表达式的返回值构建：
+当interactive的参数不是字符串而是一些表达式时，这些表达式会进行运算得到一个参数列表传递给函数。所以在这个例子中我们调用了list，它使用下面这段表达式的返回值构建：
 #+BEGIN_SRC elisp
   (read-buffer "Switch to buffer: "
                (other-buffer)
                (null current-prefix-arg))
 #+END_SRC
 
-函数read-buffer是一个底层的用于向用户询问buffer名称的函数。说它底层是因为所有其他询问buffer名称的函数最终调用的都是它。它的调用需要一个提示字符串和两个可选参数：一个默认切换到的buffer，以及一个布尔值用于标示输入是否只能是已存在的buffer。
+函数read-buffer是一个底层的用于向用户询问buffer名称的函数。说它底层是因为所有其他询问buffer名称的函数最终调用的都是它。它的调用需要一个提示字符串和两个可选参数：一个默认切换到的buffer，以及一个布尔值用于标识输入是否只能是已存在的buffer。
 
 默认的buffer，我们传递了(other-buffer)的返回值给它，它的作用是产生一个可用的默认buffer。（通常它会选择最近使用的但是当前不可见的buffer。）对于是否限制输入的布尔状态值，我们使用了
 #+BEGIN_SRC elisp
