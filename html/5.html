@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-02-27 Tue 13:45 -->
+<!-- 2018-03-08 Thu 10:09 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lisp文件</title>
@@ -235,31 +235,31 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgdee1075">1. 在本章：</a></li>
-<li><a href="#orge564b5f">2. 创建Lisp文件</a></li>
-<li><a href="#org81531c6">3. 加载文件</a>
+<li><a href="#org3668c57">1. 在本章：</a></li>
+<li><a href="#orgf341b54">2. 创建Lisp文件</a></li>
+<li><a href="#org6b4d084">3. 加载文件</a>
 <ul>
-<li><a href="#org739d3d8">3.1. 找到Lisp文件</a></li>
-<li><a href="#org69203d6">3.2. 交互式加载</a></li>
-<li><a href="#orgad1ecf6">3.3. 以代码加载</a>
+<li><a href="#org2431268">3.1. 找到Lisp文件</a></li>
+<li><a href="#org46b87d9">3.2. 交互式加载</a></li>
+<li><a href="#orge428f03">3.3. 以代码加载</a>
 <ul>
-<li><a href="#org71b0f30">3.3.1. 显式加载</a></li>
-<li><a href="#org226d3d7">3.3.2. 条件加载</a></li>
-<li><a href="#org3398c79">3.3.3. 自动加载</a></li>
+<li><a href="#orga2040b0">3.3.1. 显式加载</a></li>
+<li><a href="#org422cfb8">3.3.2. 条件加载</a></li>
+<li><a href="#org993c0cf">3.3.3. 自动加载</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org58673b9">4. 编译文件</a></li>
-<li><a href="#orgd721faf">5. eval-after-load</a></li>
-<li><a href="#orgf6a36c6">6. 局部变量列表</a></li>
-<li><a href="#org103b787">7. 补充：安全考虑</a></li>
+<li><a href="#org3ede01e">4. 编译文件</a></li>
+<li><a href="#org69c8327">5. eval-after-load</a></li>
+<li><a href="#orga34919b">6. 局部变量列表</a></li>
+<li><a href="#org652aab0">7. 补充：安全考虑</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgdee1075" class="outline-2">
-<h2 id="orgdee1075"><span class="section-number-2">1</span> 在本章：</h2>
+<div id="outline-container-org3668c57" class="outline-2">
+<h2 id="org3668c57"><span class="section-number-2">1</span> 在本章：</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <b>创建Lisp文件</b><br />
@@ -286,8 +286,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orge564b5f" class="outline-2">
-<h2 id="orge564b5f"><span class="section-number-2">2</span> 创建Lisp文件</h2>
+<div id="outline-container-orgf341b54" class="outline-2">
+<h2 id="orgf341b54"><span class="section-number-2">2</span> 创建Lisp文件</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Emacs Lisp文件名通常以.el为后缀，所以作为开始，让我们创建timestamp.el并且将上一章中最后完成的代码放进去，如下所示。<br />
@@ -318,16 +318,16 @@ Emacs Lisp文件名通常以.el为后缀，所以作为开始，让我们创建t
 </div>
 </div>
 
-<div id="outline-container-org81531c6" class="outline-2">
-<h2 id="org81531c6"><span class="section-number-2">3</span> 加载文件</h2>
+<div id="outline-container-org6b4d084" class="outline-2">
+<h2 id="org6b4d084"><span class="section-number-2">3</span> 加载文件</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 当把代码写入到timestamp.el中后，我们必须进行配置，以使我们在需要的时候能够正确的访问到它们。这是通过加载（loading）完成的，也就是使Emacs读取和执行它的内容。在Emacs中有许多方式来加载Lisp文件：交互式的（interactively）、非交互式的（non-interactively）、明确的（explicitly）、模糊的（implicitly）、以及使用或者不使用路径搜索（pathsearching）的。<br />
 </p>
 </div>
 
-<div id="outline-container-org739d3d8" class="outline-3">
-<h3 id="org739d3d8"><span class="section-number-3">3.1</span> 找到Lisp文件</h3>
+<div id="outline-container-org2431268" class="outline-3">
+<h3 id="org2431268"><span class="section-number-3">3.1</span> 找到Lisp文件</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 Emacs能够根据像/usr/local/share/emacs/site-lisp/foo.el这样的绝对路径来加载文件，但是通常更为方便的方式是直接使用如bo.el这样的文件名，而让Emacs在加载路径（load path）中去找到它。加载路径简单来说就是Emacs用来搜索要加载的文件的目录列表，跟UNIX shell中使用环境变量PATH来找到要执行的程序相似。Emacs的加载路径储存在一个字符串列表变量load-path里。<br />
@@ -368,13 +368,13 @@ Emacs能够根据像/usr/local/share/emacs/site-lisp/foo.el这样的绝对路径
 </p>
 
 <p>
-如果你要求Emacs在加载路径中查找一个Lisp文件并且忽略掉后缀名的话&#x2013;例如你使用foo而不是foo.el&#x2013;Emacs会首先查找fool.elc，也就是foo.el的字节编译格式。如果找不到，那么它将会尝试foo.el，最后是foo。通常加载文件时最好忽略掉后缀名。因为这样不仅会使你得到更有效的查找行为，而且这还会让eval-after-load工作的更好（阅读本章后面的<a href="#orgd721faf">eval-after-load</a>章节获得更多信息）。<br />
+如果你要求Emacs在加载路径中查找一个Lisp文件并且忽略掉后缀名的话&#x2013;例如你使用foo而不是foo.el&#x2013;Emacs会首先查找fool.elc，也就是foo.el的字节编译格式。如果找不到，那么它将会尝试foo.el，最后是foo。通常加载文件时最好忽略掉后缀名。因为这样不仅会使你得到更有效的查找行为，而且这还会让eval-after-load工作的更好（阅读本章后面的<a href="#org69c8327">eval-after-load</a>章节获得更多信息）。<br />
 </p>
 </div>
 </div>
 
-<div id="outline-container-org69203d6" class="outline-3">
-<h3 id="org69203d6"><span class="section-number-3">3.2</span> 交互式加载</h3>
+<div id="outline-container-org46b87d9" class="outline-3">
+<h3 id="org46b87d9"><span class="section-number-3">3.2</span> 交互式加载</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 有两个Emacs命令用来交互式的加载Lisp文件：load-file和load-library。当你输入M-x load-file RET时，Emacs会提示你输入一个Lisp文件的绝对路径（例如/home/bobg/emacs/foo.el）而不去搜索load-path。这会使用通常的文件名提示方法，所以文件名会进行自动补全。而另一种方式，当你输入M-x load-library RET时，Emacs将会提示你输入库的基本名称（例如foo）并且尝试在load-path中找到它。这不会使用文件名提示方法，因此也就不会进行自动补全。<br />
@@ -382,15 +382,15 @@ Emacs能够根据像/usr/local/share/emacs/site-lisp/foo.el这样的绝对路径
 </div>
 </div>
 
-<div id="outline-container-orgad1ecf6" class="outline-3">
-<h3 id="orgad1ecf6"><span class="section-number-3">3.3</span> 以代码加载</h3>
+<div id="outline-container-orge428f03" class="outline-3">
+<h3 id="orge428f03"><span class="section-number-3">3.3</span> 以代码加载</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 当在Lisp代码中加载文件时，你可以选择显式加载、条件加载或者自动加载。<br />
 </p>
 </div>
-<div id="outline-container-org71b0f30" class="outline-4">
-<h4 id="org71b0f30"><span class="section-number-4">3.3.1</span> 显式加载</h4>
+<div id="outline-container-orga2040b0" class="outline-4">
+<h4 id="orga2040b0"><span class="section-number-4">3.3.1</span> 显式加载</h4>
 <div class="outline-text-4" id="text-3-3-1">
 <p>
 可以显式的调用load（和交互式加载中的load-library行为类似）或者load-file加载文件。<br />
@@ -418,8 +418,8 @@ Emacs能够根据像/usr/local/share/emacs/site-lisp/foo.el这样的绝对路径
 </div>
 </div>
 
-<div id="outline-container-org226d3d7" class="outline-4">
-<h4 id="org226d3d7"><span class="section-number-4">3.3.2</span> 条件加载</h4>
+<div id="outline-container-org422cfb8" class="outline-4">
+<h4 id="org422cfb8"><span class="section-number-4">3.3.2</span> 条件加载</h4>
 <div class="outline-text-4" id="text-3-3-2">
 <p>
 当n处不同的Lisp代码想要载入同一个文件时，有两个Emacs Lisp函数，即require和provide，给出了一种方法来确保文件只会被加载一次而不是n次。<br />
@@ -479,8 +479,8 @@ Emacs明确了特性这个概念。特性通过Lisp符号进行命名，使用pr
 </div>
 </div>
 
-<div id="outline-container-org3398c79" class="outline-4">
-<h4 id="org3398c79"><span class="section-number-4">3.3.3</span> 自动加载</h4>
+<div id="outline-container-org993c0cf" class="outline-4">
+<h4 id="org993c0cf"><span class="section-number-4">3.3.3</span> 自动加载</h4>
 <div class="outline-text-4" id="text-3-3-3">
 <p>
 当使用自动加载（autoloading）时，你可以推迟一个文件的加载直到它必须加载的时候&#x2013;也就是直到你调用了它里面的方法。设置自动加载代价很小，因此通常都是在.emacs文件里做。<br />
@@ -551,8 +551,8 @@ autoload函数有多个可选参数。第一个参数是文档字符串。文档
 </div>
 </div>
 
-<div id="outline-container-org58673b9" class="outline-2">
-<h2 id="org58673b9"><span class="section-number-2">4</span> 编译文件</h2>
+<div id="outline-container-org3ede01e" class="outline-2">
+<h2 id="org3ede01e"><span class="section-number-2">4</span> 编译文件</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 就像在本章开始所提到的，当我们将Lisp代码储存在各自的文件里之后，我们可以对它进行字节编译（byte-compile）。字节编译将Emacs Lisp转换成更紧凑、执行更快的格式。就像在其他编程语言中的编译一样，程序员很难阅读字节编译的结果。但不像其他的编译，字节编译的结果在不同硬件平台和操作系统上是可移植的（但可能不兼容老版本的Emacs）。<br />
@@ -563,7 +563,7 @@ autoload函数有多个可选参数。第一个参数是文档字符串。文档
 </p>
 
 <p>
-字节编译的Lisp文件后缀名为.el文件。<br />
+字节编译的Lisp文件后缀名为.elc文件。就像前面提到的，不使用后缀名调用load和load-library将会优先调用.elc文件而不是.el文件。<br />
 </p>
 
 <p>
@@ -585,8 +585,8 @@ autoload函数有多个可选参数。第一个参数是文档字符串。文档
 </div>
 </div>
 
-<div id="outline-container-orgd721faf" class="outline-2">
-<h2 id="orgd721faf"><span class="section-number-2">5</span> eval-after-load</h2>
+<div id="outline-container-org69c8327" class="outline-2">
+<h2 id="org69c8327"><span class="section-number-2">5</span> eval-after-load</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 如果你希望直到某个特定文件加载之后才执行某些代码，eval-after-load就是你需要的。例如，假如你搞出了一个比dired（Emacs的目录编辑模块）自身的dired-sort-toggle更好的函数定义。你不能简单的把它放入.emacs中，因为一旦你编辑一个目录，dired将会被自动加载，而这将会把你自己的定义替换掉。<br />
@@ -631,11 +631,11 @@ eval-after-load的另一个作用是当你希望在一个包中使用某个变�
 </div>
 </div>
 
-<div id="outline-container-orgf6a36c6" class="outline-2">
-<h2 id="orgf6a36c6"><span class="section-number-2">6</span> 局部变量列表</h2>
+<div id="outline-container-orga34919b" class="outline-2">
+<h2 id="orga34919b"><span class="section-number-2">6</span> 局部变量列表</h2>
 <div class="outline-text-2" id="text-6">
 <p>
-本章前面的内容已经足够创建并且根据需要加载Lisp代码文件了。但是对于timestamp的例子，事情还是有些不同。当调用update-writestamps时会自动载入timestamp，但是谁来调用update-writestamps并且加载timestamp呢？回想一下前一章中update-writestamps是由local-write-file-hooks调用的。那么如何将update-writestamps放进local-write-file-hooks里呢？而因为前面的章节<a href="#orge564b5f">2</a>中所提到的副作用，我们一定不能在加载文件时这么做。<br />
+本章前面的内容已经足够创建并且根据需要加载Lisp代码文件了。但是对于timestamp的例子，事情还是有些不同。当调用update-writestamps时会自动载入timestamp，但是谁来调用update-writestamps并且加载timestamp呢？回想一下前一章中update-writestamps是由local-write-file-hooks调用的。那么如何将update-writestamps放进local-write-file-hooks里呢？而因为前面的章节<a href="#orgf341b54">2</a>中所提到的副作用，我们一定不能在加载文件时这么做。<br />
 </p>
 
 <p>
@@ -643,7 +643,7 @@ eval-after-load的另一个作用是当你希望在一个包中使用某个变�
 </p>
 
 <p>
-一种很好的完成这个需求的手段是使用文件尾部的局部变量列表（local variables list）。当Emacs访问一个新文件的时候，它会扫描文件的尾部是否有这样的文本块[<a href="#org54d4d3a">22</a>]：<br />
+一种很好的完成这个需求的手段是使用文件尾部的局部变量列表（local variables list）。当Emacs访问一个新文件的时候，它会扫描文件的尾部是否有这样的文本块[<a href="#org1537ca3">22</a>]：<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">Local Variables&#58;
@@ -738,8 +738,8 @@ Emacs在局部变量列表中引入一个“伪变量（pseudovariable）”eval
 </div>
 </div>
 
-<div id="outline-container-org103b787" class="outline-2">
-<h2 id="org103b787"><span class="section-number-2">7</span> 补充：安全考虑</h2>
+<div id="outline-container-org652aab0" class="outline-2">
+<h2 id="org652aab0"><span class="section-number-2">7</span> 补充：安全考虑</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 局部变量列表是一个潜在的安全漏洞，会导致用户受到“特洛伊木马”类型的攻击。例如一个变量的设置使得Emacs的工作不正常；或者一个eval有一些不可预知的副作用，例如删除文件或者使用你的名字伪造邮件。而攻击者只要引诱你访问一个在局部变量列表中包含这些设置的文件就可以了。只要你访问了这个文件，这些代码就会被执行。<br />
@@ -758,7 +758,7 @@ Emacs在局部变量列表中引入一个“伪变量（pseudovariable）”eval
 </p>
 
 <p>
-<a id="org54d4d3a"></a>[22]. “文件的尾部”的意思是：文件的最后3000个字节&#x2013;是的，这很随意&#x2013;直到最后一行以CONTROL-L开头的行，如果存在的话。<br />
+<a id="org1537ca3"></a>[22]. “文件的尾部”的意思是：文件的最后3000个字节&#x2013;是的，这很随意&#x2013;直到最后一行以CONTROL-L开头的行，如果存在的话。<br />
 </p>
 </div>
 </div>
