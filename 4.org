@@ -51,7 +51,7 @@
 
 #+BEGIN_SRC emacs-lisp
   (defvar insert-time-format "%X"
-    "*Format for \\[insert-time] (c.f. format-time-string').")
+    "*Format for \\[insert-time] (c.f. 'format-time-string').")
 
   (defvar insert-date-format "%x"
     "*Format for \\[insert-date] (c.f. 'format-time-string').")

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-02-27 Tue 09:36 -->
+<!-- 2018-11-10 Sat 20:56 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>搜索和修改Buffers</title>
@@ -257,37 +257,37 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org4bdc02c">1. 在本章：</a></li>
-<li><a href="#org50f666a">2. 插入当前时间</a>
+<li><a href="#org2d7cb4d">1. 在本章：</a></li>
+<li><a href="#orge8c90b8">2. 插入当前时间</a>
 <ul>
-<li><a href="#org7455f79">2.1. 用户选项和文档字符串</a></li>
-<li><a href="#orgf93adf4">2.2. 更多的星号魔法</a></li>
+<li><a href="#orgb1ef502">2.1. 用户选项和文档字符串</a></li>
+<li><a href="#org6e7f748">2.2. 更多的星号魔法</a></li>
 </ul>
 </li>
-<li><a href="#org7843edb">3. 记录戳(Writestamps)</a>
+<li><a href="#orgc48a01e">3. 记录戳(Writestamps)</a>
 <ul>
-<li><a href="#org513207f">3.1. 更新记录戳</a></li>
-<li><a href="#org92349f4">3.2. 归纳更一般的记录戳</a></li>
-<li><a href="#org68322a6">3.3. 正则表达式</a></li>
-<li><a href="#org114d28b">3.4. 正则引用</a></li>
-<li><a href="#org0083f5b">3.5. 有限搜索</a></li>
-<li><a href="#org1e6effb">3.6. 更强大的正则能力</a></li>
+<li><a href="#org693797f">3.1. 更新记录戳</a></li>
+<li><a href="#org0f2f6f8">3.2. 归纳更一般的记录戳</a></li>
+<li><a href="#orgc167993">3.3. 正则表达式</a></li>
+<li><a href="#orgf43e942">3.4. 正则引用</a></li>
+<li><a href="#orgbbea4d6">3.5. 有限搜索</a></li>
+<li><a href="#orgcfc6f72">3.6. 更强大的正则能力</a></li>
 </ul>
 </li>
-<li><a href="#orgbe2d1fb">4. 修改戳</a>
+<li><a href="#orga1dfc2c">4. 修改戳</a>
 <ul>
-<li><a href="#org7518445">4.1. 简单的方式#1</a></li>
-<li><a href="#orgbfd5d37">4.2. 简单的方式#2</a></li>
-<li><a href="#org9123a4e">4.3. 聪明的方式</a></li>
-<li><a href="#org1c3cb6a">4.4. 一个小Bug</a></li>
+<li><a href="#orgc87b8c5">4.1. 简单的方式#1</a></li>
+<li><a href="#org79942d0">4.2. 简单的方式#2</a></li>
+<li><a href="#org5ab88b2">4.3. 聪明的方式</a></li>
+<li><a href="#orgc8005e9">4.4. 一个小Bug</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org4bdc02c" class="outline-2">
-<h2 id="org4bdc02c"><span class="section-number-2">1</span> 在本章：</h2>
+<div id="outline-container-org2d7cb4d" class="outline-2">
+<h2 id="org2d7cb4d"><span class="section-number-2">1</span> 在本章：</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <b>插入当前时间</b><br />
@@ -301,15 +301,15 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org50f666a" class="outline-2">
-<h2 id="org50f666a"><span class="section-number-2">2</span> 插入当前时间</h2>
+<div id="outline-container-orge8c90b8" class="outline-2">
+<h2 id="orge8c90b8"><span class="section-number-2">2</span> 插入当前时间</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 当你编辑一个文件时插入当前的日期或者时间有时是很有用的。例如，在我写这一章的时候，是1996年8月18日星期五的晚上10点半。几天前，我在编辑一个Emacs Lisp代码文件时，我将注释<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #75715E;">;; </span><span style="color: #75715E;">Each element of ENTRIES has the form</span>
-<span style="color: #75715E;">;; </span><span style="color: #75715E;">(NAME (VALUE-HIGH . VALUE-LOW))</span>
+<pre class="src src-emacs-lisp"><span style="color: #555556;">;; </span><span style="color: #555556;">Each element of ENTRIES has the form</span>
+<span style="color: #555556;">;; </span><span style="color: #555556;">(NAME (VALUE-HIGH . VALUE-LOW))</span>
 </pre>
 </div>
 
@@ -317,10 +317,10 @@ for the JavaScript code in this tag.
 修改为<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #75715E;">;;</span><span style="color: #75715E;">NTRIES has the form</span>
-<span style="color: #75715E;">;; </span><span style="color: #75715E;">(NAME (VALUE-HIGH . VALUE-LOW))</span>
-<span style="color: #75715E;">;; </span><span style="color: #75715E;">[14 Aug 96] I changed this so NAME can now be a symbol,</span>
-<span style="color: #75715E;">;; </span><span style="color: #75715E;">a string, or a list of the form (NAME . PREFIX) [bg]</span>
+<pre class="src src-emacs-lisp"><span style="color: #555556;">;;</span><span style="color: #555556;">NTRIES has the form</span>
+<span style="color: #555556;">;; </span><span style="color: #555556;">(NAME (VALUE-HIGH . VALUE-LOW))</span>
+<span style="color: #555556;">;; </span><span style="color: #555556;">[14 Aug 96] I changed this so NAME can now be a symbol,</span>
+<span style="color: #555556;">;; </span><span style="color: #555556;">a string, or a list of the form (NAME . PREFIX) [bg]</span>
 </pre>
 </div>
 
@@ -329,18 +329,18 @@ for the JavaScript code in this tag.
 </p>
 
 <p>
-如果你知道函数current-time-string返回今天的日期和时间字符串，那么插入当前时间的命令是很简单的：[<a href="#org5507d95">18</a>]<br />
+如果你知道函数current-time-string返回今天的日期和时间字符串，那么插入当前时间的命令是很简单的：[<a href="#orgd16152b">18</a>]<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">insert-current-time</span> <span style="color: #66D9EF;">()</span>
-  <span style="color: #75715E;">"Insert the current time"</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span> <span style="color: #E6DB74;">"*"</span><span style="color: #66D9EF;">)</span>
-  <span style="color: #66D9EF;">(</span>insert <span style="color: #A6E22E;">(</span>current-time-string<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">insert-current-time</span> <span style="color: #fd971f;">()</span>
+  <span style="color: #7f7f80;">"Insert the current time"</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">interactive</span> <span style="color: #e2c770;">"*"</span><span style="color: #fd971f;">)</span>
+  <span style="color: #fd971f;">(</span>insert <span style="color: #b6e63e;">(</span>current-time-string<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
 <p>
-本章后面的章节<a href="#orgf93adf4">更多的星号魔法</a>将会解释(interactive "*")和insert的含义。<br />
+本章后面的章节<a href="#org6e7f748">更多的星号魔法</a>将会解释(interactive "*")和insert的含义。<br />
 </p>
 
 <p>
@@ -351,7 +351,7 @@ for the JavaScript code in this tag.
 幸运的是，我们只需要做一点额外的工作就可以获得更好的结果。Emacs有一些其他的时间相关的函数，特别是current-time，它会以一种原始形式返回当前时间，以及format-time-string，它以时间值以及格式作为参数（C函数的strftime的形式）。例如，<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>format-time-string <span style="color: #E6DB74;">"%l.%M %p"</span> <span style="color: #66D9EF;">(</span>current-time<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>format-time-string <span style="color: #e2c770;">"%l.%M %p"</span> <span style="color: #fd971f;">(</span>current-time<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -364,19 +364,19 @@ for the JavaScript code in this tag.
 </p>
 </div>
 
-<div id="outline-container-org7455f79" class="outline-3">
-<h3 id="org7455f79"><span class="section-number-3">2.1</span> 用户选项和文档字符串</h3>
+<div id="outline-container-orgb1ef502" class="outline-3">
+<h3 id="orgb1ef502"><span class="section-number-3">2.1</span> 用户选项和文档字符串</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 首先我们定义变量。<br />
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">insert-time-format</span> <span style="color: #E6DB74;">"%X"</span>
-  <span style="color: #75715E;">"*Format for \\[</span><span style="color: #AE81FF;">insert-time</span><span style="color: #75715E;">] (c.f. format-time-string')."</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defvar</span> <span style="color: #fd971f;">insert-time-format</span> <span style="color: #e2c770;">"%X"</span>
+  <span style="color: #7f7f80;">"*Format for \\[</span><span style="color: #fd971f;">insert-time</span><span style="color: #7f7f80;">] (c.f. 'format-time-string')."</span><span style="color: #fb2874;">)</span>
 
-<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">insert-date-format</span> <span style="color: #E6DB74;">"%x"</span>
-  <span style="color: #75715E;">"*Format for \\[</span><span style="color: #AE81FF;">insert-date</span><span style="color: #75715E;">] (c.f. 'format-time-string')."</span><span style="color: #AE81FF;">)</span>
+<span style="color: #fb2874;">(</span><span style="color: #fb2874;">defvar</span> <span style="color: #fd971f;">insert-date-format</span> <span style="color: #e2c770;">"%x"</span>
+  <span style="color: #7f7f80;">"*Format for \\[</span><span style="color: #fd971f;">insert-date</span><span style="color: #7f7f80;">] (c.f. 'format-time-string')."</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -392,21 +392,21 @@ for the JavaScript code in this tag.
 用户选项可以使用set-variable命令以交互的方式进行设置，Emacs会问用户要一个变量名（Emacs会自动补全用户的输入）以及一个值。有时，可以不以Lisp语法输入值；也就是说，不必在输入的时候带着外面的括号。当你设置非用户选项的变量值时，你必须这样做：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">&#8232;&#8232;M-: <span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> variable value<span style="color: #AE81FF;">)</span> RET
+<pre class="src src-emacs-lisp">&#8232;&#8232;M-: <span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> variable value<span style="color: #fb2874;">)</span> RET
 </pre>
 </div></li>
 </ul>
 
 <p>
   （需要使用Lisp语法来设置值）。<br />
-  而用户选项可以通过M-x edit-options RET[<a href="#org92ce2f5">19</a>]激活option-editing模式来进行编辑。<br />
+  而用户选项可以通过M-x edit-options RET[<a href="#org7c0192e">19</a>]激活option-editing模式来进行编辑。<br />
 </p>
 <ul class="org-ul">
 <li><p>
 关于文档字符串的第二个新特性是它们都包含一个特殊的结构\[command]。（是的，确实是\[&#x2026;]，但是因为是在Lisp字符串里面，反斜杠需要被转义：\\[&#x2026;]）。这个语法非常神奇。当文本字符串显示给用户时&#x2013;例如当用户使用apropos或者describe-variable时&#x2013;\[command]将会被替换为command所关联的键绑定。例如，如果C-x t会触发insert-time，那么文本字符串 <br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">&#8232;<span style="color: #E6DB74;">"*Format for \\[</span><span style="color: #AE81FF;">insert-time</span><span style="color: #E6DB74;">] (c.f. 'format-time-string')"</span>
+<pre class="src src-emacs-lisp">&#8232;<span style="color: #e2c770;">"*Format for \\[</span><span style="color: #fd971f;">insert-time</span><span style="color: #e2c770;">] (c.f. 'format-time-string')"</span>
 </pre>
 </div></li>
 </ul>
@@ -415,7 +415,7 @@ for the JavaScript code in this tag.
   将显示为<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">&#8232;&#8232;*Format for C-x t <span style="color: #AE81FF;">(</span>c.f. 'format-time-string'<span style="color: #AE81FF;">)</span>.
+<pre class="src src-emacs-lisp">&#8232;&#8232;*Format for C-x t <span style="color: #fb2874;">(</span>c.f. 'format-time-string'<span style="color: #fb2874;">)</span>.
 </pre>
 </div>
 
@@ -437,24 +437,24 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgf93adf4" class="outline-3">
-<h3 id="orgf93adf4"><span class="section-number-3">2.2</span> 更多的星号魔法</h3>
+<div id="outline-container-org6e7f748" class="outline-3">
+<h3 id="org6e7f748"><span class="section-number-3">2.2</span> 更多的星号魔法</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 前面我们定义了用来控制insert-time和insert-date的变量，下面就是这两个简单函数的定义。<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">insert-time</span> <span style="color: #66D9EF;">()</span>
-  <span style="color: #75715E;">"Insert the current time according to insert-time-format."</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span> <span style="color: #E6DB74;">"*"</span><span style="color: #66D9EF;">)</span>
-  <span style="color: #66D9EF;">(</span>insert <span style="color: #A6E22E;">(</span>format-time-string insert-time-format
-                              <span style="color: #E6DB74;">(</span>current-time<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">insert-time</span> <span style="color: #fd971f;">()</span>
+  <span style="color: #7f7f80;">"Insert the current time according to insert-time-format."</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">interactive</span> <span style="color: #e2c770;">"*"</span><span style="color: #fd971f;">)</span>
+  <span style="color: #fd971f;">(</span>insert <span style="color: #b6e63e;">(</span>format-time-string insert-time-format
+                              <span style="color: #66d9ef;">(</span>current-time<span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 
-<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">insert-date</span> <span style="color: #66D9EF;">()</span>
-  <span style="color: #75715E;">"Insert the current date according to insert-date-format."</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">interactive</span> <span style="color: #E6DB74;">"*"</span><span style="color: #66D9EF;">)</span>
-  <span style="color: #66D9EF;">(</span>insert <span style="color: #A6E22E;">(</span>format-time-string insert-date-format
-                              <span style="color: #E6DB74;">(</span>current-time<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">insert-date</span> <span style="color: #fd971f;">()</span>
+  <span style="color: #7f7f80;">"Insert the current date according to insert-date-format."</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">interactive</span> <span style="color: #e2c770;">"*"</span><span style="color: #fd971f;">)</span>
+  <span style="color: #fd971f;">(</span>insert <span style="color: #b6e63e;">(</span>format-time-string insert-date-format
+                              <span style="color: #66d9ef;">(</span>current-time<span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -466,7 +466,7 @@ for the JavaScript code in this tag.
 对于这两个函数最需要注意的是它们都以下面的结构开始<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">interactive</span> <span style="color: #E6DB74;">"*"</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">interactive</span> <span style="color: #e2c770;">"*"</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -481,16 +481,16 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org7843edb" class="outline-2">
-<h2 id="org7843edb"><span class="section-number-2">3</span> 记录戳(Writestamps)</h2>
+<div id="outline-container-orgc48a01e" class="outline-2">
+<h2 id="orgc48a01e"><span class="section-number-2">3</span> 记录戳(Writestamps)</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 以一种可配置的格式自动插入当前的时间和日期是非常简洁并且可能超过了大多数编辑器的功能，但是这并不是太有用。很显然更有用的能力是将一个记录戳（文件最后修改的日期、时间）保存在文件里。每次文件保存时记录戳会自动更新。<br />
 </p>
 </div>
 
-<div id="outline-container-org513207f" class="outline-3">
-<h3 id="org513207f"><span class="section-number-3">3.1</span> 更新记录戳</h3>
+<div id="outline-container-org693797f" class="outline-3">
+<h3 id="org693797f"><span class="section-number-3">3.1</span> 更新记录戳</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 首先我们要做的是每次文件保存时自动执行我们的writestamp-updating代码。就像我们在<a href="./2.html">第二章</a>的章节<a href="2.html#MissingReference">钩子</a>中看到的，把代码跟某些常用动作（例如保存文件）关联的最好方式就是将函数添加到一个钩子变量里。使用M-x apropos RET hook RET，我们可以找到四个可能的钩子变量：after-save-hook, local-write-file-hooks, write-contents-hooks以及write-file-hooks。<br />
@@ -524,7 +524,7 @@ local-write-file-hooks是一个buffer局部变量，每当buffer被保存到文�
 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">went into the castle and lived happily ever after.
-The end. WRITESTAMP<span style="color: #AE81FF;">(</span><span style="color: #66D9EF;">(</span>12:19pm 7 Jul 97<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+The end. WRITESTAMP<span style="color: #fb2874;">(</span><span style="color: #fd971f;">(</span>12:19pm 7 Jul 97<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -533,25 +533,25 @@ The end. WRITESTAMP<span style="color: #AE81FF;">(</span><span style="color: #66
 </p>
 
 <p>
-现在，假设文件里已经有了一些记录戳，[<a href="#orgad0e899">20</a>]我们可以在保存文件时这么更新它们：<br />
+现在，假设文件里已经有了一些记录戳，[<a href="#org5dca205">20</a>]我们可以在保存文件时这么更新它们：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>add-hook 'local-write-file-hooks 'update-writestamps<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>add-hook 'local-write-file-hooks 'update-writestamps<span style="color: #fb2874;">)</span>
 
-<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">update-writestamps</span> <span style="color: #66D9EF;">()</span>
-  <span style="color: #75715E;">"Find writestamps and replace them with the current time."</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">save-excursion</span>
-    <span style="color: #A6E22E;">(</span><span style="color: #F92672;">save-restriction</span>
-      <span style="color: #E6DB74;">(</span><span style="color: #F92672;">save-match-data</span>
-        <span style="color: #FD971F;">(</span>widen<span style="color: #FD971F;">)</span>
-        <span style="color: #FD971F;">(</span>goto-char <span style="color: #F92672;">(</span>point-min<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span>
-        <span style="color: #FD971F;">(</span><span style="color: #F92672;">while</span> <span style="color: #F92672;">(</span>search-forward <span style="color: #E6DB74;">"WRITESTAMP(("</span> nil t<span style="color: #F92672;">)</span>
-          <span style="color: #F92672;">(</span><span style="color: #F92672;">let</span> <span style="color: #AE81FF;">(</span><span style="color: #66D9EF;">(</span>start <span style="color: #A6E22E;">(</span>point<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
-            <span style="color: #AE81FF;">(</span>search-forward <span style="color: #E6DB74;">"))"</span><span style="color: #AE81FF;">)</span>
-            <span style="color: #AE81FF;">(</span>delete-region start <span style="color: #66D9EF;">(</span>- <span style="color: #A6E22E;">(</span>point<span style="color: #A6E22E;">)</span> 2<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
-            <span style="color: #AE81FF;">(</span>goto-char start<span style="color: #AE81FF;">)</span>
-            <span style="color: #AE81FF;">(</span>insert-date<span style="color: #AE81FF;">)</span><span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-  nil<span style="color: #AE81FF;">)</span>
+<span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">update-writestamps</span> <span style="color: #fd971f;">()</span>
+  <span style="color: #7f7f80;">"Find writestamps and replace them with the current time."</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">save-excursion</span>
+    <span style="color: #b6e63e;">(</span><span style="color: #fb2874;">save-restriction</span>
+      <span style="color: #66d9ef;">(</span><span style="color: #fb2874;">save-match-data</span>
+        <span style="color: #fb2874;">(</span>widen<span style="color: #fb2874;">)</span>
+        <span style="color: #fb2874;">(</span>goto-char <span style="color: #fd971f;">(</span>point-min<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+        <span style="color: #fb2874;">(</span><span style="color: #fb2874;">while</span> <span style="color: #fd971f;">(</span>search-forward <span style="color: #e2c770;">"WRITESTAMP(("</span> nil t<span style="color: #fd971f;">)</span>
+          <span style="color: #fd971f;">(</span><span style="color: #fb2874;">let</span> <span style="color: #b6e63e;">(</span><span style="color: #a2b6da;">(</span>start <span style="color: #9cb6ad;">(</span>point<span style="color: #9cb6ad;">)</span><span style="color: #a2b6da;">)</span><span style="color: #b6e63e;">)</span>
+            <span style="color: #b6e63e;">(</span>search-forward <span style="color: #e2c770;">"))"</span><span style="color: #b6e63e;">)</span>
+            <span style="color: #b6e63e;">(</span>delete-region start <span style="color: #a2b6da;">(</span>- <span style="color: #9cb6ad;">(</span>point<span style="color: #9cb6ad;">)</span> 2<span style="color: #a2b6da;">)</span><span style="color: #b6e63e;">)</span>
+            <span style="color: #b6e63e;">(</span>goto-char start<span style="color: #b6e63e;">)</span>
+            <span style="color: #b6e63e;">(</span>insert-date<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+  nil<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -583,8 +583,8 @@ The end. WRITESTAMP<span style="color: #AE81FF;">(</span><span style="color: #66
 主循环看起来是这样的：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">while</span> <span style="color: #66D9EF;">(</span>search-forward <span style="color: #E6DB74;">"WRITESTAMP(("</span> nil t<span style="color: #66D9EF;">)</span>
-  ...<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">while</span> <span style="color: #fd971f;">(</span>search-forward <span style="color: #e2c770;">"WRITESTAMP(("</span> nil t<span style="color: #fd971f;">)</span>
+  ...<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -610,7 +610,7 @@ The end. WRITESTAMP<span style="color: #AE81FF;">(</span><span style="color: #66
 while的循环体是<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">let</span> <span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>start <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">let</span> <span style="color: #fd971f;">(</span><span style="color: #b6e63e;">(</span>start <span style="color: #66d9ef;">(</span>point<span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
 </pre>
 </div>
 
@@ -622,10 +622,10 @@ while的循环体是<br />
 start定义了之后，let的body包含如下：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>search-forward <span style="color: #E6DB74;">"))"</span><span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>delete-region start <span style="color: #66D9EF;">(</span>- <span style="color: #A6E22E;">(</span>point<span style="color: #A6E22E;">)</span> 2<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>goto-char start<span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>insert-date<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>search-forward <span style="color: #e2c770;">"))"</span><span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>delete-region start <span style="color: #fd971f;">(</span>- <span style="color: #b6e63e;">(</span>point<span style="color: #b6e63e;">)</span> 2<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>goto-char start<span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>insert-date<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -687,8 +687,8 @@ update-writestamps在save-excursion调用之后的最后一个表达式，是一
 </div>
 </div>
 
-<div id="outline-container-org92349f4" class="outline-3">
-<h3 id="org92349f4"><span class="section-number-3">3.2</span> 归纳更一般的记录戳</h3>
+<div id="outline-container-org0f2f6f8" class="outline-3">
+<h3 id="org0f2f6f8"><span class="section-number-3">3.2</span> 归纳更一般的记录戳</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 我们实现的记录戳工作了，但是仍然有一些问题。首先，我们的记录戳字符串“WRITESTAMP((”和“))”对于用户来说非常的缺乏美感并且不灵活。第二，用户可能并不希望使用insert-date来插入记录戳。<br />
@@ -699,14 +699,14 @@ update-writestamps在save-excursion调用之后的最后一个表达式，是一
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">writestamp-format</span> <span style="color: #E6DB74;">"%C"</span>
-  <span style="color: #75715E;">"*Format for writestamps (c.f. 'format-time-string')."</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defvar</span> <span style="color: #fd971f;">writestamp-format</span> <span style="color: #e2c770;">"%C"</span>
+  <span style="color: #7f7f80;">"*Format for writestamps (c.f. 'format-time-string')."</span><span style="color: #fb2874;">)</span>
 
-<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">writestamp-prefix</span> <span style="color: #E6DB74;">"WRITESTAMP(("</span>
-  <span style="color: #75715E;">"*Unique string identifying start of writestamp."</span><span style="color: #AE81FF;">)</span>
+<span style="color: #fb2874;">(</span><span style="color: #fb2874;">defvar</span> <span style="color: #fd971f;">writestamp-prefix</span> <span style="color: #e2c770;">"WRITESTAMP(("</span>
+  <span style="color: #7f7f80;">"*Unique string identifying start of writestamp."</span><span style="color: #fb2874;">)</span>
 
-<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">writestamp-suffix</span> <span style="color: #E6DB74;">"))"</span>
-  <span style="color: #75715E;">"*String that terminates a writestamp."</span><span style="color: #AE81FF;">)</span>
+<span style="color: #fb2874;">(</span><span style="color: #fb2874;">defvar</span> <span style="color: #fd971f;">writestamp-suffix</span> <span style="color: #e2c770;">"))"</span>
+  <span style="color: #7f7f80;">"*String that terminates a writestamp."</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -714,21 +714,21 @@ update-writestamps在save-excursion调用之后的最后一个表达式，是一
 现在我们可以修改update-writestamps来使它更加灵活。<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">update-writestamps</span> <span style="color: #66D9EF;">()</span>
-  <span style="color: #75715E;">"Find writestamps and replace them with the current time."</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">save-excursion</span>
-    <span style="color: #A6E22E;">(</span><span style="color: #F92672;">save-restriction</span>
-      <span style="color: #E6DB74;">(</span><span style="color: #F92672;">save-match-data</span>
-        <span style="color: #FD971F;">(</span>widen<span style="color: #FD971F;">)</span>
-        <span style="color: #FD971F;">(</span>goto-char <span style="color: #F92672;">(</span>point-min<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span>
-        <span style="color: #FD971F;">(</span><span style="color: #F92672;">while</span> <span style="color: #F92672;">(</span>search-forward writestamp-prefix nil t<span style="color: #F92672;">)</span>
-          <span style="color: #F92672;">(</span><span style="color: #F92672;">let</span> <span style="color: #AE81FF;">(</span><span style="color: #66D9EF;">(</span>start <span style="color: #A6E22E;">(</span>point<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
-            <span style="color: #AE81FF;">(</span>search-forward writestamp-suffix<span style="color: #AE81FF;">)</span>
-            <span style="color: #AE81FF;">(</span>delete-region start <span style="color: #66D9EF;">(</span>match-beginning 0<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
-            <span style="color: #AE81FF;">(</span>goto-char start<span style="color: #AE81FF;">)</span>
-            <span style="color: #AE81FF;">(</span>insert <span style="color: #66D9EF;">(</span>format-time-string writestamp-format
-                                        <span style="color: #A6E22E;">(</span>current-time<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span><span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-  nil<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">update-writestamps</span> <span style="color: #fd971f;">()</span>
+  <span style="color: #7f7f80;">"Find writestamps and replace them with the current time."</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">save-excursion</span>
+    <span style="color: #b6e63e;">(</span><span style="color: #fb2874;">save-restriction</span>
+      <span style="color: #66d9ef;">(</span><span style="color: #fb2874;">save-match-data</span>
+        <span style="color: #fb2874;">(</span>widen<span style="color: #fb2874;">)</span>
+        <span style="color: #fb2874;">(</span>goto-char <span style="color: #fd971f;">(</span>point-min<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+        <span style="color: #fb2874;">(</span><span style="color: #fb2874;">while</span> <span style="color: #fd971f;">(</span>search-forward writestamp-prefix nil t<span style="color: #fd971f;">)</span>
+          <span style="color: #fd971f;">(</span><span style="color: #fb2874;">let</span> <span style="color: #b6e63e;">(</span><span style="color: #a2b6da;">(</span>start <span style="color: #9cb6ad;">(</span>point<span style="color: #9cb6ad;">)</span><span style="color: #a2b6da;">)</span><span style="color: #b6e63e;">)</span>
+            <span style="color: #b6e63e;">(</span>search-forward writestamp-suffix<span style="color: #b6e63e;">)</span>
+            <span style="color: #b6e63e;">(</span>delete-region start <span style="color: #a2b6da;">(</span>match-beginning 0<span style="color: #a2b6da;">)</span><span style="color: #b6e63e;">)</span>
+            <span style="color: #b6e63e;">(</span>goto-char start<span style="color: #b6e63e;">)</span>
+            <span style="color: #b6e63e;">(</span>insert <span style="color: #a2b6da;">(</span>format-time-string writestamp-format
+                                        <span style="color: #9cb6ad;">(</span>current-time<span style="color: #9cb6ad;">)</span><span style="color: #a2b6da;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+  nil<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -736,8 +736,8 @@ update-writestamps在save-excursion调用之后的最后一个表达式，是一
 在这个版本的update-writestamps里，我们将”WRITESTAMP((”和“))”替换成了writestamp-prefix和writestamp-suffix，并且将insert-date替换为了<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>insert <span style="color: #66D9EF;">(</span>format-time-string writestamp-format
-                            <span style="color: #A6E22E;">(</span>current-time<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>insert <span style="color: #fd971f;">(</span>format-time-string writestamp-format
+                            <span style="color: #b6e63e;">(</span>current-time<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -745,7 +745,7 @@ update-writestamps在save-excursion调用之后的最后一个表达式，是一
 我们还改变了delete-region的调用。前面它看起来是这样的：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>delete-region start <span style="color: #66D9EF;">(</span>- <span style="color: #A6E22E;">(</span>point<span style="color: #A6E22E;">)</span> 2<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>delete-region start <span style="color: #fd971f;">(</span>- <span style="color: #b6e63e;">(</span>point<span style="color: #b6e63e;">)</span> 2<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -753,8 +753,8 @@ update-writestamps在save-excursion调用之后的最后一个表达式，是一
 之前我们的记录戳的后缀被写死为“))”，而它的长度为2。但是现在我们的后缀被储存在一个变量中，我们并不能提前知道它的长度。我们当然可以通过调用length来获得它：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>delete-region start <span style="color: #66D9EF;">(</span>- <span style="color: #A6E22E;">(</span>point<span style="color: #A6E22E;">)</span>
-                        <span style="color: #A6E22E;">(</span>length writestamp-suffix<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>delete-region start <span style="color: #fd971f;">(</span>- <span style="color: #b6e63e;">(</span>point<span style="color: #b6e63e;">)</span>
+                        <span style="color: #b6e63e;">(</span>length writestamp-suffix<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -762,7 +762,7 @@ update-writestamps在save-excursion调用之后的最后一个表达式，是一
 但是一个更好的解决方案是使用match-beginning。记得我们在调用delete-region之前是<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>search-forward writestamp-suffix<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>search-forward writestamp-suffix<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -770,14 +770,14 @@ update-writestamps在save-excursion调用之后的最后一个表达式，是一
 不管writestamp-suffix是什么，search-forward都会找到第一个匹配项，并且返回它之后的第一个位置。而关于匹配的其他额外信息，特别是匹配项的开始的位置，被存储在了Emacs的一个全局的匹配项变量里。访问这个数据需要通过函数match-beginning以及match-end。由于稍后可见的原因，match-beginning需要一个参数0来告诉你最后一次搜索的匹配项的开始的位置。本例中，这也就是记录戳后缀的开始的位置，也就是记录戳里面日期的末尾，也就是要删除的范围的结尾：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>delete-region start <span style="color: #66D9EF;">(</span>match-beginning 0<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>delete-region start <span style="color: #fd971f;">(</span>match-beginning 0<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org68322a6" class="outline-3">
-<h3 id="org68322a6"><span class="section-number-3">3.3</span> 正则表达式</h3>
+<div id="outline-container-orgc167993" class="outline-3">
+<h3 id="orgc167993"><span class="section-number-3">3.3</span> 正则表达式</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 假设用户选择“Written:”和“.”作为writestamp-prefix和writestamp-suffix的值，那么记录戳看起来将会是这样的：“Written: 19 Aug 1996.”。这是一个很有可能的用户选择，但是字符串“Written:”并不像“WRITESTAMP((”这么特殊。换句话说，文件中很有可能包含其他“Written:”字符串而它并不是一个记录戳。当updatewritestamps搜索writestamp-prefix时，它将会找到其中一个，然后它会搜索后缀，删掉它们之间所有的东西。更糟糕的是，这种异常删除的发生几乎是不可察的，因为当文件保存之后它就可能发生。<br />
@@ -791,7 +791,7 @@ update-writestamps在save-excursion调用之后的最后一个表达式，是一
 这样<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>search-forward writestamp-prefix ...<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>search-forward writestamp-prefix ...<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -821,7 +821,7 @@ f. 其他正则中的元字符，例如*和.在方括号中作为普通字符存
 a. 星号*，匹配0或多个x<br />
 b. 加号+，匹配1或多个x<br />
 c. 问号？，匹配0或1个x<br />
-所以a*表示a, aa, aaa甚至空字符串（0个a）；[<a href="#org91968e4">21</a>]a+匹配a, aa, aaa,但是不能为空；a?匹配空字符串和a。可以注意到x+等同于xx*。<br /></li>
+所以a*表示a, aa, aaa甚至空字符串（0个a）；[<a href="#org011ceec">21</a>]a+匹配a, aa, aaa,但是不能为空；a?匹配空字符串和a。可以注意到x+等同于xx*。<br /></li>
 <li>正则表达式<sup>x匹配任何行首x所匹配的值</sup>。<br />
 x$匹配任何行尾x匹配的值。<br />
 这表示<sup>x</sup>$匹配一行只包含x的值。而你也可以把x去掉；^$匹配不包含任何字符的行。<br /></li>
@@ -850,18 +850,18 @@ g. \&gt;值匹配单词结束处的空字符串。<br /></li>
 </div>
 </div>
 
-<div id="outline-container-org114d28b" class="outline-3">
-<h3 id="org114d28b"><span class="section-number-3">3.4</span> 正则引用</h3>
+<div id="outline-container-orgf43e942" class="outline-3">
+<h3 id="orgf43e942"><span class="section-number-3">3.4</span> 正则引用</h3>
 <div class="outline-text-3" id="text-3-4">
 <p>
 现在我们知道了如何使用正则表达式，看起来搜索行首的writestamp-prefix只需要在它前面加一个（^）而行尾的writestamp-suffix只需要在后面加一个$，就像这样：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>re-search-forward <span style="color: #66D9EF;">(</span>concat <span style="color: #E6DB74;">"^"</span>
-                           writestamp-prefix<span style="color: #66D9EF;">)</span> ...<span style="color: #AE81FF;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">&#38169;&#21862;&#65281;</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>re-search-forward <span style="color: #fd971f;">(</span>concat <span style="color: #e2c770;">"^"</span>
+                           writestamp-prefix<span style="color: #fd971f;">)</span> ...<span style="color: #fb2874;">)</span> <span style="color: #555556;">; </span><span style="color: #555556;">&#38169;&#21862;&#65281;</span>
 
-<span style="color: #AE81FF;">(</span>re-search-forward <span style="color: #66D9EF;">(</span>concat writestamp-suffix
-                           <span style="color: #E6DB74;">"$"</span><span style="color: #66D9EF;">)</span> ...<span style="color: #AE81FF;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">&#38169;&#21862;&#65281;</span>
+<span style="color: #fb2874;">(</span>re-search-forward <span style="color: #fd971f;">(</span>concat writestamp-suffix
+                           <span style="color: #e2c770;">"$"</span><span style="color: #fd971f;">)</span> ...<span style="color: #fb2874;">)</span> <span style="color: #555556;">; </span><span style="color: #555556;">&#38169;&#21862;&#65281;</span>
 </pre>
 </div>
 
@@ -873,8 +873,8 @@ g. \&gt;值匹配单词结束处的空字符串。<br /></li>
 这几乎是正确的。但是，它有一个常见的错误：writestamp-prefix或者writestamp-suffix都可能包含元字符。实际上，writestamp-suffix确实有，在我们的例子里即“.”。因为点号匹配任何字符（除了换行符），这个表达式：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>re-search-forward <span style="color: #66D9EF;">(</span>concat writestamp-suffix
-                           <span style="color: #E6DB74;">"$"</span><span style="color: #66D9EF;">)</span> <span style="color: #FD971F; font-weight: bold; font-style: italic; text-decoration: underline;">...</span><span style="color: #AE81FF; font-weight: bold; font-style: italic; text-decoration: underline;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>re-search-forward <span style="color: #fd971f;">(</span>concat writestamp-suffix
+                           <span style="color: #e2c770;">"$"</span><span style="color: #fd971f;">)</span> <span style="color: #e2c770;">...</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -882,7 +882,7 @@ g. \&gt;值匹配单词结束处的空字符串。<br /></li>
 等同于表达式：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>re-search-forward <span style="color: #E6DB74;">".$"</span> ...<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>re-search-forward <span style="color: #e2c770;">".$"</span> ...<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -898,33 +898,33 @@ g. \&gt;值匹配单词结束处的空字符串。<br /></li>
 我们现在知道了如何开始编写新版本的update-writestamps：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">update-writestamps</span> <span style="color: #66D9EF;">()</span>
-  <span style="color: #75715E;">"Find writestamps and replace them with the current time."</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">save-excursion</span>
-    <span style="color: #A6E22E;">(</span><span style="color: #F92672;">save-restriction</span>
-      <span style="color: #E6DB74;">(</span><span style="color: #F92672;">save-match-data</span>
-        <span style="color: #FD971F;">(</span>widen<span style="color: #FD971F;">)</span>
-        <span style="color: #FD971F;">(</span>goto-char <span style="color: #F92672;">(</span>point-min<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span>
-        <span style="color: #FD971F;">(</span><span style="color: #F92672;">while</span> <span style="color: #F92672;">(</span>re-search-forward
-                <span style="color: #AE81FF;">(</span>concat <span style="color: #E6DB74;">"^"</span>
-                        <span style="color: #66D9EF;">(</span>regexp-quote writestamp-prefix<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
-                nil t<span style="color: #F92672;">)</span>
-          ...<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-  nil<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">update-writestamps</span> <span style="color: #fd971f;">()</span>
+  <span style="color: #7f7f80;">"Find writestamps and replace them with the current time."</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">save-excursion</span>
+    <span style="color: #b6e63e;">(</span><span style="color: #fb2874;">save-restriction</span>
+      <span style="color: #66d9ef;">(</span><span style="color: #fb2874;">save-match-data</span>
+        <span style="color: #fb2874;">(</span>widen<span style="color: #fb2874;">)</span>
+        <span style="color: #fb2874;">(</span>goto-char <span style="color: #fd971f;">(</span>point-min<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+        <span style="color: #fb2874;">(</span><span style="color: #fb2874;">while</span> <span style="color: #fd971f;">(</span>re-search-forward
+                <span style="color: #b6e63e;">(</span>concat <span style="color: #e2c770;">"^"</span>
+                        <span style="color: #a2b6da;">(</span>regexp-quote writestamp-prefix<span style="color: #a2b6da;">)</span><span style="color: #b6e63e;">)</span>
+                nil t<span style="color: #fd971f;">)</span>
+          ...<span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+  nil<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org0083f5b" class="outline-3">
-<h3 id="org0083f5b"><span class="section-number-3">3.5</span> 有限搜索</h3>
+<div id="outline-container-orgbbea4d6" class="outline-3">
+<h3 id="orgbbea4d6"><span class="section-number-3">3.5</span> 有限搜索</h3>
 <div class="outline-text-3" id="text-3-5">
 <p>
 让我们编写while循环的body来完成新版本的update-writestamp。在re-search-forward完成后，我们需要知道当前行是否以writestamp-suffix结束。但是我们不能简单的这么写<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>re-search-forward <span style="color: #66D9EF;">(</span>concat <span style="color: #A6E22E;">(</span>regexp-quote writestamp-suffix<span style="color: #A6E22E;">)</span>
-                           <span style="color: #E6DB74;">"$"</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>re-search-forward <span style="color: #fd971f;">(</span>concat <span style="color: #b6e63e;">(</span>regexp-quote writestamp-suffix<span style="color: #b6e63e;">)</span>
+                           <span style="color: #e2c770;">"$"</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -936,9 +936,9 @@ g. \&gt;值匹配单词结束处的空字符串。<br /></li>
 我们的解决方式是只把搜索限制在本行。search-forward和re-search-forward的第二个可选参数，如果不是nil的话，是指搜索时不超过的位置。如果我们将当前行的末尾位置作为参数传入：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>re-search-forward <span style="color: #66D9EF;">(</span>concat <span style="color: #A6E22E;">(</span>regexp-quote writestamp-suffix<span style="color: #A6E22E;">)</span>
-                           <span style="color: #E6DB74;">"$"</span><span style="color: #66D9EF;">)</span>
-                   end-of-line-position<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>re-search-forward <span style="color: #fd971f;">(</span>concat <span style="color: #b6e63e;">(</span>regexp-quote writestamp-suffix<span style="color: #b6e63e;">)</span>
+                           <span style="color: #e2c770;">"$"</span><span style="color: #fd971f;">)</span>
+                   end-of-line-position<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -946,12 +946,12 @@ g. \&gt;值匹配单词结束处的空字符串。<br /></li>
 那么搜索就会限制到本行之内，这正是我们需要的。那么问题是我们如何得到end-of-line-position的值呢？我们可以简单的使用endf-of-line将光标移动到行尾，然后得到point的值。但是要记住在这样做之后我们需要把光标移动到它原来的地方。移动光标然后恢复场景的工作正是save-excursion所做的。所以我么可以这么写：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">let</span> <span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>end-of-line-position <span style="color: #E6DB74;">(</span><span style="color: #F92672;">save-excursion</span>
-                              <span style="color: #FD971F;">(</span>end-of-line<span style="color: #FD971F;">)</span>
-                              <span style="color: #FD971F;">(</span>point<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-  <span style="color: #66D9EF;">(</span>re-search-forward <span style="color: #A6E22E;">(</span>concat <span style="color: #E6DB74;">(</span>regexp-quote writestamp-suffix<span style="color: #E6DB74;">)</span>
-                             <span style="color: #E6DB74;">"$"</span><span style="color: #A6E22E;">)</span>
-                     end-of-line-position<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">let</span> <span style="color: #fd971f;">(</span><span style="color: #b6e63e;">(</span>end-of-line-position <span style="color: #66d9ef;">(</span><span style="color: #fb2874;">save-excursion</span>
+                              <span style="color: #fb2874;">(</span>end-of-line<span style="color: #fb2874;">)</span>
+                              <span style="color: #fb2874;">(</span>point<span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+  <span style="color: #fd971f;">(</span>re-search-forward <span style="color: #b6e63e;">(</span>concat <span style="color: #66d9ef;">(</span>regexp-quote writestamp-suffix<span style="color: #66d9ef;">)</span>
+                             <span style="color: #e2c770;">"$"</span><span style="color: #b6e63e;">)</span>
+                     end-of-line-position<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -959,10 +959,10 @@ g. \&gt;值匹配单词结束处的空字符串。<br /></li>
 这会创建一个临时变量end-of-line-position来限制re-search-forward的搜索范围；但是不使用这个变量更简单：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>re-search-forward <span style="color: #66D9EF;">(</span>concat <span style="color: #A6E22E;">(</span>regexp-quote writestamp-suffix<span style="color: #A6E22E;">)</span>
-                           <span style="color: #A6E22E;">(</span><span style="color: #F92672;">save-excursion</span>
-                             <span style="color: #E6DB74;">(</span>end-of-line<span style="color: #E6DB74;">)</span>
-                             <span style="color: #E6DB74;">(</span>point<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>re-search-forward <span style="color: #fd971f;">(</span>concat <span style="color: #b6e63e;">(</span>regexp-quote writestamp-suffix<span style="color: #b6e63e;">)</span>
+                           <span style="color: #b6e63e;">(</span><span style="color: #fb2874;">save-excursion</span>
+                             <span style="color: #66d9ef;">(</span>end-of-line<span style="color: #66d9ef;">)</span>
+                             <span style="color: #66d9ef;">(</span>point<span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -974,51 +974,51 @@ g. \&gt;值匹配单词结束处的空字符串。<br /></li>
 所以update-writestamps可以被写成：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">update-writestamps</span> <span style="color: #66D9EF;">()</span>
-  <span style="color: #75715E;">"Find writestamps and replace them with the current time."</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">save-excursion</span>
-    <span style="color: #A6E22E;">(</span><span style="color: #F92672;">save-restriction</span>
-      <span style="color: #E6DB74;">(</span><span style="color: #F92672;">save-match-data</span>
-        <span style="color: #FD971F;">(</span>widen<span style="color: #FD971F;">)</span>
-        <span style="color: #FD971F;">(</span>goto-char <span style="color: #F92672;">(</span>point-min<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span>
-        <span style="color: #FD971F;">(</span><span style="color: #F92672;">while</span> <span style="color: #F92672;">(</span>re-search-forward
-                <span style="color: #AE81FF;">(</span>concat <span style="color: #E6DB74;">"^"</span>
-                        <span style="color: #66D9EF;">(</span>regexp-quote writestamp-prefix<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
-                nil t<span style="color: #F92672;">)</span>
-          <span style="color: #F92672;">(</span><span style="color: #F92672;">let</span> <span style="color: #AE81FF;">(</span><span style="color: #66D9EF;">(</span>start <span style="color: #A6E22E;">(</span>point<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
-            <span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> <span style="color: #66D9EF;">(</span>re-search-forward <span style="color: #A6E22E;">(</span>concat <span style="color: #AE81FF;">(</span>regexp-quote
-                                            writestamp-suffix<span style="color: #AE81FF;">)</span>
-                                           <span style="color: #E6DB74;">"$"</span><span style="color: #A6E22E;">)</span>
-                                   <span style="color: #A6E22E;">(</span><span style="color: #F92672;">save-excursion</span>
-                                     <span style="color: #AE81FF;">(</span>end-of-line<span style="color: #AE81FF;">)</span>
-                                     <span style="color: #AE81FF;">(</span>point<span style="color: #AE81FF;">)</span><span style="color: #A6E22E;">)</span>
-                                   t<span style="color: #66D9EF;">)</span>
-                <span style="color: #66D9EF;">(</span><span style="color: #F92672;">progn</span>
-                  <span style="color: #A6E22E;">(</span>delete-region start <span style="color: #AE81FF;">(</span>match-beginning 0<span style="color: #AE81FF;">)</span><span style="color: #A6E22E;">)</span>
-                  <span style="color: #A6E22E;">(</span>goto-char start<span style="color: #A6E22E;">)</span>
-                  <span style="color: #A6E22E;">(</span>insert <span style="color: #AE81FF;">(</span>format-time-string writestamp-format
-                                              <span style="color: #66D9EF;">(</span>current-time<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span><span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-  nil<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">update-writestamps</span> <span style="color: #fd971f;">()</span>
+  <span style="color: #7f7f80;">"Find writestamps and replace them with the current time."</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">save-excursion</span>
+    <span style="color: #b6e63e;">(</span><span style="color: #fb2874;">save-restriction</span>
+      <span style="color: #66d9ef;">(</span><span style="color: #fb2874;">save-match-data</span>
+        <span style="color: #fb2874;">(</span>widen<span style="color: #fb2874;">)</span>
+        <span style="color: #fb2874;">(</span>goto-char <span style="color: #fd971f;">(</span>point-min<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+        <span style="color: #fb2874;">(</span><span style="color: #fb2874;">while</span> <span style="color: #fd971f;">(</span>re-search-forward
+                <span style="color: #b6e63e;">(</span>concat <span style="color: #e2c770;">"^"</span>
+                        <span style="color: #a2b6da;">(</span>regexp-quote writestamp-prefix<span style="color: #a2b6da;">)</span><span style="color: #b6e63e;">)</span>
+                nil t<span style="color: #fd971f;">)</span>
+          <span style="color: #fd971f;">(</span><span style="color: #fb2874;">let</span> <span style="color: #b6e63e;">(</span><span style="color: #a2b6da;">(</span>start <span style="color: #9cb6ad;">(</span>point<span style="color: #9cb6ad;">)</span><span style="color: #a2b6da;">)</span><span style="color: #b6e63e;">)</span>
+            <span style="color: #b6e63e;">(</span><span style="color: #fb2874;">if</span> <span style="color: #a2b6da;">(</span>re-search-forward <span style="color: #9cb6ad;">(</span>concat <span style="color: #fb2874;">(</span>regexp-quote
+                                            writestamp-suffix<span style="color: #fb2874;">)</span>
+                                           <span style="color: #e2c770;">"$"</span><span style="color: #9cb6ad;">)</span>
+                                   <span style="color: #9cb6ad;">(</span><span style="color: #fb2874;">save-excursion</span>
+                                     <span style="color: #fb2874;">(</span>end-of-line<span style="color: #fb2874;">)</span>
+                                     <span style="color: #fb2874;">(</span>point<span style="color: #fb2874;">)</span><span style="color: #9cb6ad;">)</span>
+                                   t<span style="color: #a2b6da;">)</span>
+                <span style="color: #a2b6da;">(</span><span style="color: #fb2874;">progn</span>
+                  <span style="color: #9cb6ad;">(</span>delete-region start <span style="color: #fb2874;">(</span>match-beginning 0<span style="color: #fb2874;">)</span><span style="color: #9cb6ad;">)</span>
+                  <span style="color: #9cb6ad;">(</span>goto-char start<span style="color: #9cb6ad;">)</span>
+                  <span style="color: #9cb6ad;">(</span>insert <span style="color: #fb2874;">(</span>format-time-string writestamp-format
+                                              <span style="color: #fd971f;">(</span>current-time<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span><span style="color: #9cb6ad;">)</span><span style="color: #a2b6da;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+  nil<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org1e6effb" class="outline-3">
-<h3 id="org1e6effb"><span class="section-number-3">3.6</span> 更强大的正则能力</h3>
+<div id="outline-container-orgcfc6f72" class="outline-3">
+<h3 id="orgcfc6f72"><span class="section-number-3">3.6</span> 更强大的正则能力</h3>
 <div class="outline-text-3" id="text-3-6">
 <p>
 我们已经把我们最初的update-writestamps转换成了正则的形式，但是却并没有真正的展现出正则强大的能力。实际上，上面那长长的用于找到记录戳，检测同一行内的记录戳后缀，然后将其替换的代码可以被简化为下面的两个表达式：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>re-search-forward <span style="color: #66D9EF;">(</span>concat <span style="color: #E6DB74;">"^"</span>
-                           <span style="color: #A6E22E;">(</span>regexp-quote writestamp-prefix<span style="color: #A6E22E;">)</span>
-                           <span style="color: #E6DB74;">"</span><span style="color: #AE81FF;">\\</span><span style="color: #E6DB74;">(</span><span style="color: #E6DB74;">.**</span><span style="color: #AE81FF;">\\</span><span style="color: #E6DB74;">)</span><span style="color: #E6DB74;">"</span>
-                           <span style="color: #A6E22E;">(</span>regexp-quote writestamp-suffix<span style="color: #A6E22E;">)</span>
-                           <span style="color: #E6DB74;">"$"</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>replace-match <span style="color: #66D9EF;">(</span>format-time-string writestamp-format
-                                   <span style="color: #A6E22E;">(</span>current-time<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-               t t nil 1<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>re-search-forward <span style="color: #fd971f;">(</span>concat <span style="color: #e2c770;">"^"</span>
+                           <span style="color: #b6e63e;">(</span>regexp-quote writestamp-prefix<span style="color: #b6e63e;">)</span>
+                           <span style="color: #e2c770;">"</span><span style="color: #9c91e4; font-weight: bold;">\\</span><span style="color: #9c91e4; font-weight: bold;">(</span><span style="color: #e2c770;">.**</span><span style="color: #9c91e4; font-weight: bold;">\\</span><span style="color: #9c91e4; font-weight: bold;">)</span><span style="color: #e2c770;">"</span>
+                           <span style="color: #b6e63e;">(</span>regexp-quote writestamp-suffix<span style="color: #b6e63e;">)</span>
+                           <span style="color: #e2c770;">"$"</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>replace-match <span style="color: #fd971f;">(</span>format-time-string writestamp-format
+                                   <span style="color: #b6e63e;">(</span>current-time<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+               t t nil 1<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -1038,11 +1038,11 @@ g. \&gt;值匹配单词结束处的空字符串。<br /></li>
 第二个表达式调用了replace-match，它将会替换部分或者所有前一次搜索的匹配项。它的用法如下：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>replace-match new-string
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>replace-match new-string
                preserve-case
                literal
                base-string
-               subexpression<span style="color: #AE81FF;">)</span>
+               subexpression<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -1068,8 +1068,8 @@ g. \&gt;值匹配单词结束处的空字符串。<br /></li>
 作为对于update-writestamps的最终改进，我们可以看到如果我们这样写<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">while</span> <span style="color: #66D9EF;">(</span>re-search-forward <span style="color: #A6E22E;">(</span>concat ...<span style="color: #A6E22E;">)</span> ...<span style="color: #66D9EF;">)</span>
-  <span style="color: #66D9EF;">(</span>replace-match ...<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">while</span> <span style="color: #fd971f;">(</span>re-search-forward <span style="color: #b6e63e;">(</span>concat ...<span style="color: #b6e63e;">)</span> ...<span style="color: #fd971f;">)</span>
+  <span style="color: #fd971f;">(</span>replace-match ...<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -1077,29 +1077,29 @@ g. \&gt;值匹配单词结束处的空字符串。<br /></li>
 那么concat函数在每次循环里都会调用，即使参数没有改变，每次都会生成一个新的字符串。这样效率很低。更好的方式是在循环之前计算出我们需要的字符串，然后存储在一个临时变量里。因此，最好的update-writestamps是这样的：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">update-writestamps</span> <span style="color: #66D9EF;">()</span>
-  <span style="color: #75715E;">"Find writestamps and replace them with the current time."</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">save-excursion</span>
-    <span style="color: #A6E22E;">(</span><span style="color: #F92672;">save-restriction</span>
-      <span style="color: #E6DB74;">(</span><span style="color: #F92672;">save-match-data</span>
-        <span style="color: #FD971F;">(</span>widen<span style="color: #FD971F;">)</span>
-        <span style="color: #FD971F;">(</span>goto-char <span style="color: #F92672;">(</span>point-min<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span>
-        <span style="color: #FD971F;">(</span><span style="color: #F92672;">let</span> <span style="color: #F92672;">(</span><span style="color: #AE81FF;">(</span>regexp <span style="color: #66D9EF;">(</span>concat <span style="color: #E6DB74;">"^"</span>
-                              <span style="color: #A6E22E;">(</span>regexp-quote writestamp-prefix<span style="color: #A6E22E;">)</span>
-                              <span style="color: #E6DB74;">"</span><span style="color: #AE81FF;">\\</span><span style="color: #E6DB74;">(</span><span style="color: #E6DB74;">.*</span><span style="color: #AE81FF;">\\</span><span style="color: #E6DB74;">)</span><span style="color: #E6DB74;"> "</span>
-                              <span style="color: #A6E22E;">(</span>regexp-quote writestamp-suffix<span style="color: #A6E22E;">)</span>
-                              <span style="color: #E6DB74;">"$"</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span><span style="color: #F92672;">)</span>
-          <span style="color: #F92672;">(</span><span style="color: #F92672;">while</span> <span style="color: #AE81FF;">(</span>re-search-forward regexp nil t<span style="color: #AE81FF;">)</span>
-            <span style="color: #AE81FF;">(</span>replace-match <span style="color: #66D9EF;">(</span>format-time-string writestamp-format                                                                                    <span style="color: #A6E22E;">(</span>current-time<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-                           t t nil 1<span style="color: #AE81FF;">)</span><span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-  nil<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">update-writestamps</span> <span style="color: #fd971f;">()</span>
+  <span style="color: #7f7f80;">"Find writestamps and replace them with the current time."</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">save-excursion</span>
+    <span style="color: #b6e63e;">(</span><span style="color: #fb2874;">save-restriction</span>
+      <span style="color: #66d9ef;">(</span><span style="color: #fb2874;">save-match-data</span>
+        <span style="color: #fb2874;">(</span>widen<span style="color: #fb2874;">)</span>
+        <span style="color: #fb2874;">(</span>goto-char <span style="color: #fd971f;">(</span>point-min<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+        <span style="color: #fb2874;">(</span><span style="color: #fb2874;">let</span> <span style="color: #fd971f;">(</span><span style="color: #b6e63e;">(</span>regexp <span style="color: #a2b6da;">(</span>concat <span style="color: #e2c770;">"^"</span>
+                              <span style="color: #9cb6ad;">(</span>regexp-quote writestamp-prefix<span style="color: #9cb6ad;">)</span>
+                              <span style="color: #e2c770;">"</span><span style="color: #9c91e4; font-weight: bold;">\\</span><span style="color: #9c91e4; font-weight: bold;">(</span><span style="color: #e2c770;">.*</span><span style="color: #9c91e4; font-weight: bold;">\\</span><span style="color: #9c91e4; font-weight: bold;">)</span><span style="color: #e2c770;"> "</span>
+                              <span style="color: #9cb6ad;">(</span>regexp-quote writestamp-suffix<span style="color: #9cb6ad;">)</span>
+                              <span style="color: #e2c770;">"$"</span><span style="color: #a2b6da;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+          <span style="color: #fd971f;">(</span><span style="color: #fb2874;">while</span> <span style="color: #b6e63e;">(</span>re-search-forward regexp nil t<span style="color: #b6e63e;">)</span>
+            <span style="color: #b6e63e;">(</span>replace-match <span style="color: #a2b6da;">(</span>format-time-string writestamp-format                                                                                    <span style="color: #9cb6ad;">(</span>current-time<span style="color: #9cb6ad;">)</span><span style="color: #a2b6da;">)</span>
+                           t t nil 1<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+  nil<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-orgbe2d1fb" class="outline-2">
-<h2 id="orgbe2d1fb"><span class="section-number-2">4</span> 修改戳</h2>
+<div id="outline-container-orga1dfc2c" class="outline-2">
+<h2 id="orga1dfc2c"><span class="section-number-2">4</span> 修改戳</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 好的，时间戳（timestamps）挺有用，而记录戳（writestamps）也不错，但是修改戳（modifystamps）可能更有用。一个修改戳是一个记录着文件最后修改时间的记录戳，这可能和文件最后存储到磁盘上的时间不一样。例如，如果你访问了一个文件并且在没做任何修改的情况下将其保存在磁盘上，你就不应该更新修改戳。<br />
@@ -1110,8 +1110,8 @@ g. \&gt;值匹配单词结束处的空字符串。<br /></li>
 </p>
 </div>
 
-<div id="outline-container-org7518445" class="outline-3">
-<h3 id="org7518445"><span class="section-number-3">4.1</span> 简单的方式#1</h3>
+<div id="outline-container-orgc87b8c5" class="outline-3">
+<h3 id="orgc87b8c5"><span class="section-number-3">4.1</span> 简单的方式#1</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 Emacs有一个称为first-change-hook的钩子变量。每当buffer自保存之后第一次被修改，变量中的函数将会被调用。使用这个钩子来实现修改戳只是把我们之前的update-writestamps函数从local-write-file-hooks变为first-change-hook。当然，我们还要把它的名字改为update-modifystamps，并且引入一些新的变量&#x2013;modifystamp-format，modifystamp-prefix，以及modifystamp-suffix&#x2013;而不影响原来记录戳的那些变量。update-modifystamps需要使用这些新的变量。<br />
@@ -1121,7 +1121,7 @@ Emacs有一个称为first-change-hook的钩子变量。每当buffer自保存之�
 在此之前，first-change-hook是一个全局变量，而我们需要一个buffer局部的。如果我们将update-modifystamps添加到first-change-hook而first-change-hook是全局的，那么任何buffer保存的时候都会触发这个方法。我们需要将它变为buffer局部的，而其他buffer则继续使用默认的全局变量。<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>make-local-hook 'first-change-hook<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>make-local-hook 'first-change-hook<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -1129,33 +1129,33 @@ Emacs有一个称为first-change-hook的钩子变量。每当buffer自保存之�
 虽然可以使用make-localvariable或者make-variable-buffer-local来使普通变量变为buffer局部的（下面会看到），但是钩子变量必须使用make-local-hook。<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">modifystamp-format</span> <span style="color: #E6DB74;">"%C"</span>
-  <span style="color: #75715E;">"*Format for modifystamps (c.f. 'format-time-string')."</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defvar</span> <span style="color: #fd971f;">modifystamp-format</span> <span style="color: #e2c770;">"%C"</span>
+  <span style="color: #7f7f80;">"*Format for modifystamps (c.f. 'format-time-string')."</span><span style="color: #fb2874;">)</span>
 
-<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">modifystamp-prefix</span> <span style="color: #E6DB74;">"MODIFYSTAMP (("</span>
-  <span style="color: #75715E;">"*String identifying start of modifystamp."</span><span style="color: #AE81FF;">)</span>
+<span style="color: #fb2874;">(</span><span style="color: #fb2874;">defvar</span> <span style="color: #fd971f;">modifystamp-prefix</span> <span style="color: #e2c770;">"MODIFYSTAMP (("</span>
+  <span style="color: #7f7f80;">"*String identifying start of modifystamp."</span><span style="color: #fb2874;">)</span>
 
-<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">modifystamp-suffix</span> <span style="color: #E6DB74;">"))"</span>
-  <span style="color: #75715E;">"*String that terminates a modifystamp."</span><span style="color: #AE81FF;">)</span>
+<span style="color: #fb2874;">(</span><span style="color: #fb2874;">defvar</span> <span style="color: #fd971f;">modifystamp-suffix</span> <span style="color: #e2c770;">"))"</span>
+  <span style="color: #7f7f80;">"*String that terminates a modifystamp."</span><span style="color: #fb2874;">)</span>
 
-<span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">update-modifystamps</span> <span style="color: #66D9EF;">()</span>
-  <span style="color: #75715E;">"Find modifystamps and replace them with the current time."</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">save-excursion</span>
-    <span style="color: #A6E22E;">(</span><span style="color: #F92672;">save-restriction</span>
-      <span style="color: #E6DB74;">(</span><span style="color: #F92672;">save-match-data</span>
-        <span style="color: #FD971F;">(</span>widen<span style="color: #FD971F;">)</span>
-        <span style="color: #FD971F;">(</span>goto-char <span style="color: #F92672;">(</span>point-min<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span>
-        <span style="color: #FD971F;">(</span><span style="color: #F92672;">let</span> <span style="color: #F92672;">(</span><span style="color: #AE81FF;">(</span>regexp <span style="color: #66D9EF;">(</span>concat <span style="color: #E6DB74;">"^"</span>
-                              <span style="color: #A6E22E;">(</span>regexp-quote modifystamp-prefix<span style="color: #A6E22E;">)</span>
-                              <span style="color: #E6DB74;">" </span><span style="color: #AE81FF;">\\</span><span style="color: #E6DB74;">(</span><span style="color: #E6DB74;">.*</span><span style="color: #AE81FF;">\\</span><span style="color: #E6DB74;">)</span><span style="color: #E6DB74;"> "</span>
-                              <span style="color: #A6E22E;">(</span>regexp-quote modifystamp-suffix<span style="color: #A6E22E;">)</span>
-                              <span style="color: #E6DB74;">"$"</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span><span style="color: #F92672;">)</span>
-          <span style="color: #F92672;">(</span><span style="color: #F92672;">while</span> <span style="color: #AE81FF;">(</span>re-search-forward regexp nil t<span style="color: #AE81FF;">)</span>
-            <span style="color: #AE81FF;">(</span>replace-match <span style="color: #66D9EF;">(</span>format-time-string modifystamp-format
-                                               <span style="color: #A6E22E;">(</span>current-time<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-                           t t nil 1<span style="color: #AE81FF;">)</span><span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-  nil<span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>add-hook 'first-change-hook 'update-modifystamps nil t<span style="color: #AE81FF;">)</span>
+<span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">update-modifystamps</span> <span style="color: #fd971f;">()</span>
+  <span style="color: #7f7f80;">"Find modifystamps and replace them with the current time."</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">save-excursion</span>
+    <span style="color: #b6e63e;">(</span><span style="color: #fb2874;">save-restriction</span>
+      <span style="color: #66d9ef;">(</span><span style="color: #fb2874;">save-match-data</span>
+        <span style="color: #fb2874;">(</span>widen<span style="color: #fb2874;">)</span>
+        <span style="color: #fb2874;">(</span>goto-char <span style="color: #fd971f;">(</span>point-min<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+        <span style="color: #fb2874;">(</span><span style="color: #fb2874;">let</span> <span style="color: #fd971f;">(</span><span style="color: #b6e63e;">(</span>regexp <span style="color: #a2b6da;">(</span>concat <span style="color: #e2c770;">"^"</span>
+                              <span style="color: #9cb6ad;">(</span>regexp-quote modifystamp-prefix<span style="color: #9cb6ad;">)</span>
+                              <span style="color: #e2c770;">" </span><span style="color: #9c91e4; font-weight: bold;">\\</span><span style="color: #9c91e4; font-weight: bold;">(</span><span style="color: #e2c770;">.*</span><span style="color: #9c91e4; font-weight: bold;">\\</span><span style="color: #9c91e4; font-weight: bold;">)</span><span style="color: #e2c770;"> "</span>
+                              <span style="color: #9cb6ad;">(</span>regexp-quote modifystamp-suffix<span style="color: #9cb6ad;">)</span>
+                              <span style="color: #e2c770;">"$"</span><span style="color: #a2b6da;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+          <span style="color: #fd971f;">(</span><span style="color: #fb2874;">while</span> <span style="color: #b6e63e;">(</span>re-search-forward regexp nil t<span style="color: #b6e63e;">)</span>
+            <span style="color: #b6e63e;">(</span>replace-match <span style="color: #a2b6da;">(</span>format-time-string modifystamp-format
+                                               <span style="color: #9cb6ad;">(</span>current-time<span style="color: #9cb6ad;">)</span><span style="color: #a2b6da;">)</span>
+                           t t nil 1<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+  nil<span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>add-hook 'first-change-hook 'update-modifystamps nil t<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -1169,18 +1169,18 @@ add-hook中的nil参数只是一个占位符。我们只关注最后一个参数
 </div>
 </div>
 
-<div id="outline-container-orgbfd5d37" class="outline-3">
-<h3 id="orgbfd5d37"><span class="section-number-3">4.2</span> 简单的方式#2</h3>
+<div id="outline-container-org79942d0" class="outline-3">
+<h3 id="org79942d0"><span class="section-number-3">4.2</span> 简单的方式#2</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 这一次我们再次使用local-write-file-hooks，但是我们只在buffer-modified-p返回true的时候才调用update-modifystamps，也就是说只在当前buffer被改动的情况下才调用它：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">maybe-update-modifystamps</span> <span style="color: #66D9EF;">()</span>
-  <span style="color: #75715E;">"Call 'update-modifystamps' if the buffer has been modified."</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>buffer-modified-p<span style="color: #A6E22E;">)</span>
-      <span style="color: #A6E22E;">(</span>update-modifystamps<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>add-hook 'local-write-file-hooks 'maybe-update-modifystamps<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">maybe-update-modifystamps</span> <span style="color: #fd971f;">()</span>
+  <span style="color: #7f7f80;">"Call 'update-modifystamps' if the buffer has been modified."</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">if</span> <span style="color: #b6e63e;">(</span>buffer-modified-p<span style="color: #b6e63e;">)</span>
+      <span style="color: #b6e63e;">(</span>update-modifystamps<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>add-hook 'local-write-file-hooks 'maybe-update-modifystamps<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -1190,8 +1190,8 @@ add-hook中的nil参数只是一个占位符。我们只关注最后一个参数
 </div>
 </div>
 
-<div id="outline-container-org9123a4e" class="outline-3">
-<h3 id="org9123a4e"><span class="section-number-3">4.3</span> 聪明的方式</h3>
+<div id="outline-container-org5ab88b2" class="outline-3">
+<h3 id="org5ab88b2"><span class="section-number-3">4.3</span> 聪明的方式</h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
 理论上，我们可以在每次更改buffer之后调用update-modifystamps，但是实际中在每次按键之后都搜索整个文件并且对其进行修改是代价昂贵的一件事。但是每次buffer更改之后将时间记录下来就不那么难以接受。然后，当buffer保存到文件时，记录的时间就可以用来计算修改戳中的时间了。<br />
@@ -1201,7 +1201,7 @@ add-hook中的nil参数只是一个占位符。我们只关注最后一个参数
 钩子变量after-change-functions包含着每次buffer更改时要调用的函数。首先我们让它变为buffer-local的：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>make-local-hook 'after-change-functions<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>make-local-hook 'after-change-functions<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -1209,9 +1209,9 @@ add-hook中的nil参数只是一个占位符。我们只关注最后一个参数
 然后我们定义一个buffer-local的变量来保存这个buffer最后一次修改的时间：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defvar</span> <span style="color: #FD971F;">last-change-time</span> nil
-  <span style="color: #75715E;">"Time of last buffer modification."</span><span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>make-variable-buffer-local 'last-change-time<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defvar</span> <span style="color: #fd971f;">last-change-time</span> nil
+  <span style="color: #7f7f80;">"Time of last buffer modification."</span><span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>make-variable-buffer-local 'last-change-time<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -1223,7 +1223,7 @@ add-hook中的nil参数只是一个占位符。我们只关注最后一个参数
 现在我们需要一个函数来在每次buffer改变的时候修改last-change-time的值。让我们将其命名为remember-change-time并且将它添加到after-change-functions里：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>add-hook 'after-change-functions 'remember-change-time nil t<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>add-hook 'after-change-functions 'remember-change-time nil t<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -1231,9 +1231,9 @@ add-hook中的nil参数只是一个占位符。我们只关注最后一个参数
 after-change-functions中的函数有三个参数来描述刚刚发生的改变（参照<a href="7.html">第7章</a>中的<a href="7.html#MissingReference">Mode Meat</a>）。但是remember-change-time并不关心刚才发生了什么更改；它只关心发生了更改这件事本身。所以我们可以选择忽略这些参数。<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">remember-change-time</span> <span style="color: #66D9EF;">(</span><span style="color: #66D9EF;">&amp;rest</span> unused<span style="color: #66D9EF;">)</span>
-  <span style="color: #75715E;">"Store the current time in 'last-change-time'."</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">setq</span> last-change-time <span style="color: #A6E22E;">(</span>current-time<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">remember-change-time</span> <span style="color: #fd971f;">(</span><span style="color: #66d9ef;">&amp;rest</span> unused<span style="color: #fd971f;">)</span>
+  <span style="color: #7f7f80;">"Store the current time in 'last-change-time'."</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">setq</span> last-change-time <span style="color: #b6e63e;">(</span>current-time<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -1241,8 +1241,8 @@ after-change-functions中的函数有三个参数来描述刚刚发生的改变�
 关键字&amp;rest，后面跟着一个参数名称，只能出现在函数的参数列表最后。它表示“将剩下的参数收集到一个列表里并且赋给最后的参数”（本例中为unused）。函数可能还有其他的参数，包括&amp;optional的可选参数，但是这些都要出现在&amp;rest的前面。在所有其他参数按照正常格式分配完成后，&amp;rest将其他剩下的参数放到一个列表里。所以如果一个函数这么定义<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">foo</span> <span style="color: #66D9EF;">(</span>a b <span style="color: #66D9EF;">&amp;rest</span> c<span style="color: #66D9EF;">)</span>
-  ...<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">foo</span> <span style="color: #fd971f;">(</span>a b <span style="color: #66d9ef;">&amp;rest</span> c<span style="color: #fd971f;">)</span>
+  ...<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -1258,24 +1258,24 @@ after-change-functions中的函数有三个参数来描述刚刚发生的改变�
 现在我们来修改update-modifystamps：它必须使用储存在last-change-time中的时间而不是使用(current-time)。从效率考虑，它还需要在执行完成后将last-change-time置为nil，这样可以避免以后当文件在未修改的情况下进行保存时对update-modifystamps的额外调用。<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">update-modifystamps</span> <span style="color: #66D9EF;">()</span>
-  <span style="color: #75715E;">"Find modifystamps and replace them with the saved time."</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">save-excursion</span>
-    <span style="color: #A6E22E;">(</span><span style="color: #F92672;">save-restriction</span>
-      <span style="color: #E6DB74;">(</span><span style="color: #F92672;">save-match-data</span>
-        <span style="color: #FD971F;">(</span>widen<span style="color: #FD971F;">)</span>
-        <span style="color: #FD971F;">(</span>goto-char <span style="color: #F92672;">(</span>point-min<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span>
-        <span style="color: #FD971F;">(</span><span style="color: #F92672;">let</span> <span style="color: #F92672;">(</span><span style="color: #AE81FF;">(</span>regexp <span style="color: #66D9EF;">(</span>concat <span style="color: #E6DB74;">"^"</span>
-                              <span style="color: #A6E22E;">(</span>regexp-quote modifystamp-prefix<span style="color: #A6E22E;">)</span>
-                              <span style="color: #E6DB74;">"</span><span style="color: #AE81FF;">\\</span><span style="color: #E6DB74;">(</span><span style="color: #E6DB74;">.*</span><span style="color: #AE81FF;">\\</span><span style="color: #E6DB74;">)</span><span style="color: #E6DB74;">"</span>
-                              <span style="color: #A6E22E;">(</span>regexp-quote modifystamp-suffix<span style="color: #A6E22E;">)</span>
-                              <span style="color: #E6DB74;">"$"</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span><span style="color: #F92672;">)</span>
-          <span style="color: #F92672;">(</span><span style="color: #F92672;">while</span> <span style="color: #AE81FF;">(</span>re-search-forward regexp nil t<span style="color: #AE81FF;">)</span>
-            <span style="color: #AE81FF;">(</span>replace-match <span style="color: #66D9EF;">(</span>format-time-string modifystamp-format
-                                               last-change-time<span style="color: #66D9EF;">)</span>
-                           t t nil 1<span style="color: #AE81FF;">)</span><span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">setq</span> last-change-time nil<span style="color: #66D9EF;">)</span>
-  nil<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">update-modifystamps</span> <span style="color: #fd971f;">()</span>
+  <span style="color: #7f7f80;">"Find modifystamps and replace them with the saved time."</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">save-excursion</span>
+    <span style="color: #b6e63e;">(</span><span style="color: #fb2874;">save-restriction</span>
+      <span style="color: #66d9ef;">(</span><span style="color: #fb2874;">save-match-data</span>
+        <span style="color: #fb2874;">(</span>widen<span style="color: #fb2874;">)</span>
+        <span style="color: #fb2874;">(</span>goto-char <span style="color: #fd971f;">(</span>point-min<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+        <span style="color: #fb2874;">(</span><span style="color: #fb2874;">let</span> <span style="color: #fd971f;">(</span><span style="color: #b6e63e;">(</span>regexp <span style="color: #a2b6da;">(</span>concat <span style="color: #e2c770;">"^"</span>
+                              <span style="color: #9cb6ad;">(</span>regexp-quote modifystamp-prefix<span style="color: #9cb6ad;">)</span>
+                              <span style="color: #e2c770;">"</span><span style="color: #9c91e4; font-weight: bold;">\\</span><span style="color: #9c91e4; font-weight: bold;">(</span><span style="color: #e2c770;">.*</span><span style="color: #9c91e4; font-weight: bold;">\\</span><span style="color: #9c91e4; font-weight: bold;">)</span><span style="color: #e2c770;">"</span>
+                              <span style="color: #9cb6ad;">(</span>regexp-quote modifystamp-suffix<span style="color: #9cb6ad;">)</span>
+                              <span style="color: #e2c770;">"$"</span><span style="color: #a2b6da;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+          <span style="color: #fd971f;">(</span><span style="color: #fb2874;">while</span> <span style="color: #b6e63e;">(</span>re-search-forward regexp nil t<span style="color: #b6e63e;">)</span>
+            <span style="color: #b6e63e;">(</span>replace-match <span style="color: #a2b6da;">(</span>format-time-string modifystamp-format
+                                               last-change-time<span style="color: #a2b6da;">)</span>
+                           t t nil 1<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">setq</span> last-change-time nil<span style="color: #fd971f;">)</span>
+  nil<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -1283,10 +1283,10 @@ after-change-functions中的函数有三个参数来描述刚刚发生的改变�
 最后，我们不希望在last-change-time为nil时调用update-modifystamps：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">maybe-update-modifystamps</span> <span style="color: #66D9EF;">()</span>
-  <span style="color: #75715E;">"Call 'update-modifystamps' if the buffer has been modified."</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> last-change-time <span style="color: #75715E;">; </span><span style="color: #75715E;">&#26367;&#25442;&#23545;&#20110;(buffer-modified-p)&#30340;&#26816;&#27979;</span>
-      <span style="color: #A6E22E;">(</span>update-modifystamps<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">maybe-update-modifystamps</span> <span style="color: #fd971f;">()</span>
+  <span style="color: #7f7f80;">"Call 'update-modifystamps' if the buffer has been modified."</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">if</span> last-change-time <span style="color: #555556;">; </span><span style="color: #555556;">&#26367;&#25442;&#23545;&#20110;(buffer-modified-p)&#30340;&#26816;&#27979;</span>
+      <span style="color: #b6e63e;">(</span>update-modifystamps<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -1296,8 +1296,8 @@ maybe-update-modifystamps中仍然存在很大的问题。在阅读下一部分�
 </div>
 </div>
 
-<div id="outline-container-org1c3cb6a" class="outline-3">
-<h3 id="org1c3cb6a"><span class="section-number-3">4.4</span> 一个小Bug</h3>
+<div id="outline-container-orgc8005e9" class="outline-3">
+<h3 id="orgc8005e9"><span class="section-number-3">4.4</span> 一个小Bug</h3>
 <div class="outline-text-3" id="text-4-4">
 <p>
 缺陷是每次update-modifystamps重写修改戳时，会引起buffer的改变，这又回造成last-change-time的改变！这样只有第一次修改戳会被正确的修改。后续的修改戳会是一个与文件储存的时间相近的时间而不是最后一次修改的时间。<br />
@@ -1307,11 +1307,11 @@ maybe-update-modifystamps中仍然存在很大的问题。在阅读下一部分�
 一个绕过这个问题的方法是当执行update-modifystamps时暂时将after-change-functions置为nil：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>add-hook 'local-write-file-hooks
-          '<span style="color: #66D9EF;">(</span>lambda <span style="color: #A6E22E;">()</span>
-            <span style="color: #A6E22E;">(</span><span style="color: #F92672;">if</span> last-change-time
-                <span style="color: #E6DB74;">(</span><span style="color: #F92672;">let</span> <span style="color: #FD971F;">(</span><span style="color: #F92672;">(</span>after-change-functions nil<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span>
-                  <span style="color: #FD971F;">(</span>update-modifystamps<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>add-hook 'local-write-file-hooks
+          '<span style="color: #fd971f;">(</span>lambda <span style="color: #b6e63e;">()</span>
+            <span style="color: #b6e63e;">(</span><span style="color: #fb2874;">if</span> last-change-time
+                <span style="color: #66d9ef;">(</span><span style="color: #fb2874;">let</span> <span style="color: #fb2874;">(</span><span style="color: #fd971f;">(</span>after-change-functions nil<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+                  <span style="color: #fb2874;">(</span>update-modifystamps<span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -1331,10 +1331,10 @@ let创建了一个临时变量after-change-functions，用来在调用let体中�
 “截取”last-change-time最简单的方式是将其作为参数传递给update-modifystamps：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>add-hook 'local-write-file-hooks
-          '<span style="color: #66D9EF;">(</span>lambda <span style="color: #A6E22E;">()</span>
-            <span style="color: #A6E22E;">(</span><span style="color: #F92672;">if</span> last-change-time
-                <span style="color: #E6DB74;">(</span>update-modifystamps last-change-time<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>add-hook 'local-write-file-hooks
+          '<span style="color: #fd971f;">(</span>lambda <span style="color: #b6e63e;">()</span>
+            <span style="color: #b6e63e;">(</span><span style="color: #fb2874;">if</span> last-change-time
+                <span style="color: #66d9ef;">(</span>update-modifystamps last-change-time<span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -1342,24 +1342,24 @@ let创建了一个临时变量after-change-functions，用来在调用let体中�
 这需要修改update-modifystamps，使其具有一个参数，并且在调用format-time-string时使用它：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">update-modifystamps</span> <span style="color: #66D9EF;">(</span>time<span style="color: #66D9EF;">)</span>
-  <span style="color: #75715E;">"Find modifystamps and replace them with the given time."</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">save-excursion</span>
-    <span style="color: #A6E22E;">(</span><span style="color: #F92672;">save-restriction</span>
-      <span style="color: #E6DB74;">(</span><span style="color: #F92672;">save-match-data</span>
-        <span style="color: #FD971F;">(</span>widen<span style="color: #FD971F;">)</span>
-        <span style="color: #FD971F;">(</span>goto-char <span style="color: #F92672;">(</span>point-min<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span>
-        <span style="color: #FD971F;">(</span><span style="color: #F92672;">let</span> <span style="color: #F92672;">(</span><span style="color: #AE81FF;">(</span>regexp <span style="color: #66D9EF;">(</span>concat <span style="color: #E6DB74;">"^"</span>
-                              <span style="color: #A6E22E;">(</span>regexp-quote modifystamp-prefix<span style="color: #A6E22E;">)</span>
-                              <span style="color: #E6DB74;">"</span><span style="color: #AE81FF;">\\</span><span style="color: #E6DB74;">(</span><span style="color: #E6DB74;">.*</span><span style="color: #AE81FF;">\\</span><span style="color: #E6DB74;">)</span><span style="color: #E6DB74;">"</span>
-                              <span style="color: #A6E22E;">(</span>regexp-quote modifystamp-suffix<span style="color: #A6E22E;">)</span>
-                              <span style="color: #E6DB74;">"$"</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span><span style="color: #F92672;">)</span>
-          <span style="color: #F92672;">(</span><span style="color: #F92672;">while</span> <span style="color: #AE81FF;">(</span>re-search-forward regexp nil t<span style="color: #AE81FF;">)</span>
-            <span style="color: #AE81FF;">(</span>replace-match <span style="color: #66D9EF;">(</span>format-time-string modifystamp-format
-                                               time<span style="color: #66D9EF;">)</span>
-                           t t nil 1<span style="color: #AE81FF;">)</span><span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">setq</span> last-change-time nil<span style="color: #66D9EF;">)</span>
-  nil<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">update-modifystamps</span> <span style="color: #fd971f;">(</span>time<span style="color: #fd971f;">)</span>
+  <span style="color: #7f7f80;">"Find modifystamps and replace them with the given time."</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">save-excursion</span>
+    <span style="color: #b6e63e;">(</span><span style="color: #fb2874;">save-restriction</span>
+      <span style="color: #66d9ef;">(</span><span style="color: #fb2874;">save-match-data</span>
+        <span style="color: #fb2874;">(</span>widen<span style="color: #fb2874;">)</span>
+        <span style="color: #fb2874;">(</span>goto-char <span style="color: #fd971f;">(</span>point-min<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+        <span style="color: #fb2874;">(</span><span style="color: #fb2874;">let</span> <span style="color: #fd971f;">(</span><span style="color: #b6e63e;">(</span>regexp <span style="color: #a2b6da;">(</span>concat <span style="color: #e2c770;">"^"</span>
+                              <span style="color: #9cb6ad;">(</span>regexp-quote modifystamp-prefix<span style="color: #9cb6ad;">)</span>
+                              <span style="color: #e2c770;">"</span><span style="color: #9c91e4; font-weight: bold;">\\</span><span style="color: #9c91e4; font-weight: bold;">(</span><span style="color: #e2c770;">.*</span><span style="color: #9c91e4; font-weight: bold;">\\</span><span style="color: #9c91e4; font-weight: bold;">)</span><span style="color: #e2c770;">"</span>
+                              <span style="color: #9cb6ad;">(</span>regexp-quote modifystamp-suffix<span style="color: #9cb6ad;">)</span>
+                              <span style="color: #e2c770;">"$"</span><span style="color: #a2b6da;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+          <span style="color: #fd971f;">(</span><span style="color: #fb2874;">while</span> <span style="color: #b6e63e;">(</span>re-search-forward regexp nil t<span style="color: #b6e63e;">)</span>
+            <span style="color: #b6e63e;">(</span>replace-match <span style="color: #a2b6da;">(</span>format-time-string modifystamp-format
+                                               time<span style="color: #a2b6da;">)</span>
+                           t t nil 1<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">setq</span> last-change-time nil<span style="color: #fd971f;">)</span>
+  nil<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -1368,19 +1368,19 @@ let创建了一个临时变量after-change-functions，用来在调用let体中�
 </p>
 
 <p>
-<a id="org5507d95"></a>[18]. 如何找到它呢？当然是通过M-x apropos RET time RET。<br />
+<a id="orgd16152b"></a>[18]. 如何找到它呢？当然是通过M-x apropos RET time RET。<br />
 </p>
 
 <p>
-<a id="org92ce2f5"></a>[19]. 在Emacs 20.1中，在本身编写时还没发布，将会引入一个全新的用于编辑用户选项的称为“customize”的系统。将用户选项加入到“customize”中需要使用特殊的函数defgroup和defcustom。<br />
+<a id="org7c0192e"></a>[19]. 在Emacs 20.1中，在本身编写时还没发布，将会引入一个全新的用于编辑用户选项的称为“customize”的系统。将用户选项加入到“customize”中需要使用特殊的函数defgroup和defcustom。<br />
 </p>
 
 <p>
-<a id="orgad0e899"></a>[20]. 插入记录戳与插入日期或者时间很类似。编写这么一个函数就留给读者作为练习了。<br />
+<a id="org5dca205"></a>[20]. 插入记录戳与插入日期或者时间很类似。编写这么一个函数就留给读者作为练习了。<br />
 </p>
 
 <p>
-<a id="org91968e4"></a>[21]. *在正则表达式中被计算机科学家称为“Kleene Closure”。<br />
+<a id="org011ceec"></a>[21]. *在正则表达式中被计算机科学家称为“Kleene Closure”。<br />
 </p>
 </div>
 </div>
