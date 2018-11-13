@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-02-27 Tue 09:37 -->
+<!-- 2018-11-13 Tue 18:05 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>列表</title>
@@ -235,20 +235,20 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orga7dc6b3">1. 在本章：</a></li>
-<li><a href="#orgc60ad30">2. 列表初探</a></li>
-<li><a href="#orgbdb049e">3. 列表细节</a></li>
-<li><a href="#org3f80065">4. 递归列表函数</a></li>
-<li><a href="#org478f61e">5. 迭代列表函数</a></li>
-<li><a href="#orgb413251">6. 其他有用的列表函数</a></li>
-<li><a href="#org2c001bc">7. 破坏性列表操作</a></li>
-<li><a href="#org6fa12be">8. 循环列表？！</a></li>
+<li><a href="#org4b8b676">1. 在本章：</a></li>
+<li><a href="#orgfce4548">2. 列表初探</a></li>
+<li><a href="#orgdf6dee0">3. 列表细节</a></li>
+<li><a href="#orga1be8b8">4. 递归列表函数</a></li>
+<li><a href="#orgc4dca81">5. 迭代列表函数</a></li>
+<li><a href="#org15eac8d">6. 其他有用的列表函数</a></li>
+<li><a href="#org66c5d6c">7. 破坏性列表操作</a></li>
+<li><a href="#org50dc02d">8. 循环列表？！</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orga7dc6b3" class="outline-2">
-<h2 id="orga7dc6b3"><span class="section-number-2">1</span> 在本章：</h2>
+<div id="outline-container-org4b8b676" class="outline-2">
+<h2 id="org4b8b676"><span class="section-number-2">1</span> 在本章：</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <b>列表初探</b><br />
@@ -266,16 +266,16 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgc60ad30" class="outline-2">
-<h2 id="orgc60ad30"><span class="section-number-2">2</span> 列表初探</h2>
+<div id="outline-container-orgfce4548" class="outline-2">
+<h2 id="orgfce4548"><span class="section-number-2">2</span> 列表初探</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 就像我们已经看到的，Lisp中的列表就是一个括号包裹起来的0个或多个Lisp表达式的序列。列表可以嵌套；也就是说括号里的子表达式还可以包含一个或多个列表。下面是一些例子：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">&#19977;&#20010;&#31526;&#21495;&#32452;&#25104;&#30340;&#21015;&#34920;</span>
-<span style="color: #AE81FF;">(</span>7 <span style="color: #E6DB74;">"foo"</span><span style="color: #AE81FF;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">&#19968;&#20010;&#25968;&#23383;&#21644;&#23383;&#31526;&#20018;&#32452;&#25104;&#30340;&#21015;&#34920;</span>
-<span style="color: #AE81FF;">(</span><span style="color: #66D9EF;">(</span>4.12 31178<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">&#21015;&#34920;&#21482;&#26377;&#19968;&#20010;&#20803;&#32032;&#65306;&#19968;&#20010;&#20004;&#20010;&#25968;&#23383;&#32452;&#25104;&#30340;&#33258;&#21015;&#34920;</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>a b c<span style="color: #fb2874;">)</span> <span style="color: #555556;">; </span><span style="color: #555556;">&#19977;&#20010;&#31526;&#21495;&#32452;&#25104;&#30340;&#21015;&#34920;</span>
+<span style="color: #fb2874;">(</span>7 <span style="color: #e2c770;">"foo"</span><span style="color: #fb2874;">)</span> <span style="color: #555556;">; </span><span style="color: #555556;">&#19968;&#20010;&#25968;&#23383;&#21644;&#23383;&#31526;&#20018;&#32452;&#25104;&#30340;&#21015;&#34920;</span>
+<span style="color: #fb2874;">(</span><span style="color: #fd971f;">(</span>4.12 31178<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> <span style="color: #555556;">; </span><span style="color: #555556;">&#21015;&#34920;&#21482;&#26377;&#19968;&#20010;&#20803;&#32032;&#65306;&#19968;&#20010;&#20004;&#20010;&#25968;&#23383;&#32452;&#25104;&#30340;&#33258;&#21015;&#34920;</span>
 </pre>
 </div>
 
@@ -284,12 +284,12 @@ for the JavaScript code in this tag.
 </p>
 
 <p>
-函数car和cdr[<a href="#orgaad1aba">23</a>]用来访问列表的一部分：car得到列表的第一个元素，cdr得到列表剩下的元素（除第一个元素之外）。<br />
+函数car和cdr[<a href="#org316bb24">23</a>]用来访问列表的一部分：car得到列表的第一个元素，cdr得到列表剩下的元素（除第一个元素之外）。<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>car'<span style="color: #66D9EF;">(</span>abc<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; a
-<span style="color: #AE81FF;">(</span>cdr'<span style="color: #66D9EF;">(</span>abc<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>b c<span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>car <span style="color: #66D9EF;">(</span>cdr '<span style="color: #A6E22E;">(</span>a b c<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; b
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>car'<span style="color: #fd971f;">(</span>abc<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; a
+<span style="color: #fb2874;">(</span>cdr'<span style="color: #fd971f;">(</span>abc<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span>b c<span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>car <span style="color: #fd971f;">(</span>cdr '<span style="color: #b6e63e;">(</span>a b c<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; b
 </pre>
 </div>
 
@@ -301,7 +301,7 @@ for the JavaScript code in this tag.
 只包含一个元素的列表的cdr为nil：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>cdr '<span style="color: #66D9EF;">(</span>x<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; nil
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>cdr '<span style="color: #fd971f;">(</span>x<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; nil
 </pre>
 </div>
 
@@ -309,8 +309,8 @@ for the JavaScript code in this tag.
 空列表的car和cdr都为nil：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>car '<span style="color: #66D9EF;">()</span><span style="color: #AE81FF;">)</span> -&gt; nil
-<span style="color: #AE81FF;">(</span>cdr '<span style="color: #66D9EF;">()</span><span style="color: #AE81FF;">)</span> -&gt; nil
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>car '<span style="color: #fd971f;">()</span><span style="color: #fb2874;">)</span> -&gt; nil
+<span style="color: #fb2874;">(</span>cdr '<span style="color: #fd971f;">()</span><span style="color: #fb2874;">)</span> -&gt; nil
 </pre>
 </div>
 
@@ -318,8 +318,8 @@ for the JavaScript code in this tag.
 注意对于只包含nil的列表也是如此：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>car '<span style="color: #66D9EF;">(</span>nil<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; nil
-<span style="color: #AE81FF;">(</span>cdr '<span style="color: #66D9EF;">(</span>nil<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; nil
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>car '<span style="color: #fd971f;">(</span>nil<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; nil
+<span style="color: #fb2874;">(</span>cdr '<span style="color: #fd971f;">(</span>nil<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; nil
 </pre>
 </div>
 
@@ -335,8 +335,8 @@ for the JavaScript code in this tag.
 列表通过函数list，cons以及append创建。函数list可以使用任意数量的参数构建列表：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>list 'a <span style="color: #E6DB74;">"b"</span> 7<span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>a <span style="color: #E6DB74;">"b"</span> 7<span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>list '<span style="color: #66D9EF;">(</span>x y z<span style="color: #66D9EF;">)</span> 3<span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span><span style="color: #66D9EF;">(</span>x y z<span style="color: #66D9EF;">)</span> 3<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>list 'a <span style="color: #e2c770;">"b"</span> 7<span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span>a <span style="color: #e2c770;">"b"</span> 7<span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>list '<span style="color: #fd971f;">(</span>x y z<span style="color: #fd971f;">)</span> 3<span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span><span style="color: #fd971f;">(</span>x y z<span style="color: #fd971f;">)</span> 3<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -344,9 +344,9 @@ for the JavaScript code in this tag.
 函数cons使用一个Lisp表达式和一个列表作为参数。它通过将表达式添加到列表的前面构成新列表：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>cons 'a '<span style="color: #66D9EF;">(</span>3 4 5<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>a 3 4 5<span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>cons <span style="color: #E6DB74;">"hello"</span> '<span style="color: #66D9EF;">()</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span><span style="color: #E6DB74;">"hello"</span><span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>cons '<span style="color: #66D9EF;">(</span>a b<span style="color: #66D9EF;">)</span> '<span style="color: #66D9EF;">(</span>c d<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span><span style="color: #66D9EF;">(</span>a b<span style="color: #66D9EF;">)</span> c d<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>cons 'a '<span style="color: #fd971f;">(</span>3 4 5<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span>a 3 4 5<span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>cons <span style="color: #e2c770;">"hello"</span> '<span style="color: #fd971f;">()</span><span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span><span style="color: #e2c770;">"hello"</span><span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>cons '<span style="color: #fd971f;">(</span>a b<span style="color: #fd971f;">)</span> '<span style="color: #fd971f;">(</span>c d<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span><span style="color: #fd971f;">(</span>a b<span style="color: #fd971f;">)</span> c d<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -354,10 +354,10 @@ for the JavaScript code in this tag.
 注意对列表使用cons构建新列表并不会影响之前的列表：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> x '<span style="color: #66D9EF;">(</span>a b c<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> <span style="color: #75715E;">;</span><span style="color: #75715E;">&#23558;(a b c)&#36171;&#20540;&#32473;&#21464;&#37327;x</span>
-<span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> y <span style="color: #66D9EF;">(</span>cons 17 x<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> <span style="color: #75715E;">;</span><span style="color: #75715E;">cons 17&#32473;&#23427;&#24182;&#19988;&#36171;&#20540;&#32473;y</span>
-y -&gt; <span style="color: #AE81FF;">(</span>17 a b c<span style="color: #AE81FF;">)</span> <span style="color: #75715E;">;</span><span style="color: #75715E;">&#27491;&#24120;&#24037;&#20316;</span>
-x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;">)</span> <span style="color: #75715E;">;</span><span style="color: #75715E;">&#24182;&#19981;&#20250;&#25913;&#21464;x</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> x '<span style="color: #fd971f;">(</span>a b c<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> <span style="color: #555556;">;</span><span style="color: #555556;">&#23558;(a b c)&#36171;&#20540;&#32473;&#21464;&#37327;x</span>
+<span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> y <span style="color: #fd971f;">(</span>cons 17 x<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> <span style="color: #555556;">;</span><span style="color: #555556;">cons 17&#32473;&#23427;&#24182;&#19988;&#36171;&#20540;&#32473;y</span>
+y -&gt; <span style="color: #fb2874;">(</span>17 a b c<span style="color: #fb2874;">)</span> <span style="color: #555556;">;</span><span style="color: #555556;">&#27491;&#24120;&#24037;&#20316;</span>
+x -&gt; <span style="color: #fb2874;">(</span>a b c<span style="color: #fb2874;">)</span> <span style="color: #555556;">;</span><span style="color: #555556;">&#24182;&#19981;&#20250;&#25913;&#21464;x</span>
 </pre>
 </div>
 
@@ -365,8 +365,8 @@ x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;"
 函数append使用任意数量的列表作为参数，并将其顶层元素连接成一个新列表。这会高效的去掉每个列表的外层括号，把剩下的元素放到一起，然后使用一对新的括号把它们括起来：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>append '<span style="color: #66D9EF;">(</span>a b<span style="color: #66D9EF;">)</span> '<span style="color: #66D9EF;">(</span>c d<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>a b c d<span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>append '<span style="color: #66D9EF;">(</span>a <span style="color: #A6E22E;">(</span>b c<span style="color: #A6E22E;">)</span> d<span style="color: #66D9EF;">)</span> '<span style="color: #66D9EF;">(</span>e <span style="color: #A6E22E;">(</span>f<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>a <span style="color: #66D9EF;">(</span>b c<span style="color: #66D9EF;">)</span> d e <span style="color: #66D9EF;">(</span>f<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>append '<span style="color: #fd971f;">(</span>a b<span style="color: #fd971f;">)</span> '<span style="color: #fd971f;">(</span>c d<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span>a b c d<span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>append '<span style="color: #fd971f;">(</span>a <span style="color: #b6e63e;">(</span>b c<span style="color: #b6e63e;">)</span> d<span style="color: #fd971f;">)</span> '<span style="color: #fd971f;">(</span>e <span style="color: #b6e63e;">(</span>f<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span>a <span style="color: #fd971f;">(</span>b c<span style="color: #fd971f;">)</span> d e <span style="color: #fd971f;">(</span>f<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -374,8 +374,8 @@ x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;"
 函数reverse使用一个列表作为参数，将其顶层元素反转成为一个新的列表。<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>reverse '<span style="color: #66D9EF;">(</span>a b c<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>c b a<span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>reverse '<span style="color: #66D9EF;">(</span>1 2 <span style="color: #A6E22E;">(</span>3 4<span style="color: #A6E22E;">)</span> 5 6<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>6 5 <span style="color: #66D9EF;">(</span>3 4<span style="color: #66D9EF;">)</span> 2 1<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>reverse '<span style="color: #fd971f;">(</span>a b c<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span>c b a<span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>reverse '<span style="color: #fd971f;">(</span>1 2 <span style="color: #b6e63e;">(</span>3 4<span style="color: #b6e63e;">)</span> 5 6<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span>6 5 <span style="color: #fd971f;">(</span>3 4<span style="color: #fd971f;">)</span> 2 1<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -385,8 +385,8 @@ x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;"
 </div>
 </div>
 
-<div id="outline-container-orgbdb049e" class="outline-2">
-<h2 id="orgbdb049e"><span class="section-number-2">3</span> 列表细节</h2>
+<div id="outline-container-orgdf6dee0" class="outline-2">
+<h2 id="orgdf6dee0"><span class="section-number-2">3</span> 列表细节</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 这一章节将解释Lisp中列表的内部工作机制。既然大部分Lisp程序都会不同程度的使用列表，理解它们的工作机制是很有益处的。这会让你理解列表擅长做什么、不擅长什么。<br />
@@ -400,9 +400,9 @@ x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;"
 函数cons使用它的两个参数创建一个新的cons cell。不像前一小节中所讲的，cons的两个参数可以是任意Lisp表达式。第二个参数不能是一个已存在的列表。<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>cons 'a 'b<span style="color: #AE81FF;">)</span> -&gt; &#19968;&#20010;&#30001;car a&#21644;cdr b&#32452;&#25104;&#30340;cons cell
-<span style="color: #AE81FF;">(</span>car <span style="color: #66D9EF;">(</span>cons 'a 'b<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; a
-<span style="color: #AE81FF;">(</span>cdr <span style="color: #66D9EF;">(</span>cons 'a 'b<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; b
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>cons 'a 'b<span style="color: #fb2874;">)</span> -&gt; &#19968;&#20010;&#30001;car a&#21644;cdr b&#32452;&#25104;&#30340;cons cell
+<span style="color: #fb2874;">(</span>car <span style="color: #fd971f;">(</span>cons 'a 'b<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; a
+<span style="color: #fb2874;">(</span>cdr <span style="color: #fd971f;">(</span>cons 'a 'b<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; b
 </pre>
 </div>
 
@@ -424,7 +424,7 @@ x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;"
 当你将一些其他元素与一个列表执行cons时，例如<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>cons 'a '<span style="color: #66D9EF;">(</span>b c<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>cons 'a '<span style="color: #fd971f;">(</span>b c<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -436,8 +436,8 @@ x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;"
 对于cdr不是列表的cons cell有一种特殊的语法。它被称为dotted pair notation，而cons cells有时也被称为dotted pairs：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>cons a b<span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>a . b<span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>cons '<span style="color: #66D9EF;">(</span>1 2<span style="color: #66D9EF;">)</span> 3<span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span><span style="color: #66D9EF;">(</span>1 2<span style="color: #66D9EF;">)</span> . 3<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>cons a b<span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span>a . b<span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>cons '<span style="color: #fd971f;">(</span>1 2<span style="color: #fd971f;">)</span> 3<span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span><span style="color: #fd971f;">(</span>1 2<span style="color: #fd971f;">)</span> . 3<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -464,7 +464,7 @@ x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;"
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>a . <span style="color: #66D9EF;">(</span>b . nil<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> &#8801; <span style="color: #AE81FF;">(</span>a b . nil<span style="color: #AE81FF;">)</span> &#8801; <span style="color: #AE81FF;">(</span>a b<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>a . <span style="color: #fd971f;">(</span>b . nil<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> &#8801; <span style="color: #fb2874;">(</span>a b . nil<span style="color: #fb2874;">)</span> &#8801; <span style="color: #fb2874;">(</span>a b<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -481,7 +481,7 @@ x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;"
 当你编写<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> x '<span style="color: #66D9EF;">(</span>a b c<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> x '<span style="color: #fd971f;">(</span>a b c<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -489,7 +489,7 @@ x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;"
 这会将x指向这个由三个cons cell组成的链表的第一个cell。如果你编写<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> y <span style="color: #66D9EF;">(</span>cdr x<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">&#29616;&#22312;y&#26159;(b c)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> y <span style="color: #fd971f;">(</span>cdr x<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> <span style="color: #555556;">; </span><span style="color: #555556;">&#29616;&#22312;y&#26159;(b c)</span>
 </pre>
 </div>
 
@@ -517,8 +517,8 @@ x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;"
 </div>
 </div>
 
-<div id="outline-container-org3f80065" class="outline-2">
-<h2 id="org3f80065"><span class="section-number-2">4</span> 递归列表函数</h2>
+<div id="outline-container-orga1be8b8" class="outline-2">
+<h2 id="orga1be8b8"><span class="section-number-2">4</span> 递归列表函数</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 传统的Lisp教材使用一系列简短的编程练习来阐明列表和cons cells的行为。让我们花一点时间看一下两个广为人知的例子，然后再往下进行。<br />
@@ -528,7 +528,7 @@ x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;"
 在这个练习中我们的目标是定义一个名为flatten的函数，将指定的列表的所有内部的子列表都释放出来平铺到一层上。例如：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>flatten '<span style="color: #66D9EF;">(</span>a <span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">(</span>b<span style="color: #E6DB74;">)</span> c<span style="color: #A6E22E;">)</span> d<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>a b c d<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>flatten '<span style="color: #fd971f;">(</span>a <span style="color: #b6e63e;">(</span><span style="color: #66d9ef;">(</span>b<span style="color: #66d9ef;">)</span> c<span style="color: #b6e63e;">)</span> d<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span>a b c d<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -536,7 +536,7 @@ x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;"
 解决方案是使用递归，将car和cdr分别平铺，然后将他们合并到一层上来。假如输入的列表为<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #66D9EF;">(</span>a <span style="color: #A6E22E;">(</span>b<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span> <span style="color: #66D9EF;">(</span>c d<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fd971f;">(</span>a <span style="color: #b6e63e;">(</span>b<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span> <span style="color: #fd971f;">(</span>c d<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -544,8 +544,8 @@ x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;"
 它的car是(a (b))，平铺之后是(a b)。cdr是((c d))，平铺之后的结果是(c d)。函数append可以将(a b)和(c d)组合起来并且保持平铺，结果是(a b c d)。所以flatten的核心代码是：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>append <span style="color: #66D9EF;">(</span>flatten <span style="color: #A6E22E;">(</span>car lst<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-        <span style="color: #66D9EF;">(</span>flatten <span style="color: #A6E22E;">(</span>cdr lst<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>append <span style="color: #fd971f;">(</span>flatten <span style="color: #b6e63e;">(</span>car lst<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+        <span style="color: #fd971f;">(</span>flatten <span style="color: #b6e63e;">(</span>cdr lst<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -553,9 +553,9 @@ x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;"
 （我将lst作为flatten的参数名称。不能使用list，因为它是一个Lisp函数的名称）现在，flatten只能对列表工作，所以对于(flatten (car lst))，如果(car lst)不是一个列表的话将会报错。我们因此需要这么改进：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> <span style="color: #66D9EF;">(</span>listp <span style="color: #A6E22E;">(</span>car lst<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-    <span style="color: #66D9EF;">(</span>append <span style="color: #A6E22E;">(</span>flatten <span style="color: #E6DB74;">(</span>car lst<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
-            <span style="color: #A6E22E;">(</span>flatten <span style="color: #E6DB74;">(</span>cdr lst<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">if</span> <span style="color: #fd971f;">(</span>listp <span style="color: #b6e63e;">(</span>car lst<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+    <span style="color: #fd971f;">(</span>append <span style="color: #b6e63e;">(</span>flatten <span style="color: #66d9ef;">(</span>car lst<span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span>
+            <span style="color: #b6e63e;">(</span>flatten <span style="color: #66d9ef;">(</span>cdr lst<span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -563,7 +563,7 @@ x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;"
 这个if没有“else”分支。如果(car lst)不是列表怎么办？例如，假设lst为<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>a <span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>b<span style="color: #A6E22E;">)</span> c<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>a <span style="color: #fd971f;">(</span><span style="color: #b6e63e;">(</span>b<span style="color: #b6e63e;">)</span> c<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -571,11 +571,11 @@ x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;"
 car不是一个列表。这时，我们只要简单的平铺cdr，(((b) c))，得到(b c)；然后用cons将car组装上去。<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">if</span> <span style="color: #66D9EF;">(</span>listp <span style="color: #A6E22E;">(</span>car lst<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-    <span style="color: #66D9EF;">(</span>append <span style="color: #A6E22E;">(</span>flatten <span style="color: #E6DB74;">(</span>car lst<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
-            <span style="color: #A6E22E;">(</span>flatten <span style="color: #E6DB74;">(</span>cdr lst<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-  <span style="color: #66D9EF;">(</span>cons <span style="color: #A6E22E;">(</span>car lst<span style="color: #A6E22E;">)</span>
-        <span style="color: #A6E22E;">(</span>flatten <span style="color: #E6DB74;">(</span>cdr lst<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">if</span> <span style="color: #fd971f;">(</span>listp <span style="color: #b6e63e;">(</span>car lst<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+    <span style="color: #fd971f;">(</span>append <span style="color: #b6e63e;">(</span>flatten <span style="color: #66d9ef;">(</span>car lst<span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span>
+            <span style="color: #b6e63e;">(</span>flatten <span style="color: #66d9ef;">(</span>cdr lst<span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+  <span style="color: #fd971f;">(</span>cons <span style="color: #b6e63e;">(</span>car lst<span style="color: #b6e63e;">)</span>
+        <span style="color: #b6e63e;">(</span>flatten <span style="color: #66d9ef;">(</span>cdr lst<span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -583,14 +583,14 @@ car不是一个列表。这时，我们只要简单的平铺cdr，(((b) c))，�
 最后，我们需要一个方法来终止这个递归。在处理列表越来越小的分片的递归函数里，你能用来作为结束分片的最小分片是nil，而nil几乎总是作为这种函数的“默认选择”。在本例中，平铺nil的结果就是nil，所以完整的函数定义为<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">flatten</span> <span style="color: #66D9EF;">(</span>lst<span style="color: #66D9EF;">)</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>null lst<span style="color: #A6E22E;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">lst&#26159;nil&#21527;&#65311;</span>
-      nil <span style="color: #75715E;">; </span><span style="color: #75715E;">&#26159;&#30340;&#35805;&#65292;&#36820;&#22238;nil</span>
-    <span style="color: #A6E22E;">(</span><span style="color: #F92672;">if</span> <span style="color: #E6DB74;">(</span>listp <span style="color: #FD971F;">(</span>car lst<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span>
-        <span style="color: #E6DB74;">(</span>append <span style="color: #FD971F;">(</span>flatten <span style="color: #F92672;">(</span>car lst<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span>
-                <span style="color: #FD971F;">(</span>flatten <span style="color: #F92672;">(</span>cdr 1st<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span>
-      <span style="color: #E6DB74;">(</span>cons <span style="color: #FD971F;">(</span>car 1st<span style="color: #FD971F;">)</span>
-            <span style="color: #FD971F;">(</span>flatten <span style="color: #F92672;">(</span>cdr 1st<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">flatten</span> <span style="color: #fd971f;">(</span>lst<span style="color: #fd971f;">)</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">if</span> <span style="color: #b6e63e;">(</span>null lst<span style="color: #b6e63e;">)</span> <span style="color: #555556;">; </span><span style="color: #555556;">lst&#26159;nil&#21527;&#65311;</span>
+      nil <span style="color: #555556;">; </span><span style="color: #555556;">&#26159;&#30340;&#35805;&#65292;&#36820;&#22238;nil</span>
+    <span style="color: #b6e63e;">(</span><span style="color: #fb2874;">if</span> <span style="color: #66d9ef;">(</span>listp <span style="color: #fb2874;">(</span>car lst<span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span>
+        <span style="color: #66d9ef;">(</span>append <span style="color: #fb2874;">(</span>flatten <span style="color: #fd971f;">(</span>car lst<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+                <span style="color: #fb2874;">(</span>flatten <span style="color: #fd971f;">(</span>cdr lst<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span>
+      <span style="color: #66d9ef;">(</span>cons <span style="color: #fb2874;">(</span>car lst<span style="color: #fb2874;">)</span>
+            <span style="color: #fb2874;">(</span>flatten <span style="color: #fd971f;">(</span>cdr lst<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -600,8 +600,8 @@ car不是一个列表。这时，我们只要简单的平铺cdr，(((b) c))，�
 </div>
 </div>
 
-<div id="outline-container-org478f61e" class="outline-2">
-<h2 id="org478f61e"><span class="section-number-2">5</span> 迭代列表函数</h2>
+<div id="outline-container-orgc4dca81" class="outline-2">
+<h2 id="orgc4dca81"><span class="section-number-2">5</span> 迭代列表函数</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 递归并不总是列表相关编程问题的正确解决方案。有时朴实直接的迭代也是需要的。在本例中，我们将会展示Emacs Lisp每次处理列表中一个元素的语法风格，有时这也被称为列表的“cdr-ing down”（因为每次迭代，列表都会因取其cdr而缩短）。<br />
@@ -611,12 +611,12 @@ car不是一个列表。这时，我们只要简单的平铺cdr，(((b) c))，�
 假设我们需要一个用来计数列表中符号个数，并且跳过像数字、字符串和子列表等其他元素的函数。这个递归函数是错误的：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">count-syms</span> <span style="color: #66D9EF;">(</span>lst<span style="color: #66D9EF;">)</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>null lst<span style="color: #A6E22E;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">count-syms</span> <span style="color: #fd971f;">(</span>lst<span style="color: #fd971f;">)</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">if</span> <span style="color: #b6e63e;">(</span>null lst<span style="color: #b6e63e;">)</span>
       0
-    <span style="color: #A6E22E;">(</span><span style="color: #F92672;">if</span> <span style="color: #E6DB74;">(</span>symbolp <span style="color: #FD971F;">(</span>car lst<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span>
-        <span style="color: #E6DB74;">(</span>+ 1 <span style="color: #FD971F;">(</span>count-syms <span style="color: #F92672;">(</span>cdr lst<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span>
-      <span style="color: #E6DB74;">(</span>count-syms <span style="color: #FD971F;">(</span>cdr lst<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+    <span style="color: #b6e63e;">(</span><span style="color: #fb2874;">if</span> <span style="color: #66d9ef;">(</span>symbolp <span style="color: #fb2874;">(</span>car lst<span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span>
+        <span style="color: #66d9ef;">(</span>+ 1 <span style="color: #fb2874;">(</span>count-syms <span style="color: #fd971f;">(</span>cdr lst<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span>
+      <span style="color: #66d9ef;">(</span>count-syms <span style="color: #fb2874;">(</span>cdr lst<span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -624,19 +624,19 @@ car不是一个列表。这时，我们只要简单的平铺cdr，(((b) c))，�
 递归&#x2013;特别是深度递归&#x2013;引入了非常多的额外资源来记录嵌套函数的调用和返回值，而这些应该尽量避免。而且，这个问题用迭代的方式解决显然更合理，而代码通常应该反映出解决问题的合理方式，而不是自作聪明地将解决问题地方式复杂化。<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">count-syms</span> <span style="color: #66D9EF;">(</span>lst<span style="color: #66D9EF;">)</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">let</span> <span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">(</span>result 0<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
-    <span style="color: #A6E22E;">(</span><span style="color: #F92672;">while</span> lst
-      <span style="color: #E6DB74;">(</span><span style="color: #F92672;">if</span> <span style="color: #FD971F;">(</span>symbolp <span style="color: #F92672;">(</span>car lst<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span>
-          <span style="color: #FD971F;">(</span><span style="color: #F92672;">setq</span> result <span style="color: #F92672;">(</span>+ 1 result<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span>
-      <span style="color: #E6DB74;">(</span><span style="color: #F92672;">setq</span> lst <span style="color: #FD971F;">(</span>cdr lst<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
-    result<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">count-syms</span> <span style="color: #fd971f;">(</span>lst<span style="color: #fd971f;">)</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">let</span> <span style="color: #b6e63e;">(</span><span style="color: #66d9ef;">(</span>result 0<span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span>
+    <span style="color: #b6e63e;">(</span><span style="color: #fb2874;">while</span> lst
+      <span style="color: #66d9ef;">(</span><span style="color: #fb2874;">if</span> <span style="color: #fb2874;">(</span>symbolp <span style="color: #fd971f;">(</span>car lst<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+          <span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> result <span style="color: #fd971f;">(</span>+ 1 result<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span>
+      <span style="color: #66d9ef;">(</span><span style="color: #fb2874;">setq</span> lst <span style="color: #fb2874;">(</span>cdr lst<span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span>
+    result<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgb413251" class="outline-2">
-<h2 id="orgb413251"><span class="section-number-2">6</span> 其他有用的列表函数</h2>
+<div id="outline-container-org15eac8d" class="outline-2">
+<h2 id="org15eac8d"><span class="section-number-2">6</span> 其他有用的列表函数</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 下面是其他一些Emacs定义的列表相关函数。<br />
@@ -646,10 +646,10 @@ car不是一个列表。这时，我们只要简单的平铺cdr，(((b) c))，�
 length返回列表的长度。对于improper list它不会工作。<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>length nil<span style="color: #AE81FF;">)</span> -&gt; 0
-<span style="color: #AE81FF;">(</span>length '<span style="color: #66D9EF;">(</span>x y z<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; 3
-<span style="color: #AE81FF;">(</span>length '<span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>x y z<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; 1
-<span style="color: #AE81FF;">(</span>length '<span style="color: #66D9EF;">(</span>a b . c<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; error
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>length nil<span style="color: #fb2874;">)</span> -&gt; 0
+<span style="color: #fb2874;">(</span>length '<span style="color: #fd971f;">(</span>x y z<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; 3
+<span style="color: #fb2874;">(</span>length '<span style="color: #fd971f;">(</span><span style="color: #b6e63e;">(</span>x y z<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; 1
+<span style="color: #fb2874;">(</span>length '<span style="color: #fd971f;">(</span>a b . c<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; error
 </pre>
 </div></li>
 
@@ -657,7 +657,7 @@ length返回列表的长度。对于improper list它不会工作。<br />
 nthcdr对列表调用n次cdr。<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>nthcdr 2 '<span style="color: #66D9EF;">(</span>a b c<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>c<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>nthcdr 2 '<span style="color: #fd971f;">(</span>a b c<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span>c<span style="color: #fb2874;">)</span>
 </pre>
 </div></li>
 
@@ -665,8 +665,8 @@ nthcdr对列表调用n次cdr。<br />
 nth返回列表的第n个元素（第一个元素序号为0）。这与nthcdr的car等价。<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>nth 2 '<span style="color: #66D9EF;">(</span>a b c<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>-&gt; c
-<span style="color: #AE81FF;">(</span>nth 1 '<span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>a b<span style="color: #A6E22E;">)</span> <span style="color: #A6E22E;">(</span>c d<span style="color: #A6E22E;">)</span> <span style="color: #A6E22E;">(</span>e f<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>c d<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>nth 2 '<span style="color: #fd971f;">(</span>a b c<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>-&gt; c
+<span style="color: #fb2874;">(</span>nth 1 '<span style="color: #fd971f;">(</span><span style="color: #b6e63e;">(</span>a b<span style="color: #b6e63e;">)</span> <span style="color: #b6e63e;">(</span>c d<span style="color: #b6e63e;">)</span> <span style="color: #b6e63e;">(</span>e f<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span>c d<span style="color: #fb2874;">)</span>
 </pre>
 </div></li>
 
@@ -674,9 +674,9 @@ nth返回列表的第n个元素（第一个元素序号为0）。这与nthcdr的
 mapcar使用一个函数和一个列表作为参数。它对列表包含的每个元素都调用一次函数，即将列表里的元素作为参数传给那个函数。mapcar的返回值是一个包含对每个元素调用函数之后的列表。所以如果你有一个字符串列表而你想要让其中的字符串首字母大写的话，可以这么写：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>mapcar '<span style="color: #66D9EF;">(</span>lambda <span style="color: #A6E22E;">(</span>x<span style="color: #A6E22E;">)</span>
-           <span style="color: #A6E22E;">(</span>capitalize x<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-        <span style="color: #66D9EF;">(</span><span style="color: #E6DB74;">"lisp"</span> <span style="color: #E6DB74;">"is"</span> <span style="color: #E6DB74;">"cool"</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span><span style="color: #E6DB74;">"Lisp"</span> <span style="color: #E6DB74;">"Is"</span> <span style="color: #E6DB74;">"Cool"</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>mapcar '<span style="color: #fd971f;">(</span>lambda <span style="color: #b6e63e;">(</span>x<span style="color: #b6e63e;">)</span>
+           <span style="color: #b6e63e;">(</span>capitalize x<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+        '<span style="color: #fd971f;">(</span><span style="color: #e2c770;">"lisp"</span> <span style="color: #e2c770;">"is"</span> <span style="color: #e2c770;">"cool"</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span><span style="color: #e2c770;">"Lisp"</span> <span style="color: #e2c770;">"Is"</span> <span style="color: #e2c770;">"Cool"</span><span style="color: #fb2874;">)</span>
 </pre>
 </div></li>
 
@@ -688,8 +688,8 @@ equal检测它的两个参数是否相等。它与<a href="3.html">第3章</a>�
 这个区别很重要。例如：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> x <span style="color: #66D9EF;">(</span>list 1 2 3<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> y <span style="color: #66D9EF;">(</span>list 1 2 3<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> x <span style="color: #fd971f;">(</span>list 1 2 3<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> y <span style="color: #fd971f;">(</span>list 1 2 3<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -705,9 +705,9 @@ x和y是两个不同的对象。也就是说，第一次调用list创建了一�
 注意下面的eq值为true。<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> x <span style="color: #66D9EF;">(</span>list 1 2 3<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> y x<span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>eq x y<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> x <span style="color: #fd971f;">(</span>list 1 2 3<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> y x<span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>eq x y<span style="color: #fb2874;">)</span>
 </pre>
 </div></li>
 
@@ -715,21 +715,21 @@ x和y是两个不同的对象。也就是说，第一次调用list创建了一�
 assoc会帮助你以键值的方式使用列表。当列表的形式为<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #66D9EF;">(</span>key1 . value1<span style="color: #66D9EF;">)</span>
- <span style="color: #66D9EF;">(</span>key2 . value2<span style="color: #66D9EF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fd971f;">(</span>key1 . value1<span style="color: #fd971f;">)</span>
+ <span style="color: #fd971f;">(</span>key2 . value2<span style="color: #fd971f;">)</span>
  ...
- <span style="color: #66D9EF;">(</span>keyn . valuen<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+ <span style="color: #fd971f;">(</span>keyn . valuen<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
 <p>
-被称为association list，或者简写为assoc list[<a href="#org838359e">24</a>]。函数assoc会找到列表中第一个的car为指定参数的子列表。所以：<br />
+被称为association list，或者简写为assoc list[<a href="#org9e89e21">24</a>]。函数assoc会找到列表中第一个的car为指定参数的子列表。所以：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>assoc 'green
-        '<span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>red . <span style="color: #E6DB74;">"ff0000"</span><span style="color: #A6E22E;">)</span>
-        <span style="color: #A6E22E;">(</span>green . <span style="color: #E6DB74;">"00ff00"</span><span style="color: #A6E22E;">)</span>
-        <span style="color: #A6E22E;">(</span>blue . <span style="color: #E6DB74;">"0000ff"</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>green . <span style="color: #E6DB74;">"00ff00"</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>assoc 'green
+        '<span style="color: #fd971f;">(</span><span style="color: #b6e63e;">(</span>red . <span style="color: #e2c770;">"ff0000"</span><span style="color: #b6e63e;">)</span>
+        <span style="color: #b6e63e;">(</span>green . <span style="color: #e2c770;">"00ff00"</span><span style="color: #b6e63e;">)</span>
+        <span style="color: #b6e63e;">(</span>blue . <span style="color: #e2c770;">"0000ff"</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span>green . <span style="color: #e2c770;">"00ff00"</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -745,9 +745,9 @@ assoc会帮助你以键值的方式使用列表。当列表的形式为<br />
 有些程序员不喜欢使用dotted pairs，所以他们建立的字典看起来可能不是这样的：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #66D9EF;">(</span>red . <span style="color: #E6DB74;">"ff000"</span><span style="color: #66D9EF;">)</span>
- <span style="color: #66D9EF;">(</span>green . <span style="color: #E6DB74;">"00ff00"</span><span style="color: #66D9EF;">)</span>
- <span style="color: #66D9EF;">(</span>blue . <span style="color: #E6DB74;">"00ff"</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fd971f;">(</span>red . <span style="color: #e2c770;">"ff000"</span><span style="color: #fd971f;">)</span>
+ <span style="color: #fd971f;">(</span>green . <span style="color: #e2c770;">"00ff00"</span><span style="color: #fd971f;">)</span>
+ <span style="color: #fd971f;">(</span>blue . <span style="color: #e2c770;">"00ff"</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -755,9 +755,9 @@ assoc会帮助你以键值的方式使用列表。当列表的形式为<br />
 而是这样的：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #66D9EF;">(</span>red <span style="color: #E6DB74;">"ff0000"</span><span style="color: #66D9EF;">)</span>
- <span style="color: #66D9EF;">(</span>green <span style="color: #E6DB74;">"00ff00"</span><span style="color: #66D9EF;">)</span>
- <span style="color: #66D9EF;">(</span>blue <span style="color: #E6DB74;">"000ff"</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fd971f;">(</span>red <span style="color: #e2c770;">"ff0000"</span><span style="color: #fd971f;">)</span>
+ <span style="color: #fd971f;">(</span>green <span style="color: #e2c770;">"00ff00"</span><span style="color: #fd971f;">)</span>
+ <span style="color: #fd971f;">(</span>blue <span style="color: #e2c770;">"000ff"</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -765,9 +765,9 @@ assoc会帮助你以键值的方式使用列表。当列表的形式为<br />
 这没问题，因为对于assoc来说，列表中的每个元素仍然为dotted pair：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #66D9EF;">(</span>red . <span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">"ff0000"</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-<span style="color: #66D9EF;">(</span>green . <span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">"00ff00"</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span>
-<span style="color: #66D9EF;">(</span>blue . <span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">"0000ff"</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fd971f;">(</span>red . <span style="color: #b6e63e;">(</span><span style="color: #e2c770;">"ff0000"</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+<span style="color: #fd971f;">(</span>green . <span style="color: #b6e63e;">(</span><span style="color: #e2c770;">"00ff00"</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+<span style="color: #fd971f;">(</span>blue . <span style="color: #b6e63e;">(</span><span style="color: #e2c770;">"0000ff"</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -776,7 +776,7 @@ assoc会帮助你以键值的方式使用列表。当列表的形式为<br />
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>cdr <span style="color: #66D9EF;">(</span>assoc 'green ...<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #E6DB74;">"00ff00"</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>cdr <span style="color: #fd971f;">(</span>assoc 'green ...<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; <span style="color: #e2c770;">"00ff00"</span>
 </pre>
 </div>
 
@@ -784,18 +784,18 @@ assoc会帮助你以键值的方式使用列表。当列表的形式为<br />
 而现在必须这么做：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>car <span style="color: #66D9EF;">(</span>cdr <span style="color: #A6E22E;">(</span>assoc 'green ...<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #E6DB74;">"00ff00"</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>car <span style="color: #fd971f;">(</span>cdr <span style="color: #b6e63e;">(</span>assoc 'green ...<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; <span style="color: #e2c770;">"00ff00"</span>
 </pre>
 </div></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org2c001bc" class="outline-2">
-<h2 id="org2c001bc"><span class="section-number-2">7</span> 破坏性列表操作</h2>
+<div id="outline-container-org66c5d6c" class="outline-2">
+<h2 id="org66c5d6c"><span class="section-number-2">7</span> 破坏性列表操作</h2>
 <div class="outline-text-2" id="text-7">
 <p>
-目前为止，我们所看到的所有列表操作都是非破坏性的。例如，当你把一个对象cons到一个已存在的列表上时，结果是产生了一个全新的cons cell，它的cdr指向了原来未做改动的列表。任何其他引用之前列表的对象或变量都未受影响。同样的，append会创建一个新列表以及新cons cells来保存参数中列表的元素。它不会将x最后的cdr指向y，或者将y最后的cdr指向z，因为这样的话最后的nil指针就改变了。而这样的话就影响了x和y原来的使用。实际上append对这些列表分别创建了一个未命名的拷贝，如图6-5所示。注意z不需要拷贝；append总是直接使用最后一个参数[<a href="#orge535c41">25</a>]。<br />
+目前为止，我们所看到的所有列表操作都是非破坏性的。例如，当你把一个对象cons到一个已存在的列表上时，结果是产生了一个全新的cons cell，它的cdr指向了原来未做改动的列表。任何其他引用之前列表的对象或变量都未受影响。同样的，append会创建一个新列表以及新cons cells来保存参数中列表的元素。它不会将x最后的cdr指向y，或者将y最后的cdr指向z，因为这样的话最后的nil指针就改变了。而这样的话就影响了x和y原来的使用。实际上append对这些列表分别创建了一个未命名的拷贝，如图6-5所示。注意z不需要拷贝；append总是直接使用最后一个参数[<a href="#org523b7eb">25</a>]。<br />
 </p>
 
 <p>
@@ -807,10 +807,10 @@ assoc会帮助你以键值的方式使用列表。当列表的形式为<br />
 下面是非破坏性的append在Lisp代码中的表示：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> x '<span style="color: #66D9EF;">(</span>a b c<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> y '<span style="color: #66D9EF;">(</span>d e f<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> z '<span style="color: #66D9EF;">(</span>g h i<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>append x y z<span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>a b c d e f g h i<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> x '<span style="color: #fd971f;">(</span>a b c<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> y '<span style="color: #fd971f;">(</span>d e f<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> z '<span style="color: #fd971f;">(</span>g h i<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>append x y z<span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span>a b c d e f g h i<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -818,9 +818,9 @@ assoc会帮助你以键值的方式使用列表。当列表的形式为<br />
 因为append并不会修改它的参数，所以这些变量储存的仍然是之前的值：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">x -&gt; <span style="color: #AE81FF;">(</span>a b c<span style="color: #AE81FF;">)</span>
-y -&gt; <span style="color: #AE81FF;">(</span>d e f<span style="color: #AE81FF;">)</span>
-z -&gt; <span style="color: #AE81FF;">(</span>g h i<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp">x -&gt; <span style="color: #fb2874;">(</span>a b c<span style="color: #fb2874;">)</span>
+y -&gt; <span style="color: #fb2874;">(</span>d e f<span style="color: #fb2874;">)</span>
+z -&gt; <span style="color: #fb2874;">(</span>g h i<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -828,10 +828,10 @@ z -&gt; <span style="color: #AE81FF;">(</span>g h i<span style="color: #AE81FF;"
 但是如果做出了破坏性的修改，那么每个变量都会指向append时制作出的长链表的一部分，如图6-6所示。执行破坏性append的函数称为nconc。<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>nconc x y z<span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>a b c d e f g h i<span style="color: #AE81FF;">)</span>
-x -&gt; <span style="color: #AE81FF;">(</span>a b c d e f g h i<span style="color: #AE81FF;">)</span>
-y -&gt; <span style="color: #AE81FF;">(</span>d e f g h i<span style="color: #AE81FF;">)</span>
-z -&gt; <span style="color: #AE81FF;">(</span>g h i<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>nconc x y z<span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span>a b c d e f g h i<span style="color: #fb2874;">)</span>
+x -&gt; <span style="color: #fb2874;">(</span>a b c d e f g h i<span style="color: #fb2874;">)</span>
+y -&gt; <span style="color: #fb2874;">(</span>d e f g h i<span style="color: #fb2874;">)</span>
+z -&gt; <span style="color: #fb2874;">(</span>g h i<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -852,10 +852,10 @@ z -&gt; <span style="color: #AE81FF;">(</span>g h i<span style="color: #AE81FF;"
 使用破坏性操作的最常见的一个场景是改变assoc list中的值。例如，假如你有一个对应保存着人员名称和它们email的assoc list：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> e-addrs
-      '<span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">"robin"</span> . <span style="color: #E6DB74;">"rl@sherwood.uk"</span><span style="color: #A6E22E;">)</span>
-        <span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">"marian"</span> . <span style="color: #E6DB74;">"mf@sherwood.uk"</span><span style="color: #A6E22E;">)</span>
-        ...<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> e-addrs
+      '<span style="color: #fd971f;">(</span><span style="color: #b6e63e;">(</span><span style="color: #e2c770;">"robin"</span> . <span style="color: #e2c770;">"rl@sherwood.uk"</span><span style="color: #b6e63e;">)</span>
+        <span style="color: #b6e63e;">(</span><span style="color: #e2c770;">"marian"</span> . <span style="color: #e2c770;">"mf@sherwood.uk"</span><span style="color: #b6e63e;">)</span>
+        ...<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -863,7 +863,7 @@ z -&gt; <span style="color: #AE81FF;">(</span>g h i<span style="color: #AE81FF;"
 现在假设有人的email地址改变了。你需要这样来更新它：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> e-addrs <span style="color: #66D9EF;">(</span>alist-replace e-addrs <span style="color: #E6DB74;">"john"</span> <span style="color: #E6DB74;">"johnl@exile.fr"</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> e-addrs <span style="color: #fd971f;">(</span>alist-replace e-addrs <span style="color: #e2c770;">"john"</span> <span style="color: #e2c770;">"johnl@exile.fr"</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -871,16 +871,16 @@ z -&gt; <span style="color: #AE81FF;">(</span>g h i<span style="color: #AE81FF;"
 而alist-replace实际上是一个非常低效地递归操作，它的机制是重新拷贝整个列表：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">alist-replace</span> <span style="color: #66D9EF;">(</span>alist key new-value<span style="color: #66D9EF;">)</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">if</span> <span style="color: #A6E22E;">(</span>null alist<span style="color: #A6E22E;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">alist-replace</span> <span style="color: #fd971f;">(</span>alist key new-value<span style="color: #fd971f;">)</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">if</span> <span style="color: #b6e63e;">(</span>null alist<span style="color: #b6e63e;">)</span>
       nil
-    <span style="color: #A6E22E;">(</span><span style="color: #F92672;">if</span> <span style="color: #E6DB74;">(</span><span style="color: #F92672;">and</span> <span style="color: #FD971F;">(</span>listp <span style="color: #F92672;">(</span>car alist<span style="color: #F92672;">)</span><span style="color: #FD971F;">)</span>
-             <span style="color: #FD971F;">(</span>equal <span style="color: #F92672;">(</span>car <span style="color: #AE81FF;">(</span>car alist<span style="color: #AE81FF;">)</span><span style="color: #F92672;">)</span>
-                    key<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span>
-        <span style="color: #E6DB74;">(</span>cons <span style="color: #FD971F;">(</span>cons key new-value<span style="color: #FD971F;">)</span>
-              <span style="color: #FD971F;">(</span>cdr alist<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span>
-      <span style="color: #E6DB74;">(</span>cons <span style="color: #FD971F;">(</span>car alist<span style="color: #FD971F;">)</span>
-            <span style="color: #FD971F;">(</span>alist-replce <span style="color: #F92672;">(</span>cdr alist<span style="color: #F92672;">)</span> key new-value<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+    <span style="color: #b6e63e;">(</span><span style="color: #fb2874;">if</span> <span style="color: #66d9ef;">(</span><span style="color: #fb2874;">and</span> <span style="color: #fb2874;">(</span>listp <span style="color: #fd971f;">(</span>car alist<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+             <span style="color: #fb2874;">(</span>equal <span style="color: #fd971f;">(</span>car <span style="color: #b6e63e;">(</span>car alist<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span>
+                    key<span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span>
+        <span style="color: #66d9ef;">(</span>cons <span style="color: #fb2874;">(</span>cons key new-value<span style="color: #fb2874;">)</span>
+              <span style="color: #fb2874;">(</span>cdr alist<span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span>
+      <span style="color: #66d9ef;">(</span>cons <span style="color: #fb2874;">(</span>car alist<span style="color: #fb2874;">)</span>
+            <span style="color: #fb2874;">(</span>alist-replce <span style="color: #fd971f;">(</span>cdr alist<span style="color: #fd971f;">)</span> key new-value<span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -889,23 +889,23 @@ z -&gt; <span style="color: #AE81FF;">(</span>g h i<span style="color: #AE81FF;"
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> alist '<span style="color: #66D9EF;">(</span><span style="color: #A6E22E;">(</span>a . b<span style="color: #A6E22E;">)</span> <span style="color: #A6E22E;">(</span>c . d<span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">alist &#26159;&#19968;&#20010; assoc list.</span>
-<span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> alist-2 alist<span style="color: #AE81FF;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">alist-2 &#25351;&#21521;&#20102;&#21516;&#19968;&#20010;&#21015;&#34920;</span>
-<span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> alist <span style="color: #66D9EF;">(</span>alist-replace alist 'c 'q<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> <span style="color: #75715E;">; </span><span style="color: #75715E;">alist &#26159;&#19968;&#20010;&#26032;&#21015;&#34920;</span>
-alist -&gt; <span style="color: #AE81FF;">(</span><span style="color: #66D9EF;">(</span>a . b<span style="color: #66D9EF;">)</span> <span style="color: #66D9EF;">(</span>c . q<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> <span style="color: #75715E;">;</span><span style="color: #75715E;">alist &#21709;&#24212;&#20102;&#25913;&#21160;</span>
-alist-2 -&gt; <span style="color: #AE81FF;">(</span><span style="color: #66D9EF;">(</span>a . b<span style="color: #66D9EF;">)</span> <span style="color: #66D9EF;">(</span>c . d<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> <span style="color: #75715E;">;</span><span style="color: #75715E;">alist-2 &#20173;&#28982;&#25351;&#21521;&#20043;&#21069;&#30340;&#21015;&#34920;</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> alist '<span style="color: #fd971f;">(</span><span style="color: #b6e63e;">(</span>a . b<span style="color: #b6e63e;">)</span> <span style="color: #b6e63e;">(</span>c . d<span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> <span style="color: #555556;">; </span><span style="color: #555556;">alist &#26159;&#19968;&#20010; assoc list.</span>
+<span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> alist-2 alist<span style="color: #fb2874;">)</span> <span style="color: #555556;">; </span><span style="color: #555556;">alist-2 &#25351;&#21521;&#20102;&#21516;&#19968;&#20010;&#21015;&#34920;</span>
+<span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> alist <span style="color: #fd971f;">(</span>alist-replace alist 'c 'q<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> <span style="color: #555556;">; </span><span style="color: #555556;">alist &#26159;&#19968;&#20010;&#26032;&#21015;&#34920;</span>
+alist -&gt; <span style="color: #fb2874;">(</span><span style="color: #fd971f;">(</span>a . b<span style="color: #fd971f;">)</span> <span style="color: #fd971f;">(</span>c . q<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> <span style="color: #555556;">;</span><span style="color: #555556;">alist &#21709;&#24212;&#20102;&#25913;&#21160;</span>
+alist-2 -&gt; <span style="color: #fb2874;">(</span><span style="color: #fd971f;">(</span>a . b<span style="color: #fd971f;">)</span> <span style="color: #fd971f;">(</span>c . d<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> <span style="color: #555556;">;</span><span style="color: #555556;">alist-2 &#20173;&#28982;&#25351;&#21521;&#20043;&#21069;&#30340;&#21015;&#34920;</span>
 </pre>
 </div>
 
 <p>
-这里引入setcar和setcdr[<a href="#orgbf0a57b">26</a>]。给出一个cons cell和一个新值，这两个函数会将cell的car或者cdr替换为新值。例如：<br />
+这里引入setcar和setcdr[<a href="#orgc5fa18a">26</a>]。给出一个cons cell和一个新值，这两个函数会将cell的car或者cdr替换为新值。例如：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> x <span style="color: #66D9EF;">(</span>cons 'a 'b<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>a . b<span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>setcar x 'c<span style="color: #AE81FF;">)</span>
-x -&gt; <span style="color: #AE81FF;">(</span>c . b<span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>setcdr x 'd<span style="color: #AE81FF;">)</span>
-x -&gt; <span style="color: #AE81FF;">(</span>c . d<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> x <span style="color: #fd971f;">(</span>cons 'a 'b<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span>a . b<span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>setcar x 'c<span style="color: #fb2874;">)</span>
+x -&gt; <span style="color: #fb2874;">(</span>c . b<span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>setcdr x 'd<span style="color: #fb2874;">)</span>
+x -&gt; <span style="color: #fb2874;">(</span>c . d<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -913,10 +913,10 @@ x -&gt; <span style="color: #AE81FF;">(</span>c . d<span style="color: #AE81FF;"
 我们现在可以轻松的编写alist-replace的破坏性版本了：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">defun</span> <span style="color: #A6E22E;">alist-replace</span> <span style="color: #66D9EF;">(</span>alist key new-value<span style="color: #66D9EF;">)</span>
-  <span style="color: #66D9EF;">(</span><span style="color: #F92672;">let</span> <span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">(</span>sublist <span style="color: #FD971F;">(</span>assoc key alist<span style="color: #FD971F;">)</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>
-    <span style="color: #A6E22E;">(</span><span style="color: #F92672;">if</span> sublist
-        <span style="color: #E6DB74;">(</span>setcdr sublist new-value<span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span><span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">defun</span> <span style="color: #b6e63e;">alist-replace</span> <span style="color: #fd971f;">(</span>alist key new-value<span style="color: #fd971f;">)</span>
+  <span style="color: #fd971f;">(</span><span style="color: #fb2874;">let</span> <span style="color: #b6e63e;">(</span><span style="color: #66d9ef;">(</span>sublist <span style="color: #fb2874;">(</span>assoc key alist<span style="color: #fb2874;">)</span><span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span>
+    <span style="color: #b6e63e;">(</span><span style="color: #fb2874;">if</span> sublist
+        <span style="color: #66d9ef;">(</span>setcdr sublist new-value<span style="color: #66d9ef;">)</span><span style="color: #b6e63e;">)</span><span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -928,9 +928,9 @@ x -&gt; <span style="color: #AE81FF;">(</span>c . d<span style="color: #AE81FF;"
 还有另一个重要的破坏性列表操作：nreverse，reverse的非拷贝版本。<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> x '<span style="color: #66D9EF;">(</span>a b c<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>nreverse x<span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>c b a<span style="color: #AE81FF;">)</span>
-x -&gt; <span style="color: #AE81FF;">(</span>a<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> x '<span style="color: #fd971f;">(</span>a b c<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>nreverse x<span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span>c b a<span style="color: #fb2874;">)</span>
+x -&gt; <span style="color: #fb2874;">(</span>a<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -942,22 +942,22 @@ x -&gt; <span style="color: #AE81FF;">(</span>a<span style="color: #AE81FF;">)</
 如果你需要x也适应列表的改变，那么你必须这么写<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> x <span style="color: #66D9EF;">(</span>nreverse x<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>c b a<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> x <span style="color: #fd971f;">(</span>nreverse x<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span>c b a<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org6fa12be" class="outline-2">
-<h2 id="org6fa12be"><span class="section-number-2">8</span> 循环列表？！</h2>
+<div id="outline-container-org50dc02d" class="outline-2">
+<h2 id="org50dc02d"><span class="section-number-2">8</span> 循环列表？！</h2>
 <div class="outline-text-2" id="text-8">
 <p>
 由于我们可以破坏性地修改我们创建的列表，我们就可以不受只用预定义元素构建列表的限制。列表可以引用自己的一部分！例如：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span><span style="color: #F92672;">setq</span> x '<span style="color: #66D9EF;">(</span>a b c<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>nthcdr 2 x<span style="color: #AE81FF;">)</span> -&gt; <span style="color: #AE81FF;">(</span>c<span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span>setcdr <span style="color: #66D9EF;">(</span>nthcdr 2 x<span style="color: #66D9EF;">)</span> x<span style="color: #AE81FF;">)</span> <span style="color: #75715E;">;</span><span style="color: #75715E;">&#20808;&#19981;&#35201;&#36825;&#20040;&#20570;&#65281;</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span><span style="color: #fb2874;">setq</span> x '<span style="color: #fd971f;">(</span>a b c<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>nthcdr 2 x<span style="color: #fb2874;">)</span> -&gt; <span style="color: #fb2874;">(</span>c<span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span>setcdr <span style="color: #fd971f;">(</span>nthcdr 2 x<span style="color: #fd971f;">)</span> x<span style="color: #fb2874;">)</span> <span style="color: #555556;">;</span><span style="color: #555556;">&#20808;&#19981;&#35201;&#36825;&#20040;&#20570;&#65281;</span>
 </pre>
 </div>
 
@@ -969,7 +969,7 @@ x -&gt; <span style="color: #AE81FF;">(</span>a<span style="color: #AE81FF;">)</
 这个列表长什么样呢？好吧，它的开头看起来是这样的：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>a b c ab c ab c a b c a b c a b c a b c a b c . . .
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>a b c ab c ab c a b c a b c a b c a b c a b c . . .
 </pre>
 </div>
 
@@ -981,8 +981,8 @@ x -&gt; <span style="color: #AE81FF;">(</span>a<span style="color: #AE81FF;">)</
 显然，打印并不是环状结构能把Emacs搞得无限循环的唯一一件事。任何迭代执行这个列表里所有元素的动作都不会终止。下面是一个很好的例子：<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>eq x <span style="color: #66D9EF;">(</span>nthcdr 3 x<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt; t <span style="color: #75715E;">; </span><span style="color: #75715E;">&#31532;&#19977;&#20010;cdr&#19982;x&#25351;&#21521;&#21516;&#19968;&#20010;&#23545;&#35937;</span>
-<span style="color: #AE81FF;">(</span>equal x <span style="color: #66D9EF;">(</span>nthcdr 3 x<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span> -&gt;  &#27704;&#19981;&#20572;&#27490;&#65281;
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>eq x <span style="color: #fd971f;">(</span>nthcdr 3 x<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt; t <span style="color: #555556;">; </span><span style="color: #555556;">&#31532;&#19977;&#20010;cdr&#19982;x&#25351;&#21521;&#21516;&#19968;&#20010;&#23545;&#35937;</span>
+<span style="color: #fb2874;">(</span>equal x <span style="color: #fd971f;">(</span>nthcdr 3 x<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span> -&gt;  &#27704;&#19981;&#20572;&#27490;&#65281;
 </pre>
 </div>
 
@@ -990,10 +990,10 @@ x -&gt; <span style="color: #AE81FF;">(</span>a<span style="color: #AE81FF;">)</
 既然循环列表会导致Emacs进入无限循环，那它有什么用呢？通常我们都不会想让列表变为环状，但是如果你不将其认为是列表，而是相互连接在一起的cons cells的话，你就可以构建任何种类的链表结构了，比如树和lattices。有些数据结构是自引用的，例如环。如果你曾经需要构建这类数据结构的话，你就不会被Emacs可能会为了显示它而造成无限循环这件事吓倒了。不要在需要展示结果的情况下使用它就可以了。例如，如果你将上面的setcdr改为下面这样<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>setqx '<span style="color: #66D9EF;">(</span>a b c<span style="color: #66D9EF;">)</span><span style="color: #AE81FF;">)</span>
-<span style="color: #AE81FF;">(</span><span style="color: #F92672;">progn</span>
-  <span style="color: #66D9EF;">(</span>setcdr <span style="color: #A6E22E;">(</span>nthcdr 2 x<span style="color: #A6E22E;">)</span> x<span style="color: #66D9EF;">)</span>
-  nil<span style="color: #AE81FF;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>setqx '<span style="color: #fd971f;">(</span>a b c<span style="color: #fd971f;">)</span><span style="color: #fb2874;">)</span>
+<span style="color: #fb2874;">(</span><span style="color: #fb2874;">progn</span>
+  <span style="color: #fd971f;">(</span>setcdr <span style="color: #b6e63e;">(</span>nthcdr 2 x<span style="color: #b6e63e;">)</span> x<span style="color: #fd971f;">)</span>
+  nil<span style="color: #fb2874;">)</span>
 </pre>
 </div>
 
@@ -1001,26 +1001,26 @@ x -&gt; <span style="color: #AE81FF;">(</span>a<span style="color: #AE81FF;">)</
 那么Emacs将不会尝试展示setcdr的结果，而现在x就是一个我们可以操作的但是却不用全部展示的环状数据结构了。<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #AE81FF;">(</span>nth 0 x<span style="color: #AE81FF;">)</span> -&gt; a
-<span style="color: #AE81FF;">(</span>nth 1 x<span style="color: #AE81FF;">)</span> -&gt; b
-<span style="color: #AE81FF;">(</span>nth 412 x<span style="color: #AE81FF;">)</span> -&gt; b
+<pre class="src src-emacs-lisp"><span style="color: #fb2874;">(</span>nth 0 x<span style="color: #fb2874;">)</span> -&gt; a
+<span style="color: #fb2874;">(</span>nth 1 x<span style="color: #fb2874;">)</span> -&gt; b
+<span style="color: #fb2874;">(</span>nth 412 x<span style="color: #fb2874;">)</span> -&gt; b
 </pre>
 </div>
 
 <p>
-<a id="orgaad1aba"></a>[23]. 读作“could-er”。这些名称是最初Lisp设计时电脑架构的历史遗留。<br />
+<a id="org316bb24"></a>[23]. 读作“could-er”。这些名称是最初Lisp设计时电脑架构的历史遗留。<br />
 </p>
 
 <p>
-<a id="org838359e"></a>[24]. 我一直找不到统一的读法到底应该是a-SOAK，a-SOASH或者a-SOCK list。这三种我都听到过。有些人会将其读作“a-list”来避免这个问题。<br />
+<a id="org9e89e21"></a>[24]. 我一直找不到统一的读法到底应该是a-SOAK，a-SOASH或者a-SOCK list。这三种我都听到过。有些人会将其读作“a-list”来避免这个问题。<br />
 </p>
 
 <p>
-<a id="orge535c41"></a>[25]. 因为是直接指向的，所以append的最后一个参数甚至不用是一个列表！自己试试看。<br />
+<a id="org523b7eb"></a>[25]. 因为是直接指向的，所以append的最后一个参数甚至不用是一个列表！自己试试看。<br />
 </p>
 
 <p>
-<a id="orgbf0a57b"></a>[26]. 也称为rplaca和rplacd，跟car和cdr的历史原因相同。<br />
+<a id="orgc5fa18a"></a>[26]. 也称为rplaca和rplacd，跟car和cdr的历史原因相同。<br />
 </p>
 </div>
 </div>

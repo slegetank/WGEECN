@@ -511,7 +511,8 @@ update-writestamps在save-excursion调用之后的最后一个表达式，是一
                                 (regexp-quote writestamp-suffix)
                                 "$")))
             (while (re-search-forward regexp nil t)
-              (replace-match (format-time-string writestamp-format                                                                                    (current-time))
+              (replace-match (format-time-string writestamp-format
+                                                 (current-time))
                              t t nil 1))))))
     nil)
 #+END_SRC

@@ -208,9 +208,9 @@ car不是一个列表。这时，我们只要简单的平铺cdr，(((b) c))，�
         nil ; 是的话，返回nil
       (if (listp (car lst))
           (append (flatten (car lst))
-                  (flatten (cdr 1st)))
-        (cons (car 1st)
-              (flatten (cdr 1st))))))
+                  (flatten (cdr lst)))
+        (cons (car lst)
+              (flatten (cdr lst))))))
 #+END_SRC
 
 试着在*scratch* buffer里用这个函数处理一些列表，并且试着通过一些例子来理清函数逻辑。记住Lisp函数的返回值是其最后执行的表达式的值。
@@ -263,7 +263,7 @@ car不是一个列表。这时，我们只要简单的平铺cdr，(((b) c))，�
     #+BEGIN_SRC emacs-lisp
       (mapcar '(lambda (x)
                  (capitalize x))
-              ("lisp" "is" "cool")) -> ("Lisp" "Is" "Cool")
+              '("lisp" "is" "cool")) -> ("Lisp" "Is" "Cool")
     #+END_SRC
  
 + equal检测它的两个参数是否相等。它与[[file:3.org][第3章]]中的章节[[file:3.org::*保存和取出point][保存和取出point]]中介绍的eq并不相同。不像eq判断它的参数是否为同一个对象，equal判断的是两个对象是否具有相同的结构和内容。
