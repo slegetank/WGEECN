@@ -13,10 +13,10 @@
       (set-buffer-modified-p nil)
       (kill-buffer org-name))))
 
-;; (WGEECN/export-org-to-html "5.org")
+(WGEECN/export-org-to-html "2.org")
 
 ;;; export all orgs to htmls
-(let ((org-files (directory-files ".." nil "\\.org$")))
-    (dolist (org-name org-files nil)
-      (message "Export %s ..." org-name)
-      (WGEECN/export-org-to-html org-name)))
+;; (let ((org-files (directory-files ".." nil "\\.org$")))
+;;     (dolist (org-name org-files nil)
+;;       (message "Export %s ..." org-name)
+;;       (WGEECN/export-org-to-html org-name)))

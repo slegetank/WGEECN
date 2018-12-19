@@ -20,7 +20,7 @@
 
 在决定了使用C-x C-n表示“下一个窗口”之后，我需要将它绑定到一些触发“下一个窗口”的命令上。而下一个窗口实际上和C-x o所执行的跳到另一个窗口的行为一样，也就是other-window。所以C-x C-n的按键绑定很简单。将下面的命令
 #+BEGIN_SRC emacs-lisp
-  (global-set-key "\C-x \C-n" 'other-window)
+  (global-set-key "\C-x\C-n" 'other-window)
 #+END_SRC
 
 写入到.emacs中就完成了。而定义C-x C-p绑定的命令就要动一点脑子了。Emacs中并不存在一个命令表示“将光标移动到上一个窗口”。是时候定义一个了！
@@ -47,7 +47,7 @@
 
 执行defun表达式用来定义函数。现在我们可以在Lisp程序中通过(other-window-backward)来调用它；或者通过输入M-x other-window-backward RET来调用它；也可以通过M-? f other-window-backward RET[[[2-10][10]]]来查看帮助。现在我们唯一需要做的就是绑定：
 #+BEGIN_SRC emacs-lisp
-  (global-set-key "\C-x \C-p" 'other-window-backward)
+  (global-set-key "\C-x\C-p" 'other-window-backward)
 #+END_SRC
 
 ** 为other-window-backward添加参数
@@ -296,7 +296,7 @@ Emacs有两个滚屏方法，scroll-up和scroll-down，分别绑定到C-v和M-v�
 
 默认的，C-q绑定到了quoted-insert。我将这条不常用的函数移动到了C-x C-q：
 #+BEGIN_SRC elisp
-  (global-set-key "\C-x \C-q" 'quoted-insert)
+  (global-set-key "\C-x\C-q" 'quoted-insert)
 #+END_SRC
 
 C-x C-q的默认绑定是vc-toggle-read-only，我并不关心它的丢失。
