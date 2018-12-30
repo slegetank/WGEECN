@@ -13,7 +13,7 @@
       (set-buffer-modified-p nil)
       (kill-buffer org-name))))
 
-(WGEECN/export-org-to-html "2.org")
+(WGEECN/export-org-to-html "4.org")
 
 ;;; export all orgs to htmls
 ;; (let ((org-files (directory-files ".." nil "\\.org$")))

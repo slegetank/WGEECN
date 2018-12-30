@@ -648,7 +648,7 @@ after-change-functions中的函数有三个参数来描述刚刚发生的改变�
 maybe-update-modifystamps中仍然存在很大的问题。在阅读下一部分前，你能找出那是什么吗？
 
 ** 一个小Bug
-缺陷是每次update-modifystamps重写修改戳时，会引起buffer的改变，这又回造成last-change-time的改变！这样只有第一次修改戳会被正确的修改。后续的修改戳会是一个与文件储存的时间相近的时间而不是最后一次修改的时间。
+缺陷是每次update-modifystamps重写修改戳时，会引起buffer的改变，这又会造成last-change-time的改变！这样只有第一次修改戳会被正确的修改。后续的修改戳会是一个与文件储存的时间相近的时间而不是最后一次修改的时间。
 
 一个绕过这个问题的方法是当执行update-modifystamps时暂时将after-change-functions置为nil：
 #+BEGIN_SRC emacs-lisp
