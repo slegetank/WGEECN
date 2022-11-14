@@ -1,0 +1,383 @@
+\chapter{主模式}
+\label{chapter:09-A-Major-Mode}
+
+\guide{
+\begin{itemize}
+  \item 我的Quips文件
+  \item 主模式框架
+  \item 改变段落的定义
+  \item Quip命令
+  \item 键位表
+  \item Narrowing
+  \item 继承模式
+\end{itemize}
+}
+
+编写一个简单的主模式跟子模式非常像，就像我们在第\ref{chapter:07-Minor-Mode}章中所看到的那样。在本章中我们将只接触到主模式的基础知识，为创建更复杂的主模式做好准备---实际上，一个全新的应用---在下一章。
+
+\section{我的Quips文件}
+\label{section:09-My-Quips-File}
+
+多年来我一直从互联网上收集一些风趣的谚语，并且使用老牌UNIX程序fortune所使用的格式将它们存储在一个称为Quips的文件里。每个谚语都会使用一行包含 \verb|%%| 的行开始。下面是一个例子：
+
+\begin{minted}{text}
+%%
+I like a man who grins when he fights.
+- Winston Churchill %%
+%%
+The human race has one really effective weapon, and that is laughter.
+- Mark Twain
+\end{minted}
+
+除了 \verb|%%| 的行，其他内容的格式都是没有限制的。
+
+在编辑了我的Quips文件一段时间后，我发现编辑它跟编辑普通文本文件有一些区别。例如，我经常需要将我的编辑限制到一个单独的谚语里以防止意外影响到邻近的谚语。另一点，每当我需要在一个谚语的开头插入一个段落的时候，我首先需要将它跟开头的 \verb|%%| 之间插入一个空行。否则， \verb|%%| 就变成了段落的一部分：
+
+\begin{minted}{text}
+%%
+I like a man who grins when he fights.
+- Winston Churchill
+%%The human race has one really effective weapon, and that is laughter.
+- Mark Twain
+\end{minted}
+
+插入空行告诉Emacs" \verb|%%| "并不是段落的一部分。在填充完段落之后，我会将文本追加到 \verb|%%| 的后面并且删除空行。
+
+很显然我需要一个新的编辑模式，一个能够避免这么多不方便的模式。问题是，这应该是一个主模式还是子模式呢？前面说过主模式不能跟其他主模式共存，而子模式可以与主模式以及其他激活的子模式独立的激活和关闭。在这个例子中，对于编辑模式的需求来源于数据格式本身，因此我们需要一个主模式而不是子模式。这种数据格式的文件总是需要这个而不是别的主模式。例如，你不会希望使用一个编辑Lisp的主模式再额外使用一个编辑谚语的子模式。\footnote{在其他的一些情况下选择主模式还是子模式就没这么清晰了。}
+
+\section{主模式框架}
+\label{section:09-Major-Mode-Skeleton}
+
+定义主模式有如下步骤。
+
+\begin{enumerate}
+  \item 选择一个名称（name）。我们模式的名称为quip。
+  \item 创建一个与名称同名的name.el文件来保存模式相关的代码。
+  \item 创建一个称为 \mintinline{elisp}{name-mode-hook} 的钩子变量。它用来管理进入这个模式的时候用户要执行的钩子函数。
+\begin{minted}{elisp}
+(defvar quip-mode-hook nil
+  "*List of functions to call when entering Quip mode.*")
+\end{minted}
+  \item 如果需要的话，定义一个模式关联的键位表（keymap）（参照本章后面的\nameref{section:09-Keymaps}章节）。将它赋值给一个名为 \mintinline{elisp}{name-mode-map} 的变量。像下面这样定义一个模式的键位表：
+\begin{minted}{elisp}
+(defvar name-mode-map nil
+  "Keymap for name major mode.")
+(if name-mode-map
+    nil
+  (setq name-mode-map (make-keymap))
+  (define-key name-mode-map keysequence command)
+  ...)
+\end{minted}
+   如果不使用 \mintinline{elisp}{make-keymap} ，你还可以使用 \mintinline{elisp}{make-sparse-keymap} ，它更适合只包含较少键绑定的键位表。
+  \item 如果需要的话，定义一个模式关联的语法表（参照第\ref{chapter:07-Minor-Mode}章的\nameref{section:07-Minor-Adjustments}章节）。将它赋值给一个名为 \mintinline{elisp}{name-mode-syntax-table} 的变量。
+  \item 如果需要的话，定义一个模式关联的缩写表（abbrev table）。将它赋值给一个名为 \mintinline{elisp}{name-mode-abbrev-table} 的变量。
+  \item 定义一个名为 \mintinline{elisp}{name-mode} 的命令。这是主模式命令，并且没有参数(跟子模式不同，那可以有一个可选参数)。当执行时，它会通过下面的步骤使当前buffer进入 \mintinline{elisp}{name-mode} ：
+  \begin{enumerate}
+    \item 它必须调用 \mintinline{elisp}{kill-all-lcoal-variables} ，这会移除掉所有 \mintinline{elisp}{buffer-local} 的变量。这会高效地关闭所有处于激活状态的主模式和子模式。
+\begin{minted}{elisp}
+(kill-all-local-variables)
+\end{minted}
+    \item 它必须将变量 \mintinline{elisp}{major-mode} 设置为 \mintinline{elisp}{name-mode} 。
+\begin{minted}{elisp}
+(seqt major-mode 'quip-mode)
+\end{minted}
+    \item 它必须将变量 \mintinline{elisp}{mode-name} 设置为一个用来描述这个模式的缩写字符串，这将会出现在buffer的模式栏里。
+\begin{minted}{elisp}
+(setq mode-name "Quip")
+\end{minted}
+    \item 如果键位表存在的话，它必须对其安装，这是通过将 \mintinline{elisp}{name-mode-map} 传递给 \mintinline{elisp}{use-local-map} 完成的。
+    \item 它必须通过向 \mintinline{elisp}{run-hooks} 传递 \mintinline{elisp}{name-mode-hook} 执行用户的钩子函数。
+\begin{minted}{elisp}
+(run-hooks 'quip-mode-hook)
+\end{minted}
+  \end{enumerate}
+  \item 它必须通过provide name"提供"这个代码所实现的特性（参照第\ref{chapter:05-Lisp-Files}章中的章节\nameref{section:05-Programmatic-Loading}）。
+\begin{minted}{elisp}
+(provide 'quip)
+\end{minted}
+\end{enumerate}
+
+我们第一个版本的Quip模式将不会加入键位表，语法表以及缩写表，所以最初quip.el看起来是这样的：
+
+\begin{minted}{elisp}
+(defvar quip-mode-hook nil
+  "*List of functions to call when entering Quip mode.")
+(defun quip-mode ()
+  "Major mode for editing Quip files."
+  (interactive)
+  (kill-all-local-variables)
+  (setq major-mode 'quip-mode)
+  (setq mode-name "Quip")
+  (run-hooks 'quip-mode-hook))
+(provide 'quip)
+\end{minted}
+
+这些只是基础，所有主模式都会实现这些。现在让我们开始向其中添加Quip模式的内容。
+
+\section{改变段落的定义}
+\label{section:09-Changing-the-Definition-of-a-Paragraph}
+
+首先，我们必须使得包含 \verb|%%| 的行不能被认为是段落的一部分。这意味着我们必须更改变量 \mintinline{elisp}{paragraph-separate} ，它的值是一个用来描述用于分隔段落的行的正则表达式。我们还要修改 \mintinline{elisp}{paragraph-start} ，一个用来描述段落开头或者分隔段落的行的正则表达式。\footnote{并没有专门用来匹配段落开始的正则变量。作为替代的，段落的开始就是符合 \mintinline{elisp}{paragraph-start} 但是不符合 \mintinline{elisp}{paragraph-separate} 的行。}
+
+Emacs使用 \mintinline{elisp}{paragraph-start} 和 \mintinline{elisp}{paragraph-separate} 中的正则表达式来匹配行的开头，即使正则表达式中并不包含元字符 \verb|^| (用来匹配行的开头)。
+
+在Text模式中 \mintinline{elisp}{paragraph-start} 的值是"\verb|[ \t\n\^L]|"，这表示如果一行以空格、tab、新行\footnote{以一个新行“开始”的行当然是一个空行。}或者Control-L(ASCII中的"formfeed"符)开头，那么这行要么是段落的第一行，要么是分隔段落的行。
+
+Text模式中 \mintinline{elisp}{paragraph-separate} 的值是"\verb|[ \t^L]*$|"，这表示如果一行中包含0个或多个空格、tabs、formfeeds，或者一些他们的组合，并且没有其他字符，那么它不属于任何段落。
+
+我们要做的是修改这些正则，使其认为"一个包含着 \verb|%%| 的行也是一个段落分隔符"。
+
+第一步是使这些变量在Quip模式中的时候拥有不同的值。(也就是说，修改这些本来是全局变量的值的时候不会影响其他不在Quip模式中的值)因此，除了在上一部分我们描述的基本框架之外，方法 \mintinline{elisp}{quip-mode} 还需要这么做：
+
+\begin{minted}{elisp}
+(make-local-variable 'paragraph-start)
+(make-local-variable 'paragraph-separate)
+\end{minted}
+
+下一步， \mintinline{elisp}{quip-mode} 需要设置 \mintinline{elisp}{paragraph-start} 和 \mintinline{elisp}{paragraph-separate} 的buffer局部的值。
+
+\begin{minted}{elisp}
+(setq paragraph-start "%%\\|[ \t\n\^L]")
+(setq paragraph-separate "%%$\\|[ \t\^L]*$")
+\end{minted}
+
+\mintinline{elisp}{paragraph-start} 表示“ \verb|%%| 或者空格、tab、换行或者control-L”。 \mintinline{elisp}{paragraph-separate} 的值表示“只有 \verb|%%| 或者只有0个或多个空格、tab或者分页符”。具体查看第\ref{chapter:04-Searching-and-Modifying-Buffers}章中的\nameref{section:04-Regular-Expressions}章节。
+
+\section{Quip命令}
+\label{section:09-Quip-Commands}
+
+Quip模式还需要做什么呢？
+
+\begin{itemize}
+  \item 它应该允许用户每次向前或者向后移动一条谚语。
+  \item 它应该允许用户只操作一条谚语。
+  \item 它应该展示出文件中谚语的条目数，并且告诉用户当前光标下的谚语是第几条。
+  \item 除此之外，它应该与Text模式大概相似。毕竟，操作的内容基本上就是纯文本。
+\end{itemize}
+
+让我们暂停一下，重新观察一下Emacs中不同的光标移动命令。 \mintinline{elisp}{forward-char} 和 \mintinline{elisp}{backward-char} 每次移动一个字母。还有 \mintinline{elisp}{forward-word} 和 \mintinline{elisp}{backward-word} 。还有 \mintinline{elisp}{forward-line} 和 \mintinline{elisp}{previous-line} 。还有一些命令用来每次移动一句、一个段落、一页。
+
+什么是一页呢？通常，一页以分页符开始，这是因为传统打字机在新的一页开始的时候，打字员需要发送一个contrl-L给设备。但是在Emacs里工作的时候，我们可以通过改变 \mintinline{elisp}{page-delimiter} 来重新定义构成“页”的元素。
+
+\begin{minted}{elisp}
+(make-local-variable 'page-delimiter)
+(setq page-delimiter "^%%$")
+\end{minted}
+
+这一转换---将“页”转换为“谚语”---解决了大部分我们对于Quip模式的需求！现在Emacs的很多内置的页相关的命令都能应用于谚语了：
+
+\begin{itemize}
+  \item \mintinline{elisp}{backward-page} 和 \mintinline{elisp}{forward-page} ，通常绑定到 \verb|C-x [| 和 \verb|C-x ]| 上，允许每次移动一条谚语
+  \item \mintinline{elisp}{narrow-to-page} ，绑定在 \verb|C-x| \verb|n| \verb|p| 上，通过narrow操作来只编辑一条谚语（参照本章中的\nameref{section:09-Narrowing}章节）
+  \item \mintinline{elisp}{what-page} 查看当前的谚语是第几条
+\end{itemize}
+
+我们基本上完全借用了Emacs操作页面的命令，反正无所谓：在Quip模式里，这些命令反正用不到，因为Quip文件本身就不会分页。
+
+\section{键位表}
+\label{section:09-Keymaps}
+
+不幸的是，这些命令的名字--- \mintinline{elisp}{backward-page} 和 \mintinline{elisp}{forward-page} 以及其他的命令---使得这些方法在Quip模式中变得易于混淆，因为我们操作的是谚语而不是页面。因此这么做是明智的：
+
+\begin{minted}{elisp}
+(defalias 'backward-quip 'backward-page)
+(defalias 'forward-quip forward-page)
+(defalias 'narrow-to-quip 'narrow-to-page)
+(defalias 'what-quip 'what-page)
+\end{minted}
+
+但是这并不够。即使定义了这些别名，已经存在的绑定--- \verb|C-x [| ， \verb|C-x ]| ，以及 \verb|C-x| \verb|n| \verb|p| ---仍然绑定到了“页”的命令上，所以当用户在Quip模式中使用 \mintinline{elisp}{describe-bindings} 列出键绑定的时候，他们将会看到：
+
+\begin{tabular}{lr}
+  \verb|C-x [| & backward-page \\
+  \verb|C-x ]| & forward-page \\
+  \verb|C-x n p| & narrow-to-page
+\end{tabular}
+
+（以及其他的页相关函数）但是这些与谚语都没关系。如果这些函数的名字与谚语相关就好了---当然只是在Quip模式里。而且，我们还可以把 \verb|C-x| \verb|n| \verb|p| （这么定义是因为这表示narrow to page）改为 \verb|C-x| \verb|n| \verb|q| （narrow to quip）。我们还可以给what-quip绑定一个快捷键，默认是没有的。也就是说Quip模式需要一个关联的键位表。
+
+键位表（keymap）是一个用来记录函数及触发它的按键的Lisp数据结构。例如，当你按下 \verb|C-f| 时，Emacs将会查询“global”键位表并且找到 \verb|C-f| 对应的函数，也就是forward-char。键位表中的每一条记录都代表着一条按键序列。
+
+像是 \verb|C-x| \verb|C-w| （write-file）这种按键需要使用嵌套键位表（nestling keymaps）来实现。在全局表里， \verb|C-x| 的记录包含着一个嵌套表而不是一条命令。嵌套表里包含着一条 \verb|C-w| 的记录，它指向 \mintinline{elisp}{write-file} 。 \verb|C-x| 的嵌套表还包含着一条n的记录，它指向另一个嵌套表。这个二级嵌套表包含着一条p的记录，它指向命令 \mintinline{elisp}{narrow-to-page} 。
+
+指向嵌套表的按键被称为前置键（prefix key）； \verb|C-x| 是很多其他命令的前置键，而 \verb|C-x| n是更多按键的前置键（在19.16版本，你可以按下前置键后面跟着 \verb|C-h| 来看哪些键绑定以此前置）。
+
+任何时候，都可能有多个键位表同时处于激活状态。前面提到的全局键位表（global keymap）总是处于激活状态。它会被包含着当前buffer主模式的特定按键的局部键位表所覆盖。而局部键位表又会被处于激活状态的子模式的键位表里的记录所覆盖。\footnote{可以使用一个称为 \mintinline{elisp}{overriding-local-map} 的变量稍微更改一下这个优先级，但是这只在非常少数的情况下才有用。}
+
+让我们为本章前面所提到的Quip模式创建一个局部表。首先我们创建一个用于包含键位表的变量。它的初始值为nil。
+
+\begin{minted}{elisp}
+(defvar quip-mode-map nil
+  "Keymap for quip major mode.")
+\end{minted}
+
+下一步我们在quip.el的最顶层编写一个代码块，用于当文件加载的时候加载键位表。如果 \mintinline{elisp}{quip-mode-map} 已经存在了---例如quip.el之前已经加载过了---那么就什么都不做。否则，就创建并且向其中添加键绑定。
+
+\begin{minted}{elisp}
+(if quip-mode-map
+    nil ; do nothing if quip-mode-map exists
+  (setq quip-mode-map (make-sparse-keymap))
+  (define-key quip-mode-map "\C-x[" 'backward-quip)
+  (define-key quip-mode-map "\C-x]" 'forward-quip)
+  (define-key quip-mode-map "\C-xnq" 'narrow-to-quip)
+  (define-key quip-mode-map "\C-cw" 'what-quip))
+\end{minted}
+
+我们使用 \mintinline{elisp}{make-sparse-keymap} 是因为Quip模式只比全局表多几个特定的绑定。只有当表里包含很多绑定的时候才需要使用 \mintinline{elisp}{make-keymap} 来创建一个完整的键位表。
+
+每次调用 \mintinline{elisp}{define-key} 都会向 \mintinline{elisp}{quip-mode-map} 添加一条新的记录。当按键定义包含多于一个按键（就像本章中所有例子所展示的那样）， \mintinline{elisp}{define-key} 将会自动根据需要创建嵌套表。\footnote{函数 \mintinline{elisp}{current-global-map} 会返回当前的全局键位表。（有可能通过 \mintinline{elisp}{use-global-keymap} 改变了全局表，虽然这很少出现。）因此， \mintinline{elisp}{(global-set-key ...)} 等价于 \mintinline{elisp}{(define-key (current-global-map) ...)} 。}
+
+我们将what-quip绑定到了 \verb|C-c| \verb|w| 。根据习惯，模式相关的命令通常绑定到以 \verb|C-c| 开头的按键序列。其他的命令都来自于已经存在的绑定，所以没有必要再为他们指定新的前缀。
+
+最后，我们需要确保在Quip模式进入的时候安装新的键位表。
+
+\begin{minted}{elisp}
+(defun quip-mode ()
+  "Major mode for editing Quip files."
+  (interactive)
+  (kill-all-local-variables)
+  (setq major-mode 'quip-mode)
+  (setq mode-name "Quip")
+  (make-local-variable 'paragraph-separate)
+  (make-local-variable 'paragraph-start)
+  (make-local-variable 'page-delimiter)
+  (setq paragraph-start "%%\\I[ \t\n\^L]")
+  (setq paragraph-separate "%%$\\ [ \t\^L]*$")
+  (setq page-delimiter "^%%$")
+  (use-local-map quip-mode-map) ; 这里安装键位表
+  (run-hooks quip-mode-hook))
+\end{minted}
+
+如果用户希望更改Quip模式的键绑定，他们可以通过使用模式的钩子以及 \mintinline{elisp}{local-set-key} （对于Quip模式来说就是修改 \mintinline{elisp}{quip-mode-map} ）来达到目的：
+
+\begin{minted}{elisp}
+(add-hook 'quip-mode-hook
+          '(lambda ()
+            (local-set-key "\M-p" backward-quip)
+            (local-set-key "\M-n" 'forward-quip)
+            (local-unset-key "\C-x[") ; 移除了一个绑定
+            (local-unset-key "\C-x]")))
+\end{minted}
+
+通常应该将模式的局部键位绑定放到用于描述模式的文档字符串里。但是，不应该像下面这样将默认的绑定“硬编码”到文档字符串里：
+
+\begin{minted}{elisp}
+(defun quip-mode ()
+  "Major mode for editing Quip files.
+Keybindings include 'C-x [' and 'C-x ]' for backward-quip
+and forward-quip, 'C-x n p' for narrow-to-quip, and 'C-c w'
+for what-quip."
+  ...)
+\end{minted}
+
+因为我们前面已经说过，用户可能会重定义按键，这样的话文档字符串就不准确了。相反的，我们可以这么写：
+
+\begin{minted}{elisp}
+(defun quip-mode ()
+  "Major mode for editing Quip files.
+Special commands:
+\\{quip-mode-map}"
+  ...)
+\end{minted}
+
+当用户通过 \mintinline{elisp}{describe-function} 或者通过 \mintinline{elisp}{describe-mode} （使用所有相关模式的文档字符串来描述当前的主模式和子模式）来请求文档字符串的时候，Emacs会根据这个特殊的语法使用当前 \mintinline{elisp}{quip-mode-map} 中的键位绑定进行替换。
+
+\section{Narrowing}
+\label{section:09-Narrowing}
+
+你可能已经很熟悉Emacs的narrowing概念了。我们可以定义一个buffer的区域并且将buffer narrow到这个区域。Emacs通过隐藏前面和后面的文字而使得整个buffer好像只有这个区域。所有的编辑操作，以及大部分的Lisp函数，都会被限制到这个区域内（虽然当文件保存的时候，所有的改动都会被保存而不管是否存在narrowing），直到用户使用widen来取消narrowing，widen通常被绑定到 \verb|C-x| \verb|n| \verb|w| \footnote{Narrowing不会嵌套。如果将buffer narrow到了一个区域，然后再把这个区域narrow到更小的区域， \mintinline{text}{C-x} \mintinline{text}{n} \mintinline{text}{w} 仍然会恢复到整个buffer（也就是说，它不会恢复到前一次narrowing）。}。所以 \mintinline{elisp}{narrow-to-quip} 满足“将用户的编辑操作限制到一条谚语”这个需求。
+
+Emacs Lisp代码必须要根据buffer是否处于narrow状态做处理。大多数情况，Lisp函数都不必关心这件事。它们可以表现的就像narrowed部分就是整个buffer。当处于narrowing状态时用于处理buffer边界的函数通常会处理narrowed区域的边界。例如，用来检测光标是否在buffer末尾的函数 \mintinline{elisp}{eobp} （ \mintinline{elisp}{end-of-buffer-p} ）在光标位于narrowed区域末尾的时候会返回真。类似的， \mintinline{elisp}{point-min} 和 \mintinline{elisp}{point-max} 在narrowed区域存在的时候会返回它的边界而不是整个buffer的。可以说，这些函数为Lisp程序员编织了一个善意的谎言，否则他们编写代码的时候就需要付出很多努力来处理narrowing相关的情况。
+
+但是，这也需要付出代价。在某些情况下，函数需要处理narrowed区域之外的buffer。在这些情况下，需要先调用 \mintinline{elisp}{widen} 来使函数能够访问整个buffer。如果这个调用被放到 \mintinline{elisp}{save-restriction} 里，那么在代码执行后narrowing状态将会被复原。（在第\ref{chapter:04-Searching-and-Modifying-Buffers}章里我们用过这个手段。）
+
+让我们定义 \mintinline{elisp}{count-quips} 作为例子，我们必须自己进行实现，因为Emacs并没有提供任何可以让我们利用的计算页数的命令。显然不管是否有 \mintinline{elisp}{narrowing} ，count-quips都需要访问整个buffer。因此，我们可以这样定义它：
+
+\begin{minted}{elisp}
+(defun count-quips ()
+  "Count the quips in the buffer."
+  (interactive)
+  (save-excursion
+    (save-restriction
+      (widen)
+      (goto-char (point-min))
+      (count-matches '^%%$'))))
+\end{minted}
+
+函数 \mintinline{elisp}{count-matches} 会返回一个类似于“374 matches”的字符串告诉你从当前位置往后有多少处匹配该正则的地方。
+
+\section{继承模式}
+\label{section:09-Derived-Modes}
+
+我们现在已经满足了除“它应该与Text模式大概相似”之外的所有要求了。实现的方法之一就是在初始化Quip模式的时候调用 \mintinline{elisp}{text-mode} ；然后再执行Quip模式自己的特定配置。我们可以使用 \mintinline{elisp}{copy-keymap} 而不是使用 \mintinline{elisp}{make-sparse-map} 来创建 \mintinline{elisp}{quip-mode-map} 以利用 \mintinline{elisp}{text-mode} 的特性。
+
+\begin{minted}{elisp}
+(defvar quip-mode-map nil
+  "Keymap for Quip major mode.")
+(if quip-mode-map
+    nil
+  (setq quip-mode-map (copy-keymap text-mode-map))
+  (define-key quip-mode-map "\C-x[" 'backward-quip)
+  (define-key quip-mode-map "\C-x]" 'forward-quip)
+  (define-key quip-mode-map "\C-xnq" 'narrow-to-quip)
+  (define-key quip-mode-map "\C-cw" 'what-quip))
+
+(defun quip-mode ()
+  "Major mode for editing Quip files.
+Special commands:
+\\{quip-mode-map}"
+  (interactive)
+  (kill-all-local-variables)
+  (text-mode) ; 首先设置为Text模式
+  (setq major-mode 'quip-mode) ; 现在，定义Quip模式
+  (setq mode-name "Quip")
+  (use-local-map quip-mode-map)
+  (make-local-variable 'paragraph-separate)
+  (make-local-variable 'paragraph-start)
+  (make-local-variable 'page-delimiter)
+  (setq paragraph-start "%%\\|[ \t\n\^L]")
+  (setq paragraph-separate "%%$\\|[ \t\^L]*\$")
+  (setq page-delimiter "^%%$")
+  (run-hooks quip-mode-hook))
+
+(provide 'quip)
+\end{minted}
+
+为了更好的与 \mintinline{elisp}{text-mode} 协作，我们还应该拷贝 \mintinline{elisp}{text-mode-syntax-table} （使用 \mintinline{elisp}{copy-syntax-table} ），而不只是 \mintinline{elisp}{text-mode-map} 。当然需要处理的还有 \mintinline{elisp}{text-mode-abbrev-table} （但是没有对应的 \mintinline{elisp}{copy-abbrev-table} 函数，也许是因为缩写表太不常用了，以至于没有人在意是不是有这个方法）。
+
+实际上，在你克隆一个模式并且将其定制成一个新的模式的时候有许多需要做的工作。你很容易就会遗漏掉什么。幸运的是，由于继承并且修改一个模式的行为太频繁了---就像我们将文本模式修改为Quip模式---所以已经有了一个Emacs Lisp包来帮助简化这一任务。这个包被称为derived，它提供的核心函数被称为 \mintinline{elisp}{define-derived-mode} 。（实际上， \mintinline{elisp}{define-derived-mode} 是一个宏。）下面就是用它来继承Text模式生成Quip模式的实现：
+
+\begin{minted}{elisp}
+(require 'derived)
+
+(define-derived-mode quip-mode text-mode "Quip"
+  "Major mode for editing Quip files.
+Special commands:
+\\ quip-mode-map}"
+  (make-local-variable 'paragraph-separate)
+  (make-local-variable 'paragraph-start)
+  (make-local-variable 'page-delimiter)
+  (setq paragraph-start "%%\\|[ \t\n\^L]")
+  (setq paragraph-separate "%%$\\|[ \t\^L]*$")
+  (setq page-delimiter "^%%$"))
+(define-key quip-mode-map "\C-x[" 'backward-quip)
+(define-key quip-mode-map "\C-x]" 'forward-quip)
+(define-key quip-mode-map "\C-xnq" 'narrow-to-quip)
+(define-key quip-mode-map "\C-cw" 'what-quip)
+
+(provide 'quip)
+\end{minted}
+
+\mintinline{elisp}{define-derived-mode} 的语法是
+
+\begin{minted}{elisp}
+(define-derived-mode new-mode old-mode mode-line-string
+  docstring
+  body1
+  body2
+  ...)
+\end{minted}
+
+这会创建 \mintinline{elisp}{new-mode} 以及所有相关的数据结构。在 \mintinline{elisp}{body} 语句执行的时候， \mintinline{elisp}{new-mode-map} ， \mintinline{elisp}{new-mode-syntax-table} ，以及 \mintinline{elisp}{new-mode-abbrev-table} 就已经存在了。创建 \mintinline{elisp}{new-mode} 指令的最后一件事是执行 \mintinline{elisp}{new-mode-hook} 。
+
+本章向我们展示了如何较小的修改Emacs的行为来编辑特定类型的数据。Quip模式与Text模式并没有多少区别，因为谚语本身与文本也没多大区别。但是在下一章，我们将会创建一个用来编辑与文本差别很大的数据的主模式，它与任何其他的主模式都很不相同。

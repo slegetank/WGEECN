@@ -29,6 +29,16 @@ Emacs的中文书籍很少，对于部分同志，特别是想入坑的同志来
 * html版本
 html文件夹下有导出的html文件，可以直接阅读。
 
+* PDF版本
+tex文件夹下有编译好的PDF文件，以及LaTeX源码。手工编译方法如下：
+
+#+BEGIN_SRC sh
+  xelatex -shell-escape Writing-GNU-Emacs-Extensions.tex
+  xelatex -shell-escape Writing-GNU-Emacs-Extensions.tex
+#+END_SRC
+
+编译环境推荐使用texlive/texlive的docker镜像。
+
 * 译者的话
 这是一本讲解如何自己扩展Emacs的基础的书籍，在阅读的时候定位要准确。以后辈的角度看，书中很多要处理的问题现在都能找到一些更好的解决方案。在能理解书中所讲的基础的情况下，再结合github上流行的配置，再去折腾自己的配置方能事半功倍。毕竟，站在巨人的肩膀上才能看得更远。
 

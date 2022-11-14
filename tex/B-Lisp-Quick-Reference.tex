@@ -1,0 +1,335 @@
+\chapter{Lisp快速参考}
+\label{chapter:B-Lisp-Quick-Reference}
+
+\guide{
+\begin{itemize}
+  \item 基础
+  \item 数据类型
+  \item 控制结构
+  \item 代码对象
+\end{itemize}
+}
+
+这个附录总结了Emacs中常用的Lisp语法，以及一些重要的Lisp函数。它并不会总结Emacs自身的一些特性，例如buffer，钩子变量，键位表，模式，等等。要完整的查看Emacs Lisp，请参照The GNU Emacs Lisp Reference Manual。获取它的细节请参照附录\ref{chapter:E-Obtaining-and-Building-Emacs}。
+
+\section{基础}
+\label{section:B-Basics}
+
+Lisp表达式是一个可以被计算的数据单位。表达式可能由子表达式构成，就像列表或者向量。
+
+每个Lisp表达式在计算的时候都会返回一个值。大多数表达式都是自运算的，也就是说它们的值就是它们自己。
+
+Lisp表达式可以被认为是一个字面数据而不必求值。非自运算的表达式必须被引用（quoted）来避免求值而作为字面值使用。
+
+符号nil表示否。它与空表\mintinline{elisp}{()}完全相同。其他的Lisp对象都为真，而符号t则是真的真正表示。
+
+Emacs Lisp（不像其他方言）是大小写敏感的。
+
+\section{数据类型}
+\label{section:B-Data-Types}
+
+\subsection{数字}
+\label{section:B-Numbers}
+
+Emacs Lisp支持整数和浮点数。它们的写法与你想的没什么两样：一个10进制的有一个可选负号以及一个可选小数点的字符串。有一些可以操作数字的函数：
+
+\begin{itemize}
+  \item \mintinline{elisp}{(numberp x)}：判断x是否为数字。
+  \item \mintinline{elisp}{(integerp x)}：判断x是否为整数。
+  \item \mintinline{elisp}{(zerop x)}：判断x是否为0。
+  \item \mintinline{elisp}{(= a b)}：判断两个数字是否相等。
+  \item \mintinline{elisp}{(+ a b c ...)}：加。
+  \item \mintinline{elisp}{(- a b c ...)}：减。
+\end{itemize}
+
+\subsection{字符}
+\label{section:B-Characters}
+
+在Emacs Lisp中问号用来指代单独的字符。例如，\mintinline{elisp}{?a}表示小写的a。有些特殊字符，特别是用来起始其他Lisp表达式种类的那些，需要使用问号-反斜杠来转义，例如\mintinline{elisp}{?\"}，\mintinline{elisp}{?\(}和\mintinline{elisp}{?\)}。有些特殊字符可以使用反斜杠和字符构成。例如，\mintinline{elisp}{?\t}表示tab，而\mintinline{elisp}{?\n}表示换行符。
+
+字符的求值结果是它的ASCII值。例如，\mintinline{elisp}{?a}的计算结果是97。实际上，整数值可以在任何需要的时候从字符转化；Emacs Lisp并不区分这两种有什么不同，除了为字符提供了一些方便的方法。
+
+\begin{itemize}
+  \item \mintinline{elisp}{(char-equal a b)}：判断两个字符是否相等。如果case-fold-search非空则忽略大小写。
+  \item \mintinline{elisp}{(char-to-string c)}：创建一个只包含c的字符串。
+\end{itemize}
+
+\subsection{字符串}
+\label{section:B-Strings}
+
+字符串是一个字符的序列，写法上用双括号包裹起来，\mintinline{elisp}{"like this"}。如果字符串中存在双引号或者反斜杠，它必须用反斜杠进行转义，\mintinline{elisp}{"\"Like this,\" he said."}。字符串是自运算的。
+
+Emacs，作为一个文本编辑器，有许多操作字符串的函数。下面是一些小例子：
+
+\begin{itemize}
+  \item \mintinline{elisp}{(stringp x)}：判断x是否是字符串。
+  \item \mintinline{elisp}{(string= s1 s2)}：判断两个字符串是否相等。
+  \item \mintinline{elisp}{(string-lessp s1 s2)}：检测s1在ASCII值比较上是否比s2更小。
+  \item \mintinline{elisp}{(concat a b c ...)}：将所有字符串拼接成一个新字符串。
+  \item \mintinline{elisp}{(length s)}：返回字符串s的长度。
+  \item \mintinline{elisp}{(aref s i)}：返回字符串s的第i个字符，从0开始。
+  \item \mintinline{elisp}{(aset s i ch)}：设置字符串s的第i个字符为ch。
+  \item \mintinline{elisp}{(substring s from [to])}：截取从位置from到位置to处（如果忽略to则到结尾）的s的子字符串。
+\end{itemize}
+
+\subsection{符号}
+\label{section:B-Symbols}
+
+符号是能够有一些与之关联的数据的名称。符号的名字是一个由字符组成的序列，它看起来不能像是数字，字符串，列表，向量，或者其他Lisp数据类型。
+
+符号可以用作变量，函数名，或者自身作为一个值存在。符号的求值结果是它的变量值。
+
+\begin{itemize}
+  \item \mintinline{elisp}{(symbolp x)}：判断x是否是一个符号。
+  \item \mintinline{elisp}{(setq sym epr)}：将sym用作一个变量：并且将expr的值赋给sym。
+  \item \mintinline{elisp}{sym}：计算符号的变量值。
+  \item \mintinline{elisp}{(defun sym ...)}：将sym用作函数名。
+  \item \mintinline{elisp}{(sym arg1 arg2 ...)}：一个以符号开头的列表，表示调用名为sym的函数。
+\end{itemize}
+
+每个符号都有与其关联的属性列表。属性列表是一个映射表，它的键是Lisp符号而值为任何Lisp表达式。
+
+\begin{itemize}
+  \item \mintinline{elisp}{(put sym key value)}：在sym的属性列表里，将value赋给key。
+  \item \mintinline{elisp}{(get sym key)}：从sym的属性列表里取得符号key对应的值，找不到则为nil。
+\end{itemize}
+
+符号通常存储在内部的一个符号表里来防止重复符号的出现。可以显式地向符号表里添加条目或者创建但不向符号表中添加（因此可能会出现与其他符号重名的情况）。
+
+\begin{itemize}
+  \item \mintinline{elisp}{(intern string)}：从内部符号表中返回一个名为string的符号。如果不存在，则创建一个。
+  \item \mintinline{elisp}{(make-symbol string)}：创建一个新的名为string的符号。符号不会被加入到内部符号表里，并且与其他任何对象都不一样，即使是名字相同的对象。
+\end{itemize}
+
+\subsection{列表}
+\label{section:B-Lists}
+
+列表是Lisp的基础。一个列表是0个或多个其他Lisp表达式（也包括其他列表）的序列。列表的写法是用空格分隔它的子表达式；最外面用一个括号括起来。
+
+Lisp中的函数调用也用列表来表示。当执行的时候，列表中的第一个元素作为函数被调用，其它参数作为参数传入。
+
+列表在内部被实现为一个cons cells的链表。因此访问列表中的一个元素需要遍历整个链表直到找到那个元素。
+
+\begin{itemize}
+  \item \mintinline{elisp}{(listp x)}：判断x是否是列表。
+  \item \mintinline{elisp}{(null x)}：判断x是否是空列表。
+  \item \mintinline{elisp}{(consp x)}：判断x是否是非空列表。
+  \item \mintinline{elisp}{(car list)}：返回list中的第一个元素（或者cons cell中的第一个元素）。
+  \item \mintinline{elisp}{(cdr list)}：返回list剩下的部分（除第一个元素之外的部分，或者cons cell中的第二个元素）。
+  \item \mintinline{elisp}{(list a b c ...)}：创建一个新列表，以参数作为子元素。
+  \item \mintinline{elisp}{(cons a b)}：在列表b的开头插入a（或者创建一个新的cons cell \mintinline{elisp}{(a . b)}）。
+  \item \mintinline{elisp}{(append list1 list2 ...)}：去掉每个子列表外面的括号（很高效），把所有元素粘贴在一起，然后再在外面添加一个括号形成一个新的列表。
+  \item \mintinline{elisp}{(nth i list)}：返回list的第i个子表达式，从0开始。
+  \item \mintinline{elisp}{(nthcdr i list)}：返回对list调用n次cdr的结果。
+\end{itemize}
+
+列表在第\ref{chapter:06-Lists}章中有详细的描述。
+
+\subsection{向量}
+\label{section:B-Vectors}
+
+与列表一样，向量也是由0到多个子表达式构成的，写法上把小括号换成中括号。但是不像列表，向量的元素可以随机的访问（不必从头遍历访问内部的数据）。向量是自运算的。
+
+当你编写一个向量时，它的子表达式都自动被引用了。要想先对元素求值再构建向量需要使用vector函数。
+
+\begin{itemize}
+  \item \mintinline{elisp}{(vectorp x)}：判断x是否为向量。
+  \item \mintinline{elisp}{(vector a b c ...)}：创建一个新向量，以参数作为子元素。
+  \item \mintinline{elisp}{(length vector)}：返回向量的长度。
+  \item \mintinline{elisp}{(aref vector i)}：返回向量的第i个子表达式，从0开始。
+  \item \mintinline{elisp}{(aset vector i expr)}：将向量的第i个元素设置为expr。
+\end{itemize}
+
+\subsection{序列（Sequences）和数组（Arrays）}
+\label{section:B-Sequences-and-Arrays}
+
+有些Emacs Lisp数据类型是有联系的。字符串和向量都属于数组。数组是一个数据元素的线性集合，它允许对于其元素的随机访问。字符串是字符组成的数组，而向量是由任意表达式组成的数组。函数aref和aset用来操作数组，这对于字符串和向量都有效。
+
+序列是一个更宽泛的包括了数组和列表的数据结构。序列是一个数据元素的线性集合，句号。函数length对于列表，字符串和数组都有效。
+
+\begin{itemize}
+  \item \mintinline{elisp}{(arrayp x)}：判断x是否为数组。
+  \item \mintinline{elisp}{(sequencep x)}：判断x是否为序列。
+  \item \mintinline{elisp}{(copy-sequence sequence)}：返回列表，字符串或者向量的一个拷贝。
+\end{itemize}
+
+\section{控制结构}
+\label{section:B-Control-Structures}
+
+\subsection{变量}
+\label{section:B-Variables}
+
+要引用一个变量只需要使用它的名字（一个符号）。要给变量赋值，使用setq。
+\begin{minted}{elisp}
+(setq x 17) ; 将17赋值给变量x
+x -> 17 ; 变量x的值
+\end{minted}
+
+要创建只在一定范围内有效的临时变量，使用let。
+\begin{minted}{elisp}
+(let ((var1 value1)
+      (var2 value2)
+      ...)
+  body1 body2 ...)
+\end{minted}
+
+在let中，任何的vars赋值之前所有的value都会被计算且是无序的。变体\mintinline{elisp}{let*}（语法上与let相同）会先计算valuei并且赋值给vari，然后再计算\mintinline{elisp}{valuei+1}。
+
+\subsection{顺序}
+\label{section:B-Sequencing}
+
+要在只允许一个表达式的地方执行多个表达式，使用progn。
+\begin{minted}{elisp}
+(progn expr1 expr2)
+\end{minted}
+
+顺序执行每个expr。返回最后一个expr的值。
+
+要按顺序执行表达式而返回第一个子表达式的值，使用progn1。
+
+\subsection{条件}
+\label{section:B-Conditionals}
+
+Emacs Lisp中有两种条件表达式：if和cond。
+\begin{minted}{elisp}
+(if test
+    then
+  else1 else2 ...)
+\end{minted}
+对test求值。如果结果非nil，对then求值。否则，依次对剩下的每个else表达式求值。返回最后一个表达式的求值结果。
+
+\begin{minted}{elisp}
+(cond ((test1 body11 body12 ...)
+       (test2 body21 body22 ...)
+       ...))
+\end{minted}
+对test1求值。如果结果非空，则顺序对每个body1求值。否则对test2求值。如果结果非空，则顺序对每个body2求值。依次对于每个“cond子句”执行这个流程。返回最后一个表达式的求值结果。
+
+一个通常的习惯是在最后放置一个截取所有的子句：
+\begin{minted}{elisp}
+(cond ((test1 body11 body12 ...)
+       (test2 body21 body22 ...)
+       ...
+       (t bodyn1 bodyn2 ...)))
+\end{minted}
+
+逻辑运算符and，or以及not通常与条件语句一起工作---有时替代条件语句。
+
+\begin{minted}{elisp}
+(and expr1 expr2 ...)
+\end{minted}
+执行每个expr直到某个返回nil（或者执行完所有子表达式），然后返回。返回值是计算的最后一个表达式的值。这是逻辑运算符“与”，因为and只有当所有的子表达式都不为假时才为真。
+
+表达式
+\begin{minted}{elisp}
+(if expr1
+    (if expr2
+        ..
+      (if exprn-1 exprn)))
+\end{minted}
+和
+\begin{minted}{elisp}
+(if (and expr1 expr2 ... exprn-1)
+    exprn)
+\end{minted}
+通常都会简写作
+\begin{minted}{elisp}
+(and expr1 expr2 ... exprn-1 exprn)
+\end{minted}
+
+表达式
+\begin{minted}{elisp}
+(or expr1 expr2 ...)
+\end{minted}
+执行每个expr直到某个返回非nil（或者执行完所有子表达式），然后返回。返回值是计算的最后一个表达式的值。这是逻辑运算符“或”因为or只有当所有的子表达式都为假时才为假。
+
+表达式
+\begin{minted}{elisp}
+(if a a b)
+\end{minted}
+通常简写作
+\begin{minted}{elisp}
+(or a b)
+\end{minted}
+
+最后，
+\begin{minted}{elisp}
+(not expr)
+\end{minted}
+返回expr的逻辑非。如果expr为真，返回nil。如果expr为非，返回t。（有趣的是，not与null是同一个函数。）
+
+\subsection{循环}
+\label{section:B-Looping}
+
+Emacs Lisp有一个循环函数，while。
+\begin{minted}{elisp}
+(while test
+  body1 body2 ...)
+\end{minted}
+对test求值。如果结果非nil，逐次执行每个body。然后重复。test为nil的时候返回。
+
+\subsection{函数调用}
+\label{section:B-Function-Call}
+
+要调用一个函数就是编写一个列表，它的第一个元素是函数名，剩下的元素是这个函数的参数。
+\begin{minted}{elisp}
+(function arg1 arg2 ...)
+\end{minted}
+这会使用给定的参数调用function；返回function的结果。
+
+\subsection{字面数据}
+\label{section:B-Literal-Data}
+
+要使一个字面数据不受控制结构管辖---例如，避免对它求值---使用'引用（quote）它。
+\begin{minted}{elisp}
+'expr -> expr
+(quote expr) -> expr ; 等价
+\end{minted}
+
+要使一个字面数据的列表中的子表达式能够求值，使用反引用（backquote），然后去引用（unquote）子表达式。
+\begin{minted}{elisp}
+'(a b c) -> (a b c)
+(backquote (a b c)) -> (a b c) ; 等价
+`(a ,b c) -> (a value-of-b c)
+\end{minted}
+
+要去引用一个list类型的表达式然后把它拼接到一个包含着反引用的模板里，使用拼接去引用符，“\mintinline{elisp}{,@}”。
+\begin{minted}{elisp}
+(setq b '(x y z))
+`(a ,@b c) -> (a x y z c)
+\end{minted}
+
+\section{代码对象}
+\label{section:B-Code-Objects}
+
+\subsection{函数}
+\label{section:B-Functions}
+
+函数是下面这种形式的一个列表：
+\begin{minted}{elisp}
+(lambda (parameters ...)
+  "documentation string"
+  body1 body2 ...)
+\end{minted}
+
+文档字符串documentation string是可选的。
+
+当函数执行时，实参会被绑定到参数列表中的parameters中。参数列表中的关键字\mintinline{elisp}{&optional}表示后面的参数都是可选的。如果函数没有为可选参数指定值则默认为nil。最后一个参数可能使用\mintinline{elisp}{&rest}修饰，表示所有剩下的未分配的参数都被放到一个列表里然后赋给这个参数。
+
+函数执行的结果就是最后一个body表达式的结果。
+
+使用defun来定义一个带名字的函数。
+\begin{minted}{elisp}
+(defun name (parameters ...)
+  "documentation string"
+  body1 body2 ...)
+\end{minted}
+
+这会创建一个lambda表达式然后赋值给符号name的函数值\mintinline{elisp}{(function value)}。这与符号name的变量值不同，所以函数名称与变量名称并不会冲突。
+
+\subsection{宏函数}
+\label{section:B-Macro-Functions}
+
+宏函数是一个像lambda表达式一样的列表，但是并不使用lambda创建，而是使用macro。当宏执行时，它的参数不会被计算。相反的，它们被用作字面形式来计算出一个新的Lisp表达式。然后这这个表达式会被求值。
+
+要定义一个带名字的宏，就像defun那样使用defmacro。
