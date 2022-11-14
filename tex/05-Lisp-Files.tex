@@ -1,0 +1,347 @@
+\chapter{Lisp文件}
+\label{chapter:05-Lisp-Files}
+
+\guide{
+\begin{itemize}
+  \item 创建Lisp文件
+  \item 加载文件
+  \item 编译文件
+  \item eval-after-load
+  \item 局部变量列表
+  \item 补充：安全考虑
+\end{itemize}
+}
+
+到目前为止，我们编写的大多数Emacs Lisp都可以放进你的.emacs文件里。一种替代的方案是将Emacs Lisp的代码根据功能放进不同的文件里。这需要更多的努力，但是这同样也比把代码直接放到.emacs里多了一些好处：
+
+\begin{itemize}
+  \item .emacs中的代码在Emacs启动时总是会执行，即使我们在当前的工作中可能根本不需要它。这会使启动时间延长并且会消耗内存。相反的，分离的Lisp文件只有在我们需要的时候才去载入它。
+  \item .emacs中的代码通常并不会进行字节编译（byte-compiled）。字节编译会将Emacs Lisp转换成载入更高效、执行更快并且使用更少内存的格式（就像其他语言的程序一样，这会将代码变成不适于程序员阅读的格式）。字节编译过的Lisp文件通常以.elc（“Emacs Lisp, compiled”）作为后缀名，而未进行编译的文件通常以.el（“Emacs Lisp”）后缀。
+  \item 将所有代码放到.emacs里将会使文件膨胀成难以管理的乱麻。
+\end{itemize}
+
+前面章节所编写的代码就是这种可以根据功能划分到不同Lisp文件中的很好的例子，它们只应该在需要的时候载入，并且应该进行字节编译以提高执行效率。
+
+\section{创建Lisp文件}
+\label{section:05-Creating-a-Lisp-File}
+
+Emacs Lisp文件名通常以.el为后缀，所以作为开始，让我们创建timestamp.el并且将上一章中最后完成的代码放进去，如下所示。
+
+\begin{minted}{elisp}
+(defvar insert-time-format ...)
+(defvar insert-date-format ...)
+(defun insert-time () ...)
+(defun insert-date () ...)
+(defvar writestamp-format ...)
+(defvar writestamp-prefix ...)
+(defvar writestamp-suffix ...)
+(defun update-writestamps () ...)
+(defvar last-change-time ...)
+(make-variable-buffer-local 'last-change-time)
+(defun remember-change-time ...)
+(defvar modifystamp-format ...)
+(defvar modifystamp-prefix ...)
+(defvar modifystamp-suffix ...)
+(defun maybe-update-modifystamps () ...)
+(defun update-modifystamps (time) ...)
+\end{minted}
+
+先不要加入 \mintinline{elisp}{add-hook} 和 \mintinline{elisp}{make-local-hook} 。我们后面再来关注他们。现在，你需要注意的是当编写Lisp文件的时候，它应该能在任意时机被加载，甚至加载多次，而并不会带来你不希望的副作用。一个这种副作用的例子是，假如你不希望当前buffer的 \mintinline{elisp}{after-change-functions} 变为局部变量，而又把 \mintinline{elisp}{(make-local-hook 'after-change-functions)} 加入了到timestamp.el中。
+
+\section{加载文件}
+\label{section:05-Loading-the-File}
+
+当把代码写入到timestamp.el中后，我们必须进行配置，以使我们在需要的时候能够正确的访问到它们。这是通过加载（loading）完成的，也就是使Emacs读取和执行它的内容。在Emacs中有许多方式来加载Lisp文件：交互式的（interactively）、非交互式的（non-interactively）、明确的（explicitly）、模糊的（implicitly）、以及使用或者不使用路径搜索（pathsearching）的。
+
+\subsection{找到Lisp文件}
+\label{section:05-Finding-Lisp-Files}
+
+Emacs能够根据像 \verb|/usr/local/share/emacs/site-lisp/foo.el| 这样的绝对路径来加载文件，但是通常更为方便的方式是直接使用如bo.el这样的文件名，而让Emacs在加载路径（load path）中去找到它。加载路径简单来说就是Emacs用来搜索要加载的文件的目录列表，跟UNIX shell中使用环境变量PATH来找到要执行的程序相似。Emacs的加载路径储存在一个字符串列表变量 \mintinline{elisp}{load-path} 里。
+
+当Emacs启动的时候， \mintinline{elisp}{load-path} 的初始设置大概看起来跟这个差不多：
+
+\begin{minted}{elisp}
+("/usr/local/share/emacs/19.34/site-lisp"
+ "/usr/local/share/emacs/site-lisp"
+ "/usr/local/share/emacs/19.34/lisp")
+\end{minted}
+
+搜索路径时的顺序与其在列表中出现的顺序相同。要在 \mintinline{elisp}{load-path} 的头部加入一个路径，在你的.emacs文件中加入下面的代码：
+
+\begin{minted}{elisp}
+(setq load-path
+      (cons "/your/directory/here"
+            load-path))
+\end{minted}
+
+要在其末尾加入，则使用：
+
+\begin{minted}{elisp}
+(setq load-path
+      (append load-path
+              '("/your/directory/here")))
+\end{minted}
+
+注意到在第一个例子中，“ \verb|/your/directory/here| ”只作为一个普通字符串，而在第二个例子中，它却出现在一个括起来的列表中。第\ref{chapter:06-Lists}章将会解释Lisp中各种处理列表的方式。
+
+如果你要求Emacs在加载路径中查找一个Lisp文件并且忽略掉后缀名的话---例如你使用foo而不是foo.el---Emacs会首先查找fool.elc，也就是foo.el的字节编译格式。如果找不到，那么它将会尝试foo.el，最后是foo。通常加载文件时最好忽略掉后缀名。因为这样不仅会使你得到更有效的查找行为，而且这还会让 \mintinline{elisp}{eval-after-load} 工作的更好（阅读本章后面的\nameref{section:05-eval-after-load}章节获得更多信息）。
+
+\subsection{交互式加载}
+\label{section:05-Interactive-Loading}
+
+有两个Emacs命令用来交互式的加载Lisp文件： \mintinline{elisp}{load-file} 和 \mintinline{elisp}{load-library} 。当你输入 \verb|M-x| \mintinline{elisp}{load-file} \verb|RET| 时，Emacs会提示你输入一个Lisp文件的绝对路径（例如 \verb|/home/bobg/emacs/foo.el| ）而不去搜索 \mintinline{elisp}{load-path} 。这会使用通常的文件名提示方法，所以文件名会进行自动补全。而另一种方式，当你输入 \verb|M-x| \mintinline{elisp}{load-library} \verb|RET| 时，Emacs将会提示你输入库的基本名称（例如foo）并且尝试在 \mintinline{elisp}{load-path} 中找到它。这不会使用文件名提示方法，因此也就不会进行自动补全。
+
+\subsection{以代码加载}
+\label{section:05-Programmatic-Loading}
+
+当在Lisp代码中加载文件时，你可以选择显式加载、条件加载或者自动加载。
+
+\subsubsection{显式加载}
+\label{section:05-Explicit-Loading}
+
+可以显式的调用 \mintinline{elisp}{load} （和交互式加载中的 \mintinline{elisp}{load-library} 行为类似）或者 \mintinline{elisp}{load-file} 加载文件。
+
+\begin{minted}{elisp}
+(load "lazy-lock")
+\end{minted}
+
+会搜索 \mintinline{elisp}{load-path} 来查找lazy-lock.elc、lazy-lock.el或者lazy-lock。
+
+\begin{minted}{elisp}
+(load-file "/home/bobg/emacs/lazy-lock.elc")
+\end{minted}
+
+将不会使用 \mintinline{elisp}{load-path} 。
+
+显式加载应该在你确定需要马上加载某个文件时才使用，并且你应该确信文件并没有加载过或者你并不关心。事实上，如果使用下面的替代方式，你基本上不会用到显式加载这种方式。
+
+\subsubsection{条件加载}
+\label{section:05-Conditional-Loading}
+
+当n处不同的Lisp代码想要载入同一个文件时，有两个Emacs Lisp函数，即 \mintinline{elisp}{require} 和 \mintinline{elisp}{provide} ，给出了一种方法来确保文件只会被加载一次而不是 \mintinline{elisp}{n} 次。
+
+一个Lisp文件通常包含着一系列相关的函数。我们可以认为这些函数是一个单独的特性（feature）。加载这个文件会使得其包含的特性可用。
+
+Emacs明确了特性这个概念。特性通过Lisp符号进行命名，使用 \mintinline{elisp}{provide} 进行声明，使用 \mintinline{elisp}{require} 进行请求。
+
+它是这么工作的。首先，我们为timestamp.el提供的特性来选择一个代表的符号。让我们使用一个明显的，timestamp。我们通过在timestamp.el中写入
+
+\begin{minted}{elisp}
+(provide 'timestamp)
+\end{minted}
+
+来表明timestamp.el提供了特性timestamp。通常它出现在文件的末尾，这样只有当前面所有语句都正确执行后，这个特性才会被标识为“provided”。(如果发生了什么异常，那么文件的加载将会在调用provide之前终止)。
+
+现在假设在某处的代码需要使用时间戳功能。使用 \mintinline{elisp}{require} ：
+
+\begin{minted}{elisp}
+(require 'timestamp "timestamp")
+\end{minted}
+
+这表示，“如果timestamp特性还不可用，那么加载timestamp”（这会使用 \mintinline{elisp}{load} ，并且会搜索 \mintinline{elisp}{load-path} ）。如果timestamp特性已经提供了（也就是timestamp之前已经加载了），那么什么都不做。
+
+通常，对于 \mintinline{elisp}{require} 的调用通常都出现在Lisp文件的头部---就像C程序中通常以一大堆\mintinline{c}{#includes}开头一样。但是有些程序员喜欢在需要某个特性时才在那里调用 \mintinline{elisp}{require} 。这可能有很多个地方，而如果每次都会真的去加载文件的话，程序将会慢的像爬，每载入一个文件都会耗费大量的时间。使用“特性”将会使得文件只载入一次，大量的节省时间！
+
+调用 \mintinline{elisp}{require} 时，如果文件名是特性名的“字符串等价式”，那么文件名可以被省略而根据特性名推断出来。符号的“字符串等价式”就是简单的符号名称的字符串格式。特性符号timestamp的字符串等价式为“timestamp”，所以我们可以这么写：
+
+\begin{minted}{elisp}
+(require 'timestamp)
+\end{minted}
+
+来替换 \mintinline{elisp}{(require 'timestamp "timestamp")} 。（函数 \mintinline{elisp}{symbol-name} 可以得到符号的字符串等价式）。
+
+如果 \mintinline{elisp}{require} 使得相关的文件被加载（这时其特性还未被提供），那么那个文件应该 \mintinline{elisp}{provide} 请求的特性。否则， \mintinline{elisp}{require} 将会报告加载的文件并没有提供需要的特性。
+
+\subsubsection{自动加载}
+\label{section:05-Autoloading}
+
+当使用自动加载（autoloading）时，你可以推迟一个文件的加载直到它必须加载的时候---也就是直到你调用了它里面的方法。设置自动加载代价很小，因此通常都是在.emacs文件里做。
+
+函数 \mintinline{elisp}{autoload} 将一个函数名称与一个定义它的文件联系在一起。当Emacs尝试调用一个还未被定义的函数时，它将根据 \mintinline{elisp}{autoload} 来载入指定的文件，并且假定它做出了定义。而不使用 \mintinline{elisp}{autoload} ，尝试执行一个未定义的函数将会报错。
+
+下面是如何使用：
+
+\begin{minted}{elisp}
+(autoload 'insert-time "timestamp")
+(autoload 'insert-date "timestamp")
+(autoload 'update-writestamps "timestamp")
+(autoload 'update-modifystamps "timestamp")
+\end{minted}
+
+当第一次调用这四个函数 \mintinline{elisp}{insert-time} ， \mintinline{elisp}{insert-date} ， \mintinline{elisp}{updatewritestamps} ，或者 \mintinline{elisp}{update-modifystamps} 中的任意一个时，Emacs都将加载timestamp。这不仅会载入被调用的函数定义，并且会使另外的三个也被载入，所以后续的对于这几个函数的调用不会重新载入timestamp。
+
+ \mintinline{elisp}{autoload} 函数有多个可选参数。第一个参数是文档字符串。文档字符串允许用户甚至在还未从文件中加载函数的定义之前就得到帮助（通过 \mintinline{elisp}{describe-function} 和 \mintinline{elisp}{apropos} ）。
+
+\begin{minted}{elisp}
+(autoload 'insert-time "timestamp"
+  "Insert the current time according to insert-time-format.")
+(autoload 'insert-date "timestamp"
+  "Insert the current date according to insert-date-format.")
+(autoload 'update-writestamps "timestamp"
+  "Find writestamps and replace them with the current time.")
+(autoload 'update-modifystamps "timestamp"
+  "Find modifystamps and replace them with the given time.")
+\end{minted}
+
+下一个可选参数定义了当函数被加载后是一个交互式命令还是一个普通函数。如果忽略或者为 \mintinline{elisp}{nil} ，函数将被认为是非交互的；否则它就是一个命令。函数被加载之前，像 \mintinline{elisp}{command-apropos} 这样的函数也可以使用这个信息来区分函数是交互式还是非交互式的。
+
+\begin{minted}{elisp}
+(autoload 'insert-time "timestamp"
+  "Insert the current time according to insert-time-format."
+  t)
+(autoload 'insert-date "timestamp"
+  "Insert the current date according to insert-date-format."
+  t)
+(autoload 'update-writestamps "timestamp"
+  "Find writestamps and replace them with the current time."
+  nil)
+(autoload 'update-modifystamps "timestamp"
+  "Find modifystamps and replace them with the given time."
+  nil)
+\end{minted}
+
+如果你在 \mintinline{elisp}{autoload} 中错误的将交互式函数标记为非交互的，或者相反，当函数被载入之后就不要紧了。真正的函数定义会将所有 \mintinline{elisp}{autoload} 所给出的信息替换掉。
+
+最后一个可选参数我们这里不会讲。如果自动加载对象的类型不是函数的话，它会指定类型。就像它所指出的，键映射表和宏（我们后面的章节将会讲到）也可以被自动加载。
+
+\section{编译文件}
+\label{section:05-Compiling-the-File}
+
+就像在本章开始所提到的，当我们将Lisp代码储存在各自的文件里之后，我们可以对它进行字节编译（byte-compile）。字节编译将Emacs Lisp转换成更紧凑、执行更快的格式。就像在其他编程语言中的编译一样，程序员很难阅读字节编译的结果。但不像其他的编译，字节编译的结果在不同硬件平台和操作系统上是可移植的（但可能不兼容老版本的Emacs）。
+
+字节编译过的Lisp代码比未编译的代码执行速度快很多。
+
+字节编译的Lisp文件后缀名为.elc文件。就像前面提到的，不使用后缀名调用 \mintinline{elisp}{load} 和 \mintinline{elisp}{load-library} 将会优先加载.elc文件而不是.el文件。
+
+有几种字节编译文件的方式。最直接的方式是
+
+\begin{itemize}
+ \item 在Emacs里：执行 \verb|M-x| \mintinline{elisp}{byte-compile-file} \verb|RET| file.el \verb|RET| 。
+ \item 在UNIX shell里：执行\mintinline{sh}{emacs -batch -f batch-byte-compile file.el}。
+\end{itemize}
+
+你可以对Lisp文件的路径执行 \mintinline{elisp}{byte-recompile-directory} 来进行字节编译。
+
+当Emacs要载入的.elc文件的日期比对应的.el文件的日期旧时，Emacs将仍然会载入它，但是会提示一个警告。
+
+\section{eval-after-load}
+\label{section:05-eval-after-load}
+
+如果你希望直到某个特定文件加载之后才执行某些代码， \mintinline{elisp}{eval-after-load} 就是你需要的。例如，假如你搞出了一个比dired（Emacs的目录编辑模块）自身的 \mintinline{elisp}{dired-sort-toggle} 更好的函数定义。你不能简单的把它放入.emacs中，因为一旦你编辑一个目录，dired将会被自动加载，而这将会把你自己的定义替换掉。
+
+你应该做的是：
+
+\begin{minted}{elisp}
+(eval-after-load
+    "dired"
+  '(defun dired-sort-toggle ()
+     ...))
+\end{minted}
+
+这将会在dired加载之后马上执行 \mintinline{elisp}{defun} ，将dired自己的 \mintinline{elisp}{dired-sort-toggle} 替换为其他的版本。但是要注意，这只有当使用dired这个名称加载时才会工作。如果使用名称dired.elc或者 \verb|/usr/local/share/emacs/19.34/lisp/dired| 加载dired的话就不会执行。 \mintinline{elisp}{load} 或者 \mintinline{elisp}{autoload} 或者 \mintinline{elisp}{require} 必须使用同 \mintinline{elisp}{eval-after-load} 中一模一样的名称才可以。这也就是前面提到的为什么最好只用文件的基本名称加载文件的原因。
+
+ \mintinline{elisp}{eval-after-load} 的另一个作用是当你希望在一个包中使用某个变量、函数或者按键映射，而你又不想强制这个包加载的时候：
+
+\begin{minted}{elisp}
+(eval-after-load
+    "font-lock"
+  '(setq lisp-font-lock-keywords lisp-font-lock-keywords-2))
+\end{minted}
+
+这里使用了 \mintinline{elisp}{font-lock} 定义的变量 \mintinline{elisp}{lisp-font-lock-keywords-2} 。如果你在fontlock加载之前使用 \mintinline{elisp}{lisp-font-lock-keywords-2} ，你将会得到一个“Symbol's value as variable is void”错误。但是不要急着加载font-lock，因为这个setq只是为了将 \mintinline{elisp}{lisp-font-lock-keywords-2} 设置给 \mintinline{elisp}{font-lock} 的另一个变量 \mintinline{elisp}{lisp-font-lock-keywords} ，而这只有当 \mintinline{elisp}{font-lock} 由于什么原因加载的时候才会用到。所以我们使用 \mintinline{elisp}{eval-after-load} 来保证 \mintinline{elisp}{setq} 不会发生的太早而引起错误。
+
+如果你调用 \mintinline{elisp}{eval-after-load} 而文件已经被加载会发生什么呢？那么后面的Lisp表达式会马上执行。如果同一个文件有多个 \mintinline{elisp}{eval-after-load} 会发生什么呢？它们会在文件加载时一个接一个的全部执行。
+
+你可能发现 \mintinline{elisp}{eval-after-load} 的工作方式和钩子变量很相似。这是对的，但是一个重要的区别是钩子只执行Lisp函数（通常为lambda表达式的形式），而 \mintinline{elisp}{eval-after-load} 可以执行任何Lisp表达式。
+
+\section{局部变量列表}
+\label{section:05-Local-Variables-Lists}
+
+本章前面的内容已经足够创建并且根据需要加载Lisp代码文件了。但是对于timestamp的例子，事情还是有些不同。当调用 \mintinline{elisp}{update-writestamps} 时会自动载入timestamp，但是谁来调用 \mintinline{elisp}{update-writestamps} 并且加载timestamp呢？回想一下前一章中 \mintinline{elisp}{update-writestamps} 是由 \mintinline{elisp}{local-write-file-hooks} 调用的。那么如何将 \mintinline{elisp}{update-writestamps} 放进 \mintinline{elisp}{local-write-file-hooks} 里呢？而因为前面的章节\nameref{section:05-Creating-a-Lisp-File}中所提到的副作用，我们一定不能在加载文件时这么做。
+
+我们需要一种方法将 \mintinline{elisp}{update-writestmpas} 加入到需要它的buffer的局部变量 \mintinline{elisp}{local-write-file-hooks} 里，这样当 \mintinline{elisp}{local-write-file-hooks} 第一次触发时就会自动加载timestamp。
+
+一种很好的完成这个需求的手段是使用文件尾部的局部变量列表（local variables list）。当Emacs访问一个新文件的时候，它会扫描文件的尾部是否有这样的文本块\footnote{“文件的尾部”的意思是：文件的最后3000个字节---是的，这很随意---直到最后一行以CONTROL-L开头的行，如果存在的话。}：
+
+\begin{minted}{elisp}
+Local variables:
+var1: value1
+var2: value2
+...
+End:
+\end{minted}
+
+当Emacs找到这样一个块的时候，它会将每个 \mintinline{elisp}{value} 赋给对应的 \mintinline{elisp}{var} ，并且使其变为buffer的局部变量。Emacs甚至能解析出以某个前缀开头的这种块，只要它们的前缀相同。而在Lisp代码文件中必须将其作为注释，这样它们就不会被当做是Lisp代码执行：
+
+\begin{minted}{elisp}
+; Local variables:
+; var1: value1
+; var2: value2
+; ...
+; End:
+\end{minted}
+
+ \mintinline{elisp}{values} 被当做引用来对待；它们在赋给对应的 \mintinline{elisp}{vars} 之前不会被计算。所以在包含下面这个块
+
+\begin{minted}{elisp}
+; Local variables:
+; foo: (+ 3 5)
+; End:
+\end{minted}
+
+的文件中buffer局部变量 \mintinline{elisp}{foo} 的值为 \mintinline{elisp}{(+ 3 5)} ，而不是 \mintinline{elisp}{8} 。
+
+因此任何需要将 \mintinline{elisp}{update-writestamps} 加入到 \mintinline{elisp}{local-write-file-hooks} 中的文件都可以这样指定：
+
+\begin{minted}{elisp}
+Local variables:
+local-write-file-hooks: (update-writestamps)
+End:
+\end{minted}
+
+实际上，文件可以根据需要建立起自己所有的变量：
+
+\begin{minted}{elisp}
+Local variables:
+local-write-file-hooks: (update-writestamps)
+writestamp-prefix: "Written:"
+writestamp-suffix: "."
+writestamp-format: "%D"
+End:
+\end{minted}
+
+使用这种方式设置 \mintinline{elisp}{local-write-file-hooks} 的一个问题是它会将 \mintinline{elisp}{local-write-file-hooks} 替换为上面例子中所示的一个新的列表，而不是一种更好的方式---保留原来 \mintinline{elisp}{local-write-file-hooks} 里的其他值并向其中添加 \mintinline{elisp}{update-writestamps} 。虽然这样做需要执行Lisp代码。即，你需要执行下面的表达式：
+
+\begin{minted}{elisp}
+(add-hook 'local-write-file-hooks 'update-writestamps)
+\end{minted}
+
+Emacs在局部变量列表中引入一个“伪变量（pseudovariable）”eval来完成这个功能。
+当
+
+\begin{minted}{elisp}
+eval: value
+\end{minted}
+
+出现在局部变量列表中时， \mintinline{elisp}{value} 将被计算。计算的结果将被忽略；它将不会存储到局部变量 \mintinline{elisp}{eval} 中。因此完整的解决方案是将
+
+\begin{minted}{elisp}
+eval: (add-hook 'local-write-file-hooks 'update-writestamps)
+\end{minted}
+
+添加到局部变量里。
+
+实际上，设置 \mintinline{elisp}{local-write-file-hooks} 的正确做法应该是编写一个子模式（minor mode），这将是第\ref{chapter:07-Minor-Mode}章的主题。
+
+\section{补充：安全考虑}
+\label{section:05-Addendum-Security-Consideration}
+
+局部变量列表是一个潜在的安全漏洞，会导致用户受到“特洛伊木马”类型的攻击。例如一个变量的设置使得Emacs的工作不正常；或者一个eval有一些不可预知的副作用，例如删除文件或者使用你的名字伪造邮件。而攻击者只要引诱你访问一个在局部变量列表中包含这些设置的文件就可以了。只要你访问了这个文件，这些代码就会被执行。
+
+保护你自己的方式是将
+
+\begin{minted}{elisp}
+(setq enable-local-variables 'query)
+\end{minted}
+
+加入到你的.emacs文件里。这将会使Emacs在执行任何局部变量列表时都会询问你。也可以使用 \mintinline{elisp}{enable-local-eval} 来控制伪变量 \mintinline{elisp}{eval} 的执行。

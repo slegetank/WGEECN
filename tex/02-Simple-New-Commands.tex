@@ -1,0 +1,715 @@
+\chapter{简单的新命令}
+\label{chapter:02-Simple-New-Commands}
+
+\guide{
+\begin{itemize}
+  \item 游历窗口
+  \item 逐行滚动
+  \item 其他光标和文本移动命令
+  \item 处理符号链接
+  \item 修饰Buffer切换
+  \item 补充：原始的前置参数
+\end{itemize}
+}
+
+本章中我们将会着手写一些很小的Lisp函数和命令，介绍很多的概念来帮助我们面对后面章节中将出现的更大的任务。
+
+\section{游历窗口}
+\label{section:02-Traversing-Windows}
+
+当我最初使用Emacs时，我对于\verb|C-x o|很满意，也就是 \mintinline{elisp}{other-window} 。它将光标从一个窗口移动到另一个。如果我想把光标移动回前一个，我必须使用-1作为参数执行 \mintinline{elisp}{other-window} ，这需要输入\verb|C-u| \verb|-1| \verb|C-x| \verb|o|，这太繁琐了。而同样繁琐的另一种方案是不停\verb|C-x o|直到我逛遍所有窗口最终回到前一个窗口。
+
+我真正需要的是用一个按键绑定表示“下一个窗口”以及另一个表示“前一个窗口”。我知道我可以编写一些Emacs Lisp代码将我需要的方法绑定到新的按键上。首先我必须选择这些按键。“Next”和“Previous”自然可以想到\verb|C-n|和\verb|C-p|，但是这些已经被绑定到了 \mintinline{elisp}{next-line} 和 \mintinline{elisp}{previous-line} 而我并不想修改它们。另一个选择是使用一些前置按键，后面跟着\verb|C-n|和\verb|C-p|。Emacs已经使用\verb|C-x|作为很多两键命令的前置键（就像\verb|C-x o|自己），所以我选择\verb|C-x C-n|对应“下一个窗口”而\verb|C-x C-p|对应“前一个窗口”。
+
+我使用帮助命令 \mintinline{elisp}{describe-key} \footnote{如果你像第\ref{chapter:01-Customizing-Emacs}章中描述的那样修改了 \mintinline{elisp}{help-command} 的绑定，那么 \mintinline{elisp}{describe-key} 的按键绑定是M-? k；否则是C-h k。}来查看\verb|C-x C-n|和\verb|C-x C-p|是否已经绑定到其他按键了。我发现\verb|C-x C-p|已经绑定到了 \mintinline{elisp}{set-goal-column} ，而\verb|C-x C-p|绑定到了 \mintinline{elisp}{mark-page} 。将他们绑定到“下一个窗口”和“上一个窗口”将会覆盖他们默认的绑定。而因为这并不是我经常使用的命令，所以我并不介意覆盖他们。如果我需要的话可以使用\verb|M-x|来触发他们。
+
+在决定了使用\verb|C-x C-n|表示“下一个窗口”之后，我需要将它绑定到一些触发“下一个窗口”的命令上。而下一个窗口实际上和\verb|C-x o|所执行的跳到另一个窗口的行为一样，也就是 \mintinline{elisp}{other-window} 。所以\verb|C-x C-n|的按键绑定很简单。将下面的命令
+
+\begin{minted}{elisp}
+(global-set-key "\C-x\C-n" 'other-window)
+\end{minted}
+
+写入到.emacs中就完成了。而定义\verb|C-x C-p|绑定的命令就要动一点脑子了。Emacs中并不存在一个命令表示“将光标移动到上一个窗口”。是时候定义一个了！
+
+\subsection{定义other-window-backward}
+\label{section:02-Defining-other-window-backward}
+
+既然知道了给 \mintinline{elisp}{other-window} 传递一个参数-1可以使光标移动到上一个窗口，那么我们可以定义一个新的命令 \mintinline{elisp}{other-window-backward} ，如下所示：
+
+\begin{minted}{elisp}
+(defun other-window-backward ()
+  "Select the previous window."
+  (interactive)
+  (other-window -1))
+\end{minted}
+
+让我们看一下这个函数定义的各个部分。
+
+\begin{enumerate}
+  \item Lisp函数的定义以 \mintinline{elisp}{defun} 开始。
+  \item 下面跟着要定义的函数名称；这里使用 \mintinline{elisp}{other-window-backward} 。
+  \item 下面跟着函数的参数列表\footnote{“parameter”与“argument”有什么不同呢？这两个概念通常可以替换使用，但是技术上来讲，“parameter”是指函数定义中的形参，而“argument”是指函数调用时传入的实参。argument的值会传递给parameter。}。这个函数没有参数，所以我们使用了一个空列表。
+  \item 字符串”Select the previous window.”是这个新函数的文档字符串，或者叫做docstring。任何Lisp函数定义都可以有一个文档字符串。Emacs将会在使用命令 \mintinline{elisp}{describe-function} (\verb|M-? f|)或者 \mintinline{elisp}{apropos} 展示在线帮助时显示这个字符串。
+  \item 下一行 \mintinline{elisp}{(interactive)} 很特殊。这表示这个函数是一个交互式命令。在Emacs里，命令表示一个可以交互执行的Lisp函数，这表示它可以通过按键绑定或者通过\verb|M-x| command-name来进行触发。并不是所有Lisp函数都是命令，但所有命令都是Lisp函数。
+任何Lisp函数，包括交互命令，可以被其他Lisp代码使用 \mintinline{elisp}{(function arg ...)} 语法来进行调用。
+函数通过在函数定义的头部（在可选的docstring之后）使用特殊的 \mintinline{elisp}{(interactive)} 表达式来表示自己是交互命令。更多信息在之后的“交互声明”中做更多叙述。
+  \item 跟在函数名，参数列表，文档字符串，以及 \mintinline{elisp}{interactive} 声明之后的是函数体，也就是一个Lisp表达式序列。这个函数的函数体是一个单独的表达式 \mintinline{elisp}{(other-window -1)} ，也就是使用参数-1调用函数 \mintinline{elisp}{other-window} 。
+\end{enumerate}
+
+执行 \mintinline{elisp}{defun} 表达式用来定义函数。现在我们可以在Lisp程序中通过 \mintinline{elisp}{(other-window-backward)} 来调用它；或者通过输入\verb|M-x| \mintinline{elisp}{other-window-backward} \verb|RET|来调用它；也可以通过\verb|M-? f| \mintinline{elisp}{other-window-backward} \verb|RET|\footnote{再一次，如果你已经把help-command的绑定到M-?那么就是M-? f。从这开始，我将假设你修改过了，或者你至少应该理解我的做法。}来查看帮助。现在我们唯一需要做的就是绑定：
+
+\begin{minted}{elisp}
+(global-set-key "\C-x\C-p" 'other-window-backward)
+\end{minted}
+
+\subsection{为other-window-backward添加参数}
+\label{section:02-Parameterizing-other-window-backward}
+
+这个按键绑定已经能满足我们的需求了，但是我们还需要进行一点点改进。当使用\verb|C-x o|（或者我们现在可以使用\verb|C-x C-n|）来调用 \mintinline{elisp}{other-window} 时，你可以使用一个数字 \mintinline{elisp}{n} 作为参数来改变它的行为。如果使用了 \mintinline{elisp}{n} ， \mintinline{elisp}{other-window} 可以跳过很多窗口。例如，\verb|C-u| \verb|2| \verb|C-x| \verb|C-n|表示“移动到当前窗口后面的第二个窗口”。就像我们已经看到的， \mintinline{elisp}{n} 可以是一个负数来向回跳 \mintinline{elisp}{n} 个窗口。因此给 \mintinline{elisp}{other-window-backward} 添加一个参数来跳过窗口是很自然的想法。而现在， \mintinline{elisp}{other-window-backward} 只能每次向后跳一次。
+
+因此，我们需要给这个函数一个参数：要跳过的窗口数。我们可以这么做：
+
+\begin{minted}{elisp}
+(defun other-window-backward (n)
+  "Select Nth previous window."
+  (interactive "p")
+  (other-window (- n)))
+\end{minted}
+
+我们给自己的函数一个参数 \mintinline{elisp}{n} 。我们还把交互声明修改为 \mintinline{elisp}{(interactive "p")} ，还把传递给 \mintinline{elisp}{other-window} 的参数从 \mintinline{elisp}{-1} 改为 \mintinline{elisp}{(- n)} 。让我们从交互声明开始看一下这些改动。
+
+就像我们所看到的，交互命令是一种Lisp函数。这意味着命令也可以有参数。从Lisp中向函数传递参数是简单的；只要函数调用时写下来就可以了，就像 \mintinline{elisp}{(other-window -1)} 。但是如果函数是通过交互命令触发的呢？参数怎么传递？这也就是交互声明的目的。
+
+interactive的参数描述了这个函数如何获取参数。当命令不需要参数时，那么interactive也没有参数，就像我们一开始 \mintinline{elisp}{other-window-backward} 中所示的那样。当命令需要参数时， \mintinline{elisp}{interactive} 也有了一个参数：一个字母构成的字符串，每个字母描述一个参数。例子中的字母 \mintinline{elisp}{p} 表示“如果有前置参数，将它解释为一个数字，如果没有前置参数，就将参数默认设为1。”\footnote{要查看 \mintinline{elisp}{interactive} 的code letter，按下M-? f \mintinline{elisp}{interactive} RET。}在命令触发时参数n将接收这个值。所以如果用户输入\verb|C-u| \verb|7| \verb|C-x| \verb|C-p|， \mintinline{elisp}{n} 就是7 。如果输入\verb|C-x C-p|，则 \mintinline{elisp}{n} 是1 。当然你也可以在Lisp代码中调用 \mintinline{elisp}{other-window-backward} ，例如 \mintinline{elisp}{(other-window-backward 4)} 。
+
+新版本的 \mintinline{elisp}{other-window-backward} 使用参数 \mintinline{elisp}{(- n)} 来调用 \mintinline{elisp}{other-window} 。这里将 \mintinline{elisp}{n} 传递给函数-来得到相反数（注意-和 \mintinline{elisp}{n} 之间的空格）。 \mintinline{elisp}{-} 通常表示减---例如 \mintinline{elisp}{(- 5 2)} 得到 \mintinline{elisp}{3} ---但是当只有一个参数时，他表示取负。
+
+默认情况下， \mintinline{elisp}{n} 是1， \mintinline{elisp}{(- n)} 就是-1，对于 \mintinline{elisp}{other-window} 的调用就变成了 \mintinline{elisp}{(other-window -1)} ---同函数的第一个版本一样。如果用户指定了一个数字前缀参数---例如\verb|C-u| \verb|3| \verb|C-x| \verb|C-p|---那么我们调用的就是 \mintinline{elisp}{(other-window -3)} ，也就是向前移动3个窗口，这正是我们需要的。
+
+理解 \mintinline{elisp}{(- n)} 和-1的区别很重要。前者是一个函数调用。函数名和参数之间必须有一个空格。后者是一个整数常量。负号和1之间并没有空格。当然你也可以将它写成 \mintinline{elisp}{(- 1)} （虽然没有必要在能直接写成-1的情况下而触发一次函数调用）。不能写成-n，因为n不是一个常量。
+
+\subsection{可选参数}
+\label{section:02-Making-the-Argument-Optional}
+
+我们还可以对 \mintinline{elisp}{other-window-backward} 做出另一个改进，即当调用函数的时候参数 \mintinline{elisp}{n} 是可选的，也就是当交互触发的时候前置参数也是可选的。它应该能够在不提供参数 \mintinline{elisp}{(other-window-backward)} 时触发默认行为（即 \mintinline{elisp}{(other-window-backward 1)} ）。就像这样实现：
+
+\begin{minted}{elisp}
+(defun other-window-backward (&optional n)
+  "Select Nth previous window."
+  (interactive "p")
+  (if n
+      (other-window (- n))              ; 如果n非空
+    (other-window -1)))                 ; 如果n为空
+\end{minted}
+
+参数中的关键词 \mintinline{elisp}{&optional} 表示所有后续的参数都是可选的。可选参数可能会也可能不会传递给函数。如果没给，可选参数的值为 \mintinline{elisp}{nil} 。
+
+关于符号 \mintinline{elisp}{nil} 有三点需要注意：
+
+\begin{itemize}
+  \item 它表示错误。在Lisp的判断结构中--- \mintinline{elisp}{if} 、 \mintinline{elisp}{cond} 、 \mintinline{elisp}{while} 、 \mintinline{elisp}{and} 、 \mintinline{elisp}{or} 以及 \mintinline{elisp}{not} --- \mintinline{elisp}{nil} 表示“ \mintinline{elisp}{false} ”，其他值表示“ \mintinline{elisp}{true} ”。因此，在表达式
+\begin{minted}{elisp}
+(if n
+  (other-window (- n))
+  (other-window -1))
+\end{minted}
+(Lisp版本的if-then-else结构)中，第一个n被求值。如果n的值是true（非空），那么
+\begin{minted}{elisp}
+(other-window (- n))
+\end{minted}
+被执行，否则
+\begin{minted}{elisp}
+(other-window -1)
+\end{minted}
+被执行。
+还有另一个符号，t，代表truth， 但是这没有nil重要，就像后面表明的。
+  \item 它和空表很难区分。在Lisp解释器中，符号 \mintinline{elisp}{nil} 和空表 \mintinline{elisp}{()} 是相同的对象。如果你调用 \mintinline{elisp}{listp} 来判断符号 \mintinline{elisp}{nil} 是否是一个表，你将会得到结果 \mintinline{elisp}{t} ，也就是truth。同样的，如果你使用 \mintinline{elisp}{symbolp} 来判断空表是否是一个符号，那么也会得到 \mintinline{elisp}{t} 。但是，如果你传递任何其他列表给 \mintinline{elisp}{symbolp} ，或者传递其他符号给 \mintinline{elisp}{listp} ，那么你会得到 \mintinline{elisp}{nil} ---即表示非。
+  \item 它的值就是它自身。当你计算符号 \mintinline{elisp}{nil} 时，结果是 \mintinline{elisp}{nil} 。因此，不像其他的符号，当你需要它的名称而不是它的值得时候， \mintinline{elisp}{nil} 不需要引用，因为它的名称就是它的值。所以你可以这样写：
+\begin{minted}{elisp}
+(setq x nil) ; 将nil赋给变量x
+\end{minted}
+将nil赋给变量x而不必这样写：
+\begin{minted}{elisp}
+(setq x 'nil)
+\end{minted}
+虽然这两种写法都可以。同样的，不要试图将任何新的值赋给nil，\footnote{实际上Emacs也不允许你把任何值赋给 \mintinline{elisp}{nil} 。}虽然它看起来是一个合法的变量名称。
+\end{itemize}
+
+\mintinline{elisp}{nil} 的另一个功能就是区分列表是否正确。这将在第\ref{chapter:06-Lists}章中讨论。
+
+另一个符号t用来表示正确。就像 \mintinline{elisp}{nil} ， \mintinline{elisp}{t} 也表示着自身的值，因此不需要引用。与 \mintinline{elisp}{nil} 不同的是， \mintinline{elisp}{t} 并没有跟其他什么对象相同。也与 \mintinline{elisp}{nil} 不同的是， \mintinline{elisp}{nil} 是唯一表示错误的方式，而其他所有Lisp值都和 \mintinline{elisp}{t} 一样表示正确。但是，当你仅仅想表示正确时（就像 \mintinline{elisp}{symbolp} 的返回值）你不需要选择一个类似 \mintinline{elisp}{17} 或者“ \mintinline{elisp}{plugin} ”这样的值来表示它。
+
+\subsection{简化代码}
+\label{section:02-Condensing-the-Code}
+
+就像前面提到的，表达式
+
+\begin{minted}{elisp}
+  (if n                                   ; 如果...
+      (other-window (- n))                ; ...那么
+    (other-window -1))                    ; ...否则
+\end{minted}
+
+是Lisp版本的if-then-else结构。 \mintinline{elisp}{if} 的第一个参数是一个条件。它将被检测结果是真（除 \mintinline{elisp}{nil} 之外的一切值）还是假（ \mintinline{elisp}{nil} ）。如果为真，则第二个参数---“ \mintinline{elisp}{then} ”分句将会被执行。如果是假，第三个参数---“ \mintinline{elisp}{else} ”分句（可选的）---将会被执行。 \mintinline{elisp}{if} 的返回值总是最后执行的表达式的结果。附录\ref{chapter:B-Lisp-Quick-Reference}会向你展示 \mintinline{elisp}{if} 和其他像 \mintinline{elisp}{cond} 和 \mintinline{elisp}{while} 这样的Lisp流程控制函数。
+
+在本例中，我们可以通过提取公有表达式的方式来进行简化。注意到 \mintinline{elisp}{other-window} 在 \mintinline{elisp}{if} 的两个分支中都被调用了。唯一的区别来自传递给 \mintinline{elisp}{other-window} 的参数 \mintinline{elisp}{n} 。因此我们可以将表达式重写：
+
+\begin{minted}{elisp}
+(other-window (if n (- n) -1))
+\end{minted}
+
+通常，
+
+\begin{minted}{elisp}
+(if test
+  (a b)
+  (a c))
+\end{minted}
+
+可以简写成 \mintinline{elisp}{(a (if test b c))} 。
+
+我们还观察到在 \mintinline{elisp}{if} 的两个分支上，我们都在取反---不管是 \mintinline{elisp}{n} 的负数还是 \mintinline{elisp}{1} 的负数。所以
+
+\begin{minted}{elisp}
+(if n (-n) -1)
+\end{minted}
+
+可以变为
+
+\begin{minted}{elisp}
+(- (if n n 1))
+\end{minted}
+
+\subsection{逻辑表达式}
+\label{section:02-Logical-Expressions}
+
+另一个Lisp程序员的常用技巧甚至可以使这个表达式更简单： \mintinline{elisp}{(if n n 1)} $\equiv$ \mintinline{elisp}{(or n 1)} 。
+
+函数 \mintinline{elisp}{or} 跟大多数语言中的逻辑或都一样：如果所有条件为否，则返回否，否则返回是。但是Lisp的 \mintinline{elisp}{or} 还有另一个用途：它挨个计算它的参数的值直到找到第一个为真的值并返回。如果没找到，则返回 \mintinline{elisp}{nil} 。所以 \mintinline{elisp}{or} 的返回值并不仅仅是 \mintinline{elisp}{false} 或者 \mintinline{elisp}{true} ，它返回 \mintinline{elisp}{false} 或者表中的第一个为 \mintinline{elisp}{true} 的值。这意味着通常来说，
+
+\begin{minted}{elisp}
+(if a a b)
+\end{minted}
+
+可以替换为
+
+\begin{minted}{elisp}
+(or a b)
+\end{minted}
+
+实际上，通常我们都应该这么写，因为如果 \mintinline{elisp}{a} 是 \mintinline{elisp}{true} ，那么 \mintinline{elisp}{(if a a b)} 会执行两次 \mintinline{elisp}{a} 而 \mintinline{elisp}{(or a b)} 只执行一次。（另一方面，如果你就是想 \mintinline{elisp}{a} 执行两次，那么当然你应该使用 \mintinline{elisp}{if} ）。实际上，
+
+\begin{minted}{elisp}
+(if a a ; 如果a为true，返回a
+  (if b b ; else if b为true，返回b
+    ...
+    (if y y z))) ; else if y为true，返回y，否则z
+\end{minted}
+
+（虽然这看上去很夸张但在真正的程序里这是很常见的一种模式）可以转换成下面这种形式。
+
+\begin{minted}{elisp}
+(or a b .. y z)
+\end{minted}
+
+同样的，
+
+\begin{minted}{elisp}
+(if a
+  (if b
+    ...
+    (if y z)))
+\end{minted}
+
+（注意这个例子中没有任何else）可以被写成
+
+\begin{minted}{elisp}
+(and a b ... y z)
+\end{minted}
+
+因为and通过计算每个参数直到遇到一个值为nil的参数。如果找到了，就返回nil，否则它返回最后一个参数的值。
+
+另一个简写需要注意：一些程序员喜欢将
+
+\begin{minted}{elisp}
+(if (and a b ... y) z)
+\end{minted}
+
+转换成
+
+\begin{minted}{elisp}
+(and a b ... y z)
+\end{minted}
+
+我不这么做，因为虽然他们功能上相同，但是前一个有一个细微的暗示---即“如果a-y都是 \mintinline{elisp}{true} 的话就执行z”---后一种却不是这样，这可以让人更加容易理解代码。
+
+\subsection{最好的other-window-backward}
+\label{section:02-The-Best-other-window-backward}
+
+回到 \mintinline{elisp}{other-window-backward} 。使用我们自己整理过的 \mintinline{elisp}{other-window} 调用，现在函数的定义看起来是这样的：
+
+\begin{minted}{elisp}
+(defun other-window-backward (&optional n)
+  "Select Nth previous window."
+  (interactive "p")
+  (other-window (- (or n 1))))
+\end{minted}
+
+但是最好的定义---最有Emacs Lisp风格的---应该是这样：
+
+\begin{minted}{elisp}
+(defun other-window-backward (&optional n)
+  "Select Nth previous window."
+  (interactive "P")
+  (other-window (- (prefix-numeric-value n))))
+\end{minted}
+
+在这个版本中，交互声明中的字母并不是小写的 \mintinline{elisp}{p} 了，而是大写的 \mintinline{elisp}{P} ；而 \mintinline{elisp}{other-window} 的参数变成了 \mintinline{elisp}{(- (prefix-numeric-value n))} ，而不是 \mintinline{elisp}{(- (or n 1))} 。
+
+大写的P表示“当以交互的方式调用时，将前置参数保持为原始形式（raw form）并将其赋值给 \mintinline{elisp}{n} ”。前置参数的原始形式是Emacs使用的一种内部数据结构，用于在触发命令之前记录用户提供的前置信息。（查看\nameref{section:02-Addendum-Raw-Prefix-Argument}得到更多关于原始前置参数数据结构的细节。）函数 \mintinline{elisp}{prefix-numeric-value} 可以将像 \mintinline{elisp}{(interactive "p")} 那样将数据结构转换为一个数字。而且，如果 \mintinline{elisp}{other-window-backward} 以非交互的方式调用（因此 \mintinline{elisp}{n} 就不再是一个原始形式的前置参数）， \mintinline{elisp}{prefix-numeric-value} 还是会做正确的事情---也就是说，如果 \mintinline{elisp}{n} 是数字则直接返回 \mintinline{elisp}{n} ，如果 \mintinline{elisp}{n} 为 \mintinline{elisp}{nil} 则返回 \mintinline{elisp}{1} 。
+
+可以说，这个定义并不比我们前面定义的 \mintinline{elisp}{other-window-backward} 的功能更强大。但是这个版本更“Emacs-Lisp-like”，因为它的代码重用性更好。它使用内建的函数 \mintinline{elisp}{prefix-numeric-value} 而不是重复定义函数的行为。
+
+现在，让我们看看另一个例子。
+
+\section{逐行滚动}
+\label{section:02-Line-at-a-Time-Scrolling}
+
+在我使用Emacs之前，我习惯了一些编辑器上存在而Emacs上并没有的特性。自然我很怀念这些功能并且决定找回他们。这其中的一个例子是使用一个键来向上、向下滚屏。
+
+Emacs有两个滚屏方法， \mintinline{elisp}{scroll-up} 和 \mintinline{elisp}{scroll-down} ，分别绑定到\verb|C-v|和\verb|M-v|。每个方法都有一个可选参数来告诉它要滚动多少行。默认的，他们每次翻一屏。（不要把向上、向下滚屏和通过\verb|C-n|/\verb|C-p|向上、向下移动光标混淆。）
+
+虽然我可以使用\verb|C-u| \verb|1| \verb|C-v|和\verb|C-u| \verb|1| \verb|M-v|来每次向上、向下滚动一行，我还是希望只使用一次按键就实现这一功能。使用前面章节所讲述的技术，这很容易实现。
+
+虽然在这之前，我还是要先考虑一件事。我永远也分不清这两个函数实际上分别是干什么的。 \mintinline{elisp}{scroll-up} 是不是将文本向上移动，展示出下面的一部分文件？或者它表示展示上面的一部分文件，而把所有文字下移？我希望这些方法的名称能够少一些混淆，就像 \mintinline{elisp}{scroll-ahead} 和 \mintinline{elisp}{scrll-behind} 。
+
+我们可以使用defalias来指向任意Lisp函数。
+
+\begin{minted}{elisp}
+(defalias 'scroll-ahead 'scroll-up)
+(defalias 'scroll-behind 'scroll-down)
+\end{minted}
+
+这样就好多了。现在我们就再也不用为这些混淆的名字而头痛了（虽然原来的名字仍然还在）。
+
+现在我们来定义两个函数来使用正确的参数调用 \mintinline{elisp}{scroll-ahead} 和 \mintinline{elisp}{scroll-behind} 。这个过程和之前定义 \mintinline{elisp}{other-window-backward} 一样：
+
+\begin{minted}{elisp}
+(defun scroll-one-line-ahead ()
+  "Scroll ahead one line."
+  (interactive)
+  (scroll-ahead 1))
+
+(defun scroll-one-line-behind ()
+  "Scroll behind one line."
+  (interactive)
+  (scroll-behind 1))
+\end{minted}
+
+同样，我们可以给他们一个可选参数来使函数更通用：
+
+\begin{minted}{elisp}
+(defun scroll-n-lines-ahead (&optional n)
+  "Scroll ahead N lines (1 by default)."
+  (interactive "P")
+  (scroll-ahead (prefix-numeric-value n)))
+   
+(defun scroll-n-lines-behind (&optional n)
+  "Scroll behind N lines (1 by default)."
+  (interactive "P"))
+\end{minted}
+
+最后，我们需要选择按键来绑定新的命令。我喜欢\verb|C-q|绑定 \mintinline{elisp}{scroll-n-lines-behind} 而\verb|C-z|绑定 \mintinline{elisp}{scroll-n-lines-ahead} ：
+
+\begin{minted}{elisp}
+(global-set-key "\C-q" 'scroll-n-lines-behind)
+(global-set-key "\C-z" 'scroll-n-lines-ahead)
+\end{minted}
+
+默认的，\verb|C-q|绑定到了 \mintinline{elisp}{quoted-insert} 。我将这条不常用的函数移动到了\verb|C-x C-q|：
+
+\begin{minted}{elisp}
+(global-set-key "\C-x\C-q" 'quoted-insert)
+\end{minted}
+
+\verb|C-x C-q|的默认绑定是 \mintinline{elisp}{vc-toggle-read-only} ，我并不关心它的丢失。
+
+\verb|C-z|的在X系统下默认绑定是 \mintinline{elisp}{iconify-or-deiconify-frame} ，在终端的绑定是 \mintinline{elisp}{suspend-emacs} 。在这两种情况下，函数也绑定到了\verb|C-x C-z|，所以也没有必要重新绑定他们。
+
+\section{其他光标和文本移动命令}
+\label{section:02-Other-Cursor-and-Text-Motion-Commands}
+
+下面是另外一些绑定到合理键位的简单命令。
+
+\begin{minted}{elisp}
+(defun point-to-top ()
+  "Put point on top line of window."
+  (interactive)
+  (move-to-window-line 0))
+
+(global-set-key "\M-," 'point-to-top)
+\end{minted}
+
+"Point"指代光标的位置。这个命令将光标移动到窗口的左上角。推荐的按键绑定替换了 \mintinline{elisp}{tags-loop-continue} ，我把它替换到了\verb|C-x|,:
+
+\begin{minted}{elisp}
+(global-set-key "\C-x," 'tags-loop-continue)
+\end{minted}
+
+下一个函数将光标移动到了窗口的左下角。
+
+\begin{minted}{elisp}
+(defun point-to-bottom ()
+  "Put point at beginning of last visible line."
+  (interactive)
+  (move-to-window-line -1))
+
+(global-set-key "\M-." 'point-to-bottom)
+\end{minted}
+
+这次的按键绑定替换了 \mintinline{elisp}{find-tag} 。我将它放到了\verb|C-x|.，这回替换了我并不关心的 \mintinline{elisp}{set-fill-prefix} 。
+
+\begin{minted}{elisp}
+(defun line-to-top ()
+  "Move current line to top of window."
+  (interactive)
+  (recenter 0))
+
+(global-set-key "\M-!" 'line-to-top)
+\end{minted}
+
+这条命令将光标所在的行移动到屏幕的最顶端。这条命令替换了 \mintinline{elisp}{shell-command} 。
+
+改变Emacs的按键绑定有一个缺点。当你习惯了自己高度定制化的Emacs后再在另一个没有这些定制的Emacs上工作时（例如在不同的电脑上或者使用了朋友的账号登录），你会很不习惯。这经常困扰着我。我训练着自己在未定制的Emacs上工作而不会受太多影响。我很少使用未定制的Emacs，所以总的来说得大于失。当你疯狂的更改按键绑定之前，你需要权衡一下这些得失。
+
+\section{处理符号链接}
+\label{section:02-Clobbering-Symbolic-Links}
+
+目前为止，我们写的函数都非常简单。本质上，他们都只是重新排列了一下参数来调用其他已经存在的函数。现在让我们看看需要我们更多编程工作的示例。
+
+在UNIX里，符号链接（symbol link，或者symlink）是一个指向另一个文件的文件。当你查看符号链接的内容时，你实际上得到的是它所指向的文件的内容。
+
+假设你在Emacs里访问了一个指向其他文件的符号链接。你修改了一下文件内容然后按下\verb|C-x C-s|来保存buffer。Emacs应该做什么呢？
+
+\begin{enumerate}
+  \item 使用编辑的文件替换符号链接，破坏链接，所指向的原始文件保持不变。
+  \item 覆盖符号链接所指向的文件。
+  \item 提示用户来选择上面的方案。
+  \item 其他。
+\end{enumerate}
+
+不同的编辑器处理符号链接的方式都不一样，所以习惯一个编辑器的用户可能会对其他编辑器的行为感到不适应。而且，我相信情况不同正确的处理方式也不同，而用户每次遇到这种情况都被迫需要考虑一下。
+
+我的做法是：当我访问一个符号链接文件时，我让Emacs自动的将buffer变为只读。当我想要修改时会导致一个“Buffer is read-only”的错误。这个错误提示我可能正在访问一个符号链接。然后我会选择使用我自己设计的两个特殊命令之一来处理。
+
+\subsection{钩子}
+\label{section:02-Hooks}
+
+当我希望Emacs在我访问某个文件时将其对应的buffer变为只读，我必须告诉Emacs“当我访问这个文件时执行一段特定的Lisp代码”。访问文件的动作应该触发一段我写的代码。这时钩子（hooks）就出场了。
+
+钩子是指在特定情况下执行的指向某个函数列表的Lisp变量。例如，变量 \mintinline{elisp}{write-file-hooks} 是当一个buffer保存时Emacs执行的函数列表，而 \mintinline{elisp}{post-command-hook} 是当执行一个交互命令时执行的函数列表。在本例中我们最感兴趣的钩子是 \mintinline{elisp}{find-file-hooks} ，这在当Emacs访问一个新文件时会被执行。（有许多钩子，有一些我们将会在后面的内容中看到。要查看所有钩子，可以使用\verb|M-x| apropos \verb|RET| hook \verb|RET|。）
+
+函数 \mintinline{elisp}{add-hook} 将一个函数添加到钩子变量上。下面的函数将被添加到 \mintinline{elisp}{find-file-hooks} ：
+
+\begin{minted}{elisp}
+(defun read-only-if-symlink ()
+  (if (file-symlink-p buffer-file-name)
+    (progn
+      (setq buffer-read-only t)
+      (message "File is a symlink"))))
+\end{minted}
+
+这个函数用来检测当前buffer的文件是否是符号链接。如果是，则buffer将变为只读并且显示“File is a symlink”。让我们仔细看一下这个函数。
+
+\begin{itemize}
+  \item 首先，注意参数列表是空的。钩子变量中的函数都没有参数。
+  \item 函数 \mintinline{elisp}{file-symlink-p} 用来检测它的参数，也就是buffer的文件名称是否是一个符号链接。它是一个断言（predicate），这表示它会返回 \mintinline{elisp}{true} 或者 \mintinline{elisp}{false} 。在Lisp中，断言通常被以p或者-p结尾。
+  \item \mintinline{elisp}{file-symlink-p} 的参数是 \mintinline{elisp}{buffer-file-name} 。这个预置的变量在每个buffer中都有不同的值，因此也称为buffer局部变量。它总是保存着当前buffer的名字。在这里，当前buffer是指 \mintinline{elisp}{find-file-hooks} 执行时找到的文件。
+  \item 如果 \mintinline{elisp}{buffer-file-name} 指向的是符号链接，我们希望做两件事：将buffer变为只读，并且提示一条信息。但是，Lisp在if-then-else中的“then”部分只允许一条表达式。如果我们写成：
+\begin{minted}{elisp}
+(if (file-symlink-p buffer-file-name)
+  (setq buffer-read-only t)
+  (message "File is a symlink"))
+\end{minted}
+这表示，“如果 \mintinline{elisp}{buffer-file-name} 是符号链接，那么就把buffer变成只读的，否则打印信息‘File is a symlink.’”要想两条语句都执行，我们可以把他们放到 \mintinline{elisp}{progn} 里，就像下面这样：
+\begin{minted}{elisp}
+(progn
+  (setq buffer-read-only t)
+  (message "File is a symlink"))
+\end{minted}
+ \mintinline{elisp}{progn} 表达式会顺序执行内部的表达式并且返回最后执行的语句的值。
+  \item 变量 \mintinline{elisp}{buffer-read-only} 也是buffer局部变量，用于控制当前buffer是否是只读的。
+\end{itemize}
+
+既然我们已经定义了 \mintinline{elisp}{read-only-if-symlink} ，我们就可以调用
+
+\begin{minted}{elisp}
+(add-hook 'find-file-hooks 'read-only-if-symlink)
+\end{minted}
+
+来将其添加到访问新文件就会触发的函数列表中。
+
+\subsection{匿名函数}
+\label{section:02-Anonymous-Functions}
+
+当你使用 \mintinline{elisp}{defun} 定义函数的时候，你给了函数一个可以在任何地方调用的名字。但是对于那些并不需要在任何地方都被调用的函数呢？假如它只需要在一个地方生效呢？可以说， \mintinline{elisp}{read-only-if-symlink} 仅需要在 \mintinline{elisp}{find-file-hooks} 的列表里执行；实际上，在 \mintinline{elisp}{find-file-hooks} 之外的地方调用它甚至并不是什么好事。
+
+我们可以在不指定名称的情况下定义函数。这种函数被称为匿名函数。我们使用Lisp的关键词 \mintinline{elisp}{lambda} \footnote{“lambda演算”是一套用于研究函数及其参数的数学形式。某种意义上来说它是Lisp（以及其他很多语言）的理论基础。单词“lambda”只是一个希腊语中的单词，并没有什么特殊的含义。}来定义，除了不指定函数名外，它的作用跟defun一模一样。
+
+\begin{minted}{elisp}
+(lambda ()
+  (if (file-symlink-p buffer-file-name)
+    (progn
+      (setq buffer-readonly t)
+      (message “File is a symlink))))
+\end{minted}
+
+ \mintinline{elisp}{lambda} 后面的空括号是匿名函数的参数列表。这个函数没有参数。匿名函数可以用在任何你使用函数名的地方：
+\begin{minted}{elisp}
+(add-hook 'find-file-hooks
+          '(lambda ()
+             (if (file-symlink-p buffer-file-name)
+               (progn
+                 (setq buffer-read-only t)
+                 (message "File is a symlink")))))
+\end{minted}
+
+这样就只有 \mintinline{elisp}{add-hook} 可以访问它了。\footnote{这并不是绝对正确的。其他的代码可以搜索 \mintinline{elisp}{find-file-hooks} 列表的内容并且执行里面的所有函数。这里的意思是这个函数相对于 \mintinline{elisp}{defun} 的显式声明来说隐藏起来了。}
+
+不过也有一个不应该在钩子中使用匿名函数的原因。如果你想要从钩子中移除一个函数的话，你需要使用函数名来调用 \mintinline{elisp}{remove-hook} ，就像这样：
+
+\begin{minted}{elisp}
+  (remove-hook 'find-file-hooks 'read-only-if-symlink)
+\end{minted}
+
+而如果使用匿名函数就没法这样做了。
+
+\subsection{处理符号链接}
+\label{section:02-Handling-the-Symlink}
+
+当Emacs提醒我在编辑符号链接时，我可能希望打开链接的目标文件来作为当前buffer的内容；我也可能希望"clobber"符号链接（将符号链接文件替换为所指向的真实文件）然后再访问它。下面是这两个的实现方式：
+
+\begin{minted}{elisp}
+(defun visit-target-instead ()
+  "Replace this buffer with a buffer visiting the link target."
+  (interactive)
+  (if buffer-file-name
+    (let ((target (file-symlink-p buffer-file-name)))
+      (if target
+        (find-alternate-file target)
+        (error "Not visiting a symlink")))
+    (error "Not visiting a file")))
+
+(defun clobber-symlink ()
+  "Replace symlink with a copy of the file."
+  (interactive)
+  (if buffer-file-name
+    (let ((target (file-symlink-p buffer-file-name)))
+      (if target
+        (if (yes-or-no-p (format "Replace %s with %s?"
+                                 buffer-file-name
+                                 target))
+          (progn
+            (delete-file buffer-file-name)
+            (write-file buffer-file-name)))
+        (error "Not visiting a symlink")))
+    (error "Not visiting a file")))
+\end{minted}
+
+两个函数都以下面的表达式开始：
+
+\begin{minted}{elisp}
+(if buffer-file-name
+  ...
+  (error "Not visiting a file"))
+\end{minted}
+
+（我将其他内容省略掉以强调这个 \mintinline{elisp}{if} 结构。）因为 \mintinline{elisp}{buffer-file-name} 可能为空（当前buffer可能没有访问任何文件---例如，*scratch* buffer），所以这是必要的，而传递 \mintinline{elisp}{nil} 给 \mintinline{elisp}{file-symlink-p} 将会触发错误，“Wrong type argument: stringp,nil”。\footnote{请自己试一下：M-: \mintinline{elisp}{(file-symlink-p nil)} RET。}这个错误表示一个函数的参数应该是字符串---一个符合 \mintinline{elisp}{stringp} 断言的对象---但是却得到了 \mintinline{elisp}{nil} 。 \mintinline{elisp}{visit-target-instead} 和 \mintinline{elisp}{clobber-symlink} 都会触发这个错误信息，所以我们自己来检测 \mintinline{elisp}{buffer-file-name} 是不是 \mintinline{elisp}{nil} 。如果是 \mintinline{elisp}{nil} ，那么“else”子句里我们会使用 \mintinline{elisp}{error} 函数生成一个可读性更好的错误信息---“Not visiting a file”。当 \mintinline{elisp}{error} 函数被调用时，当前的命令会被终止，Emacs将会返回到它的最顶层来等待用户的下一个输入。
+
+为什么 \mintinline{elisp}{read-only-if-symlink} 中不需要检测 \mintinline{elisp}{buffer-file-name} 是否为空呢？因为这个方法只会由 \mintinline{elisp}{find-file-hooks} 调用，而这个钩子只有当访问某个文件时才会触发。
+
+在 \mintinline{elisp}{buffer-file-name} 条件的“then”部分，两个函数都有下面的结构
+
+\begin{minted}{elisp}
+(let ((target (file-symlink-p buffer-file-name))) ...)
+\end{minted}
+
+大多数语言都有方法来创建临时变量（也称为局部变量），它们只存在于某个特定的代码域中，称为变量的作用域。在Lisp中，临时变量使用 \mintinline{elisp}{let} 来创建，结构是这样的：
+
+\begin{minted}{elisp}
+(let ((var1 value1)
+      (var2 value2)
+      ...
+      (varn valuen))
+  body1 body2 ... bodyn)
+\end{minted}
+
+这会将value1赋值给var1，value2赋值给var2，依此类推；var1和var2只能在bodyi表达式中使用。此外，使用临时变量能够帮助避免不同域的代码中出现函数名相同的冲突。
+
+所以表达式
+
+\begin{minted}{elisp}
+(let ((target (file-symlink-p buffer-file-name))) ...)
+\end{minted}
+
+创建了一个名为target的临时变量，它的值是 \mintinline{elisp}{(file-symlink-p buffer-file-name)} 的返回值。
+
+就像前面提到的， \mintinline{elisp}{file-symlink-p} 是一个断言，也就是说它的返回值是真或者假。但是因为真在Lisp中可以被任何除 \mintinline{elisp}{nil} 之外的值表示，如果 \mintinline{elisp}{file-symlink-p} 的参数是一个符号链接时它的返回值并不一定就是 \mintinline{elisp}{t} 。实际上，它会返回符号链接所指向的文件名。所以如果 \mintinline{elisp}{buffer-file-name} 是符号链接的名字， \mintinline{elisp}{target} 将会是符号链接的目标的名称。
+
+在临时变量 \mintinline{elisp}{target} 的作用域中， \mintinline{elisp}{let} 的 \mintinline{elisp}{body} 都是这样的：
+
+\begin{minted}{elisp}
+(if target
+  ...
+  (error "Not visiting a symlink"))
+\end{minted}
+
+在执行完 \mintinline{elisp}{let} 的 \mintinline{elisp}{body} 之后，变量 \mintinline{elisp}{target} 就不存在了。
+
+在 \mintinline{elisp}{let} 中，如果 \mintinline{elisp}{target} 为空（ \mintinline{elisp}{file-symlink-p} 可能会返回 \mintinline{elisp}{nil} ，因为 \mintinline{elisp}{buffer-file-name} 可能并不是一个符号链接），那么我们就会在“else”里产生一个错误信息，“Not visiting a symlink”。否则每个函数中会执行自己的逻辑。最后我们来看两个函数不一样的地方。
+
+函数 \mintinline{elisp}{visit-target-instead} 中执行
+
+\begin{minted}{elisp}
+(find-alternate-file target)
+\end{minted}
+
+这会访问 \mintinline{elisp}{target} 文件来替换当前的buffer，并且会提示用户，以免原buffer还有未保存的修改。它甚至会触发 \mintinline{elisp}{find-file-hooks} ，因为新文件也可能是一个符号链接！
+
+在 \mintinline{elisp}{visit-target-instead} 调用 \mintinline{elisp}{find-alternate-file} 的地方， \mintinline{elisp}{clobber-symlink} 则如下所示：
+
+\begin{minted}{elisp}
+(if (yes-or-no-p ...) ...)
+\end{minted}
+
+函数 \mintinline{elisp}{yes-or-no-p} 会询问用户一个问题，并会根据用户的选择返回 \mintinline{elisp}{true} 或 \mintinline{elisp}{false} 。本例中，问题是：
+
+\begin{minted}{elisp}
+(format "Replace %s with %s?"
+        buffer-file-name
+        target)
+\end{minted}
+
+这个字符串的结构和C语言的 \mintinline{elisp}{printf} 很相似。第一个参数是一个格式化模式字符串。每个\%s都使用后面的字符串参数来替换。第一个\%s使用 \mintinline{elisp}{buffer-file-name} 的值替换，第二个使用 \mintinline{elisp}{target} 的值替换。所以如果 \mintinline{elisp}{buffer-file-name} 的值是“ \mintinline{elisp}{foo} ”而 \mintinline{elisp}{target} 的值是“ \mintinline{elisp}{bar} ”，那么提示就会是“Replace foo with bar?”（ \mintinline{elisp}{format} 函数还支持其他的格式化符号。例如，如果参数是ASCII值则\%c会打印出一个字母。使用\verb|M-?| \verb|f| \mintinline{elisp}{format} \verb|RET|来查看整个功能列表。）
+
+在检查了 \mintinline{elisp}{yes-or-no-p} 的返回值并且用户选择了“yes”之后， \mintinline{elisp}{clobber-symlink} 将会执行：
+
+\begin{minted}{elisp}
+(progn
+  (delete-file buffer-file-name)
+  (write-file buffer-file-name))
+\end{minted}
+
+我们已经知道， \mintinline{elisp}{progn} 会把多条Lisp表达式组合起来。 \mintinline{elisp}{delete-file} 会删除文件（只是个符号链接）， \mintinline{elisp}{write-file} 会将当前buffer的内容保存到 \mintinline{elisp}{buffer-file-name} 所指向的位置，只是这次保存的是普通文件。
+
+我喜欢将\verb|C-x t|绑定到 \mintinline{elisp}{visit-target-instead} （默认未被使用）而\verb|C-x 1|绑定到 \mintinline{elisp}{clobber-symlink} （默认绑定到 \mintinline{elisp}{count-linespage} ）。
+
+\section{修饰Buffer切换}
+\label{section:02-Advised-Buffer-Switching}
+
+让我们以一个例子总结本章，这个例子将会引入一个称为修饰（advice）的非常有用的Lisp工具。
+
+我发现我经常同时编辑许多名称相似的文件；例如，foobar.c和foobar.h。当我想从一个buffer切换到另一个时，我使用\verb|C-x b|，也就是 \mintinline{elisp}{switch-to-buffer} ，它会询问我buffer的名称。因为我希望尽量少的按键，我使用\verb|TAB|来补全buffer名称。我会输入
+
+\begin{minted}{elisp}
+C-x b fo TAB
+\end{minted}
+
+并且希望TAB会将“fo”补全为”foobar.c”，然后我只要按下RET就可以了。90\%的情况下这工作的很好。另外的情况下，就像这个例子中，按下fo TAB将只会补全为“foobar.”，而让我自己区分是选择”foobar.c”还是”foobar.h”。出于习惯，我常常按下RET，结果buffer的名称变成了”foobar.”。
+
+这时，Emacs将会创建一个新的名为foobar.的新buffer，当然这完全不是我想要的。现在我需要杀掉这个新buffer（使用\verb|C-x k|，kill-buffer）然后再来一次。虽然我有时也需要新建一个不存在的buffer，但是这和刚刚这种错误的情况相比很少见。我希望在这种情况中，Emacs能够在我出错之前提示我。
+
+要达到这点，我们可以使用advice。advice是指一段在函数调用之前或之后执行的代码。前置修饰可以在参数传递给函数之前对其进行修改。后置修饰可以修改函数的返回值。修饰跟钩子变量有点像，只是Emacs只为一些特定的情况定义了不多的一些钩子，而你却能选择对哪些方法进行修饰。
+
+下面是修饰的第一次尝试：
+
+\begin{minted}{elisp}
+  (defadvice switch-to-buffer (before existing-buffer
+                                      activate compile)
+    "When interactive, switch to existing buffers only."
+    (interactive "b"))
+\end{minted}
+
+让我们仔细看看它。函数 \mintinline{elisp}{defadvice} 用于创建一个新的修饰。它的第一个参数是要被修饰的函数名（不必引用，unquoted）---在本例中也就是 \mintinline{elisp}{switch-to-buffer} 。后面跟着的是特定格式的列表。它的第一个元素---在本例中也就是 \mintinline{elisp}{before} ---告诉我们这是前置还是后置修饰。（还有一种修饰，称为“ \mintinline{elisp}{around} ”，它能让你在修饰函数的内部调用被修饰的方法。）后面跟着的是这个修饰的名称；本例中是 \mintinline{elisp}{existing-buffer} 。以后如果你想删除或者修改这个修饰你可以使用这个名称。再后面是一些关键词： \mintinline{elisp}{activate} 表示这个修饰在其定义之后马上生效（可以只是定义修饰而不生效）； \mintinline{elisp}{compile} 表示这个修饰的代码应该被“ \mintinline{elisp}{byte-compiled} ”提高执行速度（查看第\ref{chapter:05-Lisp-Files}章）。
+
+在特定格式的列表之后，跟着一个可选的文档字符串。
+
+本例中的 \mintinline{elisp}{body} 只有一行交互声明，这会替换 \mintinline{elisp}{switch-to-buffer} 的交互声明。 \mintinline{elisp}{switch-to-buffer} 接受任何字符串作为 \mintinline{elisp}{buffer-name} 参数，而交互声明中的字符 \mintinline{elisp}{b} 表示“只接受已存在的buffer的名称”。我们在不影响任何以非交互形式调用 \mintinline{elisp}{switch-to-buffer} 的情况下做出了这个更改。所以这个修饰高效的完成了整件工作：它使 \mintinline{elisp}{switch-to-buffer} 只接受已存在的buffer名。
+
+不幸的是，这样约束性太大了。还是应该能够切换到不存在的buffer，但是只在某些特殊的条件下才移除这个限制---例如，当使用前置参数的时候。这样，\verb|C-x b|将会拒绝切换到不存在的buffer，而\verb|C-u| \verb|C-x| \verb|b|将允许。
+
+我们可以这么做：
+
+\begin{minted}{elisp}
+(defadvice switch-to-buffer (before existing-buffer
+                                    activate compile)
+  "When interactive, switch to existing buffers only,
+unless given a prefix argument."
+  (interactive
+    (list (read-buffer "Switch to buffer:"
+                       (other-buffer)
+                       (null current-prefix-arg)))))
+\end{minted}
+
+又一次，我们使用了前置修饰修改了 \mintinline{elisp}{switch-to-buffer} 的交互声明。但是这次，我们使用了一种未见过的形式调用 \mintinline{elisp}{interactive} ：我们传递了一个列表作为参数给它，而不是一个字母组成的字符串。
+
+当 \mintinline{elisp}{interactive} 的参数不是字符串而是一些表达式时，这些表达式会进行运算得到一个参数列表传递给函数。所以在这个例子中我们调用了 \mintinline{elisp}{list} ，它使用下面这段表达式的返回值构建：
+
+\begin{minted}{elisp}
+(read-buffer "Switch to buffer: "
+             (other-buffer)
+             (null current-prefix-arg))
+\end{minted}
+
+函数 \mintinline{elisp}{read-buffer} 是一个底层的用于向用户询问buffer名称的函数。说它底层是因为所有其他询问buffer名称的函数最终调用的都是它。它的调用需要一个提示字符串和两个可选参数：一个默认切换到的buffer，以及一个布尔值用于标识输入是否只能是已存在的buffer。
+
+默认的buffer，我们传递了 \mintinline{elisp}{(other-buffer)} 的返回值给它，它的作用是产生一个可用的默认buffer。（通常它会选择最近使用的但是当前不可见的buffer。）对于是否限制输入的布尔状态值，我们使用了
+
+\begin{minted}{elisp}
+(null current-prefix-arg)
+\end{minted}
+
+这会查看 \mintinline{elisp}{current-prefix-arg} 是否为 \mintinline{elisp}{nil} 。如果是，则返回 \mintinline{elisp}{t} ；否则返回 \mintinline{elisp}{nil} 。因此，如果没有前置参数（也就是 \mintinline{elisp}{current-prefix-arg} 为 \mintinline{elisp}{nil} ），那么我们调用的是
+
+\begin{minted}{elisp}
+(read-buffer "Switch to buffer: "
+             (other-buffer)
+             t)
+\end{minted}
+
+表示“读入buffer名称，只接受已存在的buffer”。如果有前置参数，那么我们调用的是
+
+\begin{minted}{elisp}
+(read-buffer "Switch to buffer: "
+             (other-buffer)
+             nil)
+\end{minted}
+
+表示“读入buffer名称而不做任何限制”（允许不存在的buffer作为参数）。然后 \mintinline{elisp}{read-buffer} 的返回值被传给了list，list（包含着一个元素，也就是buffer名称）传递给 \mintinline{elisp}{switch-to-buffer} 作为参数列表。
+
+ \mintinline{elisp}{switch-to-buffer} 这样修饰之后，Emacs将不会回应我切换到不存在的buffer的要求了，除非我按下\verb|C-u|来要求这种能力。
+
+完整起见，你还应该同样修饰函数 \mintinline{elisp}{switch-to-buffer-other-window} 和 \mintinline{elisp}{switch-to-buffer-other-frame} 。
+
+\section{补充：原始的前置参数}
+\label{section:02-Addendum-Raw-Prefix-Argument}
+
+变量 \mintinline{elisp}{current-prefix-arg} 总是保存着最后的“原始”前置参数，跟你从 \mintinline{elisp}{(interactive "P")} 中取到的一样。
+
+函数 \mintinline{elisp}{prefix-numeric-value} 可以应用到一个跟你从 \mintinline{elisp}{(interactive "P")} 中取得的“原始”前置参数一样类型的值来得到数值。
+
+原始的前置参数什么样子呢？表格\ref{table:prefix-arguments}展示出了原始值以及对应的数值。
+
+\begin{table}[hbt!]
+  \begin{tabular}{l|l|l}
+    如果用户输入 & 原始值 & 数值 \\
+    \hline
+    \verb|C-u|后面跟一个（可能是负数）数字 & 数字本身 & 数字本身 \\
+    \verb|C-u -| （后面什么都没有） & 符号- & -1 \\
+    \verb|C-u n| 一行中n次 & 一个包含数字4的n次方的表 & 4的n次方 \\
+    没有前置参数 & nil & 1 \\
+    \hline
+  \end{tabular}
+  \caption{前置参数}
+  \label{table:prefix-arguments}
+\end{table}

@@ -1,0 +1,112 @@
+\chapter{获取以及编译Emacs}
+\label{chapter:E-Obtaining-and-Building-Emacs}
+
+\guide{
+\begin{itemize}
+  \item 获取包
+  \item 解包，编译，以及安装Emacs
+\end{itemize}
+}
+
+\section{获取包}
+\label{section:E-Availability-of-Packages}
+
+本书中描述的所有软件包，除了TEX，都是自由软件基金会的GNU软件。它们的软件和其他包都可以通过匿名FTP从ftp.gnu.ai.mit.edu下的/pub/gnu路径获取。有很多镜像网站，相关信息在GNUinfo/FTP下。
+
+如果你不能从网上下载到，或者你希望有更简单的方式，你可以从自由软件基金会订购软件的发布版本。它们有磁盘，磁带，以及光盘版本。你还可以订购许多纸质版本的GNU手册，包括一些关于Emacs的，还有附录\ref{chapter:D-Sharing-Your-Code}中提到的Textinfo手册。要知道更多信息，包括价格，可以联系FSF：
+
+\begin{verbatim}
+Free Software Foundation, Inc.
+59 Temple Place - Suite 330
+Boston, MA 02111-1307 USA
+Telephone: +1-617-542-5942
+Fax: +1-617-542-2652
+Email: gnu@prep.ai.mit.ed
+\end{verbatim}
+
+本书中提到的FSF提供的包有：
+
+\begin{description}
+  \item[Emacs] 编辑器本身，包括很多Lisp扩展。源文件以emacs-x.y.tar.gz的形式存在，其中x和y分别是最新版本的主版本和小版本号（当前是19.34）。
+  \item[Textinfo] GNU文档系统，包括makeinfo和一个关于如何编写Textinfo文档的手册。需要TEX来生成可打印的手册。形式为textinfo-x.y.gz。当前版本为3.7。
+  \item[Emacs Lisp Reference Manual] The Emacs Lisp Reference Manual的Textinfo文档的源文件以elisp-manual-19-x.y.tar.gz的形式存在。（19是Emacs的主版本。）当前手册的版本是2.4。对于Emacs Lisp程序员来说，一个在线版本的手册是不可或缺的。
+  \item[Shar untilities] 包括shar和unshar，用来创建和解包软件发布版本。形式为sharutils-x.y.gz。当前版本是4.2。shar文件不需要使用unshar解包；只需要使用标准的UNIX sh命令就可以了。
+  \item[Gzip] Compression and decompression package，形式为gzip-x.y.shar。当前版本为1.2.4。
+  \item[Tar] 另一个用来创建和解包软件发布版本的程序，形式为tar-x.y.shar.gz。当前版本为1.11.8。注意不像大多数其他的实现，GNU tar可以处理.tar.gz文件而并不需要gzip的存在。
+  \item[The Jargon File] 在线Hacker Jargon File（在前言中引用过）在FSF中也有提供，文件为jargversion.txt.gz，当前版本为400。也有Info格式的版本，jargversion.info.gz。它是黑客知识的宝库，会以书籍的形式The New Hacker's Dictionary定期发布。
+\end{description}
+
+你可以通过TEX用户组获取到TEX。
+
+\begin{verbatim}
+TEX Users Group
+1850 Union Street—Suite 1637
+San Francisco, CA 94123 USA
+Home page: http://www.tug.org/
+Email: tug@tug.org
+Fax: +1-415-982-8559
+\end{verbatim}
+
+\section{解包，编译，以及安装Emacs}
+\label{section:E-Unpacking-Building-and-Installing-Emacs}
+
+就像大多数GNU软件，Emacs的解包，编译和安装也很简单。实际上，下面的说明对于几乎所有GNU软件包都有效，而不仅仅是Emacs。
+
+\subsection{解包}
+\label{section:E-Unpacking}
+
+如果你有一个压缩的tar文件（文件名以.tar.gz，.tar.Z，或者.tgz）并且你拥有GNU tar，执行：
+
+\begin{minted}{sh}
+tar zxvf file
+\end{minted}
+
+如果你没有GNU tar，使用这个：
+
+\begin{minted}{sh}
+zcat file | tar xvf -
+\end{minted}
+
+（你可以在Gzip包中找到zcat。）如果你使用的tar来自于SVR4的衍生版本，你可能需要把xvf替换为xvof。o使你成为展开的文件的拥有者。（否则，拥有者为tar文件的发布者---你的电脑可能并不认识他。）
+
+如果你有一个shar文件（文件名以.sh或者.shar结尾），执行
+
+\begin{minted}{sh}
+unshar file
+\end{minted}
+
+或者简单的
+
+\begin{minted}{sh}
+sh file
+\end{minted}
+
+如果shar文件本身压缩了（.Z或者.gz），首先用\mintinline{sh}{gzip -d}解压它。
+
+\subsection{编译和安装}
+\label{section:E-Building-and-Installing}
+
+首先在要编译的软件包的顶层目录，通过运行configure脚本来配置软件。
+
+不同的软件包拥有不同的配置选项。使用\mintinline{sh}{./configure --help}来查看这个包的选项。Emacs的选项有：
+
+\begin{description}
+  \item[\mintinline{sh}{--with-gcc}] 使用GNU C编译器来编译Emacs。
+  \item[\mintinline{sh}{--with-pop}] 编译支持Post Office Protocol（POP），有时用来收取email（对于用Emacs读取邮件的用户）
+  \item[\mintinline{sh}{--with-kerberos}] 对POP使用Kerberos鉴权扩展。
+  \item[\mintinline{sh}{--with-hesiod}] 使用Hesiod寻找POP服务器。
+  \item[\mintinline{sh}{--with-x}] 支持X窗口。
+  \item[\mintinline{sh}{--with-x-toolkit}] 更好的X窗口支持；使用工具箱部件。默认使用Toolkit，但是--with-x-toolkit=motif会使用Motif工具箱替代它。
+\end{description}
+
+你还可能希望查看configure脚本在执行的时候做了什么---这可能会有一会儿---所以你还可以使用\mintinline{sh}{--verbose}选项。下面就是我经常执行的configure：
+
+\begin{minted}{sh}
+./configure --verbose --with-x --with-x-toolkit
+\end{minted}
+
+在配置完包之后，执行make。这将会编译程序并且会花相当长的时间。
+
+下一步，执行make check。这会执行包里提供的自检程序。
+
+假设软件正确编译并且通过了测试，使用make install来安装它。

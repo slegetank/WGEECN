@@ -1,0 +1,94 @@
+\documentclass[10pt,oneside,a4paper]{ctexbook}
+
+% 导言区
+
+\title{Writing GNU Emacs Extensions (中文版)}
+\author{Bob Glickstein}
+\date{2022-11-11}
+
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tocbibind}
+
+\usepackage[pdfborder={0 0 0}]{hyperref}
+\hypersetup{
+  pdftitle={Writing GNU Emacs Extensions (Chinese Simplified)},
+  pdfkeywords={Emacs, GNU Emacs},
+  pdfcreator={Zhang, Zepeng <redraiment@gmail.com>},
+  colorlinks,
+  pdfstartview=FitH,
+  bookmarksopen=true,
+  bookmarksnumbered=true,
+}
+
+\usepackage{enumitem}
+\setenumerate[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+\setitemize[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+\setdescription{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+
+\usepackage{minted}
+\setminted{
+  autogobble=true,
+  breakanywhere,
+  frame=lines,
+}
+
+\makeindex
+
+\newcommand{\guide}[1]{
+\begin{center}
+\fcolorbox{white}{blue!15!gray!15}{
+\begin{minipage}{\linewidth}
+在本章：
+
+{#1}
+\end{minipage}
+}
+\end{center}
+}
+
+% rename captions
+\renewcommand{\listtablename}{表格清单}
+\renewcommand{\listfigurename}{插图清单}
+
+\begin{document}
+
+\pagenumbering{Alph}
+\input{00-Title-Page}
+
+\frontmatter
+
+\tableofcontents
+
+\input{00-Preface}
+
+\mainmatter
+
+\input{01-Customizing-Emacs}
+\input{02-Simple-New-Commands}
+\input{03-Cooperating-Commands}
+\input{04-Searching-and-Modifying-Buffers}
+\input{05-Lisp-Files}
+\input{06-Lists}
+\input{07-Minor-Mode}
+\input{08-Evaluation-and-Error-Recovery}
+\input{09-A-Major-Mode}
+\input{10-A-Comprehensive-Example}
+
+\appendix
+
+\input{A-Conclusion}
+\input{B-Lisp-Quick-Reference}
+\input{C-Debugging-and-Profiling}
+\input{D-Sharing-Your-Code}
+\input{E-Obtaining-and-Building-Emacs}
+
+\backmatter
+
+\cleardoublepage
+\listoftables
+
+\cleardoublepage
+\listoffigures
+
+\end{document}

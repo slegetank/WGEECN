@@ -1,0 +1,786 @@
+\chapter{搜索和修改Buffers}
+\label{chapter:04-Searching-and-Modifying-Buffers}
+
+\guide{
+\begin{itemize}
+  \item 插入当前时间
+  \item 记录戳
+  \item 修改戳
+\end{itemize}
+}
+
+很多场景中你会想要在buffer中搜索一个字符串，可能还希望用另一个字符串替换它。本章中我们将会为此展示很多有效的方法。我们将会讲解那些执行搜索功能的函数，并且展示如何构建正则表达式，这会给你的搜索带来巨大的灵活性。
+
+\section{插入当前时间}
+\label{section:04-Inserting-the-Current-Time}
+
+当你编辑一个文件时插入当前的日期或者时间有时是很有用的。例如，在我写这一章的时候，是1996年8月18日星期五的晚上10点半。几天前，我在编辑一个Emacs Lisp代码文件时，我将注释
+
+\begin{minted}{elisp}
+;; Each element of ENTRIES has the form
+;; (NAME (VALUE-HIGH . VALUE-LOW))
+\end{minted}
+
+修改为
+
+\begin{minted}{elisp}
+;;NTRIES has the form
+;; (NAME (VALUE-HIGH . VALUE-LOW))
+;; [14 Aug 96] I changed this so NAME can now be a symbol,
+;; a string, or a list of the form (NAME . PREFIX) [bg]
+\end{minted}
+
+我在注释中插入了一个时间戳，因为这在当我以后要修改这段代码时，我可以知道这段代码是在之前什么时候做出的修改。
+
+如果你知道函数 \mintinline{elisp}{current-time-string} 返回今天的日期和时间字符串，那么插入当前时间的命令是很简单的：\footnote{如何找到它呢？当然是通过M-x \mintinline{elisp}{apropos} RET \mintinline{elisp}{time} RET。}
+
+\begin{minted}{elisp}
+(defun insert-current-time ()
+  "Insert the current time"
+  (interactive "*")
+  (insert (current-time-string)))
+\end{minted}
+
+本章后面的章节\nameref{section:04-More-Asterisk-Magic}将会解释 \mintinline{elisp}{(interactive "*")} 和 \mintinline{elisp}{insert} 的含义。
+
+上面这个简单的函数非常不灵活，因为它只会插入类似“Sun Aug 19 22:34:53 1996”这种格式的字符串（标准C的库函数\mintinline{c}{ctime}和\mintinline{c}{asctime}的形式）。这在你希望的是日期，或者只是时间，或者12小时制而不是24小时制，或者日期的形式为”18 Aug 1996”或者“8/18/96”或者“18/8/96”时是非常笨重的。
+
+幸运的是，我们只需要做一点额外的工作就可以获得更好的结果。Emacs有一些其他的时间相关的函数，特别是 \mintinline{elisp}{current-time} ，它会以一种原始形式返回当前时间，以及 \mintinline{elisp}{format-time-string} ，它以时间值以及格式作为参数（C函数的\mintinline{c}{strftime}的形式）。例如，
+
+\begin{minted}{elisp}
+(format-time-string "%l.%M %p" (current-time))
+\end{minted}
+
+返回“10.38 PM”。（这里使用的格式代码 \verb|%l| ，即“1-12小时”， \verb|%M| ，（0-59分），以及 \verb|%P| ，“AM或者PM”。使用 \mintinline{elisp}{describe-function} 来查看 \mintinline{elisp}{format-time-string} 的完整各式列表）。
+
+这样我们就可以很容易地提供两个命令，一个用来插入当前的时间，另一个用来插入当前的日期。我们还可以根据用户提供的格式配置变量来返回特定的各式。这两个函数分别命名为 \mintinline{elisp}{insert-time} 和 \mintinline{elisp}{insert-date} 。而格式配置变量分别为 \mintinline{elisp}{insert-time-format} 和 \mintinline{elisp}{insert-date-format} 。
+
+\subsection{用户选项和文档字符串}
+\label{section:04-User-Options-and-Docstrings}
+
+首先我们定义变量。
+
+\begin{minted}{elisp}
+(defvar insert-time-format "%X"
+  "*Format for \\[insert-time] (c.f. 'format-time-string').")
+
+(defvar insert-date-format "%x"
+  "*Format for \\[insert-date] (c.f. 'format-time-string').")
+\end{minted}
+
+关于文档字符串我们能看到两个新特性。
+
+\begin{itemize}
+  \item 首先，每个都以星号（ \verb|*| ）开始。 \mintinline{elisp}{defvar} 的文档字符串以星号开头有特殊的含义。它表示这个变量是一个用户选项（user option）。用户选项和其他Lisp变量没什么区别，除了下面这两种情况：
+  \begin{itemize}
+    \item 用户选项可以使用 \mintinline{elisp}{set-variable} 命令以交互的方式进行设置，Emacs会问用户要一个变量名（Emacs会自动补全用户的输入）以及一个值。有时，可以不以Lisp语法输入值；也就是说，不必在输入的时候带着外面的括号。当你设置非用户选项的变量值时，你必须这样做：
+\begin{minted}{elisp}
+M-: (setq variable value) RET
+\end{minted}
+需要使用Lisp语法来设置值）。
+  \item 而用户选项可以通过 \verb|M-x| \mintinline{elisp}{edit-options} \verb|RET| \footnote{在Emacs 20.1中，在本身编写时还没发布，将会引入一个全新的用于编辑用户选项的称为“customize”的系统。将用户选项加入到“customize”中需要使用特殊的函数 \mintinline{elisp}{defgroup} 和 \mintinline{elisp}{defcustom} 。}激活 \mintinline{elisp}{option-editing} 模式来进行编辑。
+  \end{itemize}
+  \item 关于文档字符串的第二个新特性是它们都包含一个特殊的结构 \verb|\[command]| 。（是的，确实是 \verb|\[...]| ，但是因为是在Lisp字符串里面，反斜杠需要被转义： \verb|\\[...]| ）。这个语法非常神奇。当文本字符串显示给用户时---例如当用户使用 \mintinline{elisp}{apropos} 或者 \mintinline{elisp}{describe-variable} 时--- \verb|\[command]| 将会被替换为command所关联的键绑定。例如，如果 \verb|C-x t| 会触发 \mintinline{elisp}{insert-time} ，那么文本字符串
+\begin{minted}{elisp}
+"*Format for \\[insert-time] (c.f. 'format-time-string')"
+\end{minted}
+将显示为
+\begin{minted}{elisp}
+*Format for C-x t (c.f. 'format-time-string').
+\end{minted}
+如果 \mintinline{elisp}{insert-time} 并没有键绑定，那么将会默认显示 \verb|M-x| insert-time。如果有多个键绑定到了 \mintinline{elisp}{insert-time} ，Emacs会自己选择一个。
+如果你希望字符串 \mintinline{elisp}{\[insert-time]} 不被替换，如何阻止它被替换为对应的键绑定呢？对于这种情况有一个特殊的转义序列： \mintinline{elisp}{\=} 。当 \mintinline{elisp}{\=} 出现在 \verb|\[...]| 之前时， \verb|\[...]| 将不会发生替换。当然在Lisp字符串里面你需要这样写“ \verb|...\\=\\[...]...| ”。
+如果你并不希望一个变量作为用户选项，而你又希望它的文本字符串以星号开头时， \mintinline{elisp}{\=} 也会起作用。
+\end{itemize}
+
+所有在多个函数之间共享的变量都应该使用 \mintinline{elisp}{defvar} 来声明。如何选择哪些变量作为用户选项存在呢？一个经验之谈是如果某个变量直接控制一个用户可见的并且想要控制的特性，并且设置这个变量很简单时（也就是没有复杂的数据结构和特定的编码值），那么就可以将它设置为用户选项。
+
+\subsection{更多的星号魔法}
+\label{section:04-More-Asterisk-Magic}
+
+前面我们定义了用来控制 \mintinline{elisp}{insert-time} 和 \mintinline{elisp}{insert-date} 的变量，下面就是这两个简单函数的定义。
+
+\begin{minted}{elisp}
+(defun insert-time ()
+  "Insert the current time according to insert-time-format."
+  (interactive "*")
+  (insert (format-time-string insert-time-format
+                              (current-time))))
+
+(defun insert-date ()
+  "Insert the current date according to insert-date-format."
+  (interactive "*")
+  (insert (format-time-string insert-date-format
+                              (current-time))))
+\end{minted}
+
+这两个函数非常相似，除了一个使用 \mintinline{elisp}{insert-time-format} 而另一个使用 \mintinline{elisp}{insert-date-format} 。 \mintinline{elisp}{insert} 函数使用任意数量的参数（类型必须为字符串或者字符），顺序的将它们插入到当前文本位置的后面。
+
+对于这两个函数最需要注意的是它们都以下面的结构开始
+
+\begin{minted}{elisp}
+(interactive "*")
+\end{minted}
+
+之前你已经知道了 \mintinline{elisp}{interactive} 将一个函数转变为一个命令，以及指定用户交互输入时如何获取函数的参数。但是我们在之前并没有看到过*作为 \mintinline{elisp}{interactive} 的参数，而且，这两个函数并没有参数，那么这个*到底代表什么呢？
+
+当星号作为 \mintinline{elisp}{interactive} 的第一个参数时，这表示“如果当前buffer为只读时终止这个函数”。在函数开始之前就去检测buffer是否为只读要比函数执行了一半才提示用户“Buffer is read-only”错误信息要更好。在本例中，如果我们忽略对于buffer只读的检测，insert函数将会触发它自己的“Buffer is read-only”错误，这当然也没有什么危害会发生。但是在其他更复杂的函数里，这可能会造成一些不可逆的副作用（例如修改了全局变量）。
+
+\section{记录戳(Writestamps)}
+\label{section:04-Writestamps}
+
+以一种可配置的格式自动插入当前的时间和日期是非常简洁并且可能超过了大多数编辑器的功能，但是这并不是太有用。很显然更有用的能力是将一个记录戳（文件最后修改的日期、时间）保存在文件里。每次文件保存时记录戳会自动更新。
+
+\subsection{更新记录戳}
+\label{section:04-Updating-Writestamps}
+
+首先我们要做的是每次文件保存时自动执行我们的 \mintinline{elisp}{writestamp-updating} 代码。就像我们在第\ref{chapter:02-Simple-New-Commands}章的章节\nameref{section:02-Hooks}中看到的，把代码跟某些常用动作（例如保存文件）关联的最好方式就是将函数添加到一个钩子变量里。使用 \verb|M-x| \mintinline{elisp}{apropos} \verb|RET| \mintinline{elisp}{hook} \verb|RET| ，我们可以找到四个可能的钩子变量： \mintinline{elisp}{after-save-hook} , \mintinline{elisp}{local-write-file-hooks} , \mintinline{elisp}{write-contents-hooks} 以及 \mintinline{elisp}{write-file-hooks} 。
+
+首先我们排除掉 \mintinline{elisp}{after-save-hook} 。我们并不希望我们的记录戳在文件保存之后才修改，因为这样我们就永远无法保存文件了（死循环）。
+
+其他候选人的差别比较微妙：
+
+\begin{description}
+  \item[\mintinline{elisp}{write-file-hooks}] 代码将在buffer保存时执行。
+  \item[\mintinline{elisp}{local-write-file-hooks}] 一个 \mintinline{elisp}{buffer-local} 版本的 \mintinline{elisp}{write-file-hooks} 。回忆一下第\ref{chapter:02-Simple-New-Commands}章的章节\nameref{section:02-Hooks}中关于buffer局部变量的描述，即每个buffer都有自己不同的变量。 \mintinline{elisp}{write-file-hooks} 作用于每个buffer，而 \mintinline{elisp}{local-write-file-hooks} 做只对单个buffer起作用。因此，如果你希望保存Lisp文件时执行一个函数，而保存文本文件时执行另一个，那么 \mintinline{elisp}{local-write-file-hooks} 就是你的选择。
+  \item[\mintinline{elisp}{write-contents-hooks}] \mintinline{elisp}{local-write-file-hooks} 是一个buffer局部变量，每当buffer被保存到文件时它将会执行。但是---就像我提醒过你这很微妙--- \mintinline{elisp}{write-contents-hooks} 作用于buffer的内容，而其他两个钩子作用于编辑的文件。实际上，这意味着如果你改掉了buffer的主模式，你也改变了内容的行为方式，因此 \mintinline{elisp}{write-contents-hooks} 会被重置为 \mintinline{elisp}{nil} 而 \mintinline{elisp}{local-write-file-hooks} 却不会。另一方面，如果你更改了Emacs关于你正编辑哪个文件的想法，例如通过调用 \mintinline{elisp}{set-visited-file-name} ，那么 \mintinline{elisp}{local-write-file-hooks} 将会被重置为 \mintinline{elisp}{nil} 而 \mintinline{elisp}{write-contents-hooks} 却不会。
+\end{description}
+
+我们排除掉 \mintinline{elisp}{write-file-hooks} ，因为我们只想在拥有记录戳的buffer保存时才调用我们的函数，而并不是所有buffer都触发。而撇除语法上的吹毛求疵，我们会排除掉 \mintinline{elisp}{write-contents-hooks} ，因为我们希望所选择的钩子变量对于buffer的主模式的变更不做回应。这样就只剩下了 \mintinline{elisp}{local-write-file-hooks} 。
+
+现在，我们要在 \mintinline{elisp}{local-write-file-hooks} 中放置什么样的函数呢？我们必须定位每个记录戳，删除掉它，并且用新的记录戳来替换它。最简单直接的方法是将每个记录戳用特殊的字符串标记括起来。例如我们可以使用 “ WRITESTAMP((”放在左边而“))”放在右边，这样它在文件里看起来是这样的：
+
+\begin{minted}{text}
+went into the castle and lived happily ever after.
+The end. WRITESTAMP((12:19pm 7 Jul 97))
+\end{minted}
+
+假设WRITESTATMP((...))当中的东西是由 \mintinline{elisp}{insert-date} 放入的（我们之前已经定义了），那么它的格式可以通过 \mintinline{elisp}{insert-date-format} 进行控制。
+
+现在，假设文件里已经有了一些记录戳，\footnote{插入记录戳与插入日期或者时间很类似。编写这么一个函数就留给读者作为练习了。}我们可以在保存文件时这么更新它们：
+
+\begin{minted}{elisp}
+(add-hook 'local-write-file-hooks 'update-writestamps)
+
+(defun update-writestamps ()
+  "Find writestamps and replace them with the current time."
+  (save-excursion
+    (save-restriction
+      (save-match-data
+        (widen)
+        (goto-char (point-min))
+        (while (search-forward "WRITESTAMP((" nil t)
+          (let ((start (point)))
+            (search-forward "))")
+            (delete-region start (- (point) 2))
+            (goto-char start)
+            (insert-date))))))
+  nil)
+\end{minted}
+
+这里有很多的新知识。让我们一行一行的来阅读这个函数。
+
+首先我们看到函数体被包在了一个函数 \mintinline{elisp}{save-excursion} 中。 \mintinline{elisp}{save-excursion} 的作用是记录光标的位置，执行参数中的子表达式，然后将光标移动回原处。在这里它很有用，因为我们的函数体会将光标在buffer中到处移动，而在函数结束时我们希望函数的调用者感觉不到这些。在第\ref{chapter:08-Evaluation-and-Error-Recovery}章中将会有更多关于 \mintinline{elisp}{save-excursion} 的信息。
+
+下一步调用了 \mintinline{elisp}{save-restriction} 。它的作用方式跟 \mintinline{elisp}{save-excursion} 相似，也是记录了某些信息，然后执行它的参数，然后将信息恢复。这里它记录的是buffer的restriction，它是narrowing的结果。narrowing在第\ref{chapter:09-A-Major-Mode}章中将会做具体描述。现在我们只要知道narrowing是Emacs的一种只展示buffer的一部分的能力。因为 \mintinline{elisp}{update-writestamps} 将会调用 \mintinline{elisp}{widen} ，这会移除掉所有narrowing的效果，我们需要 \mintinline{elisp}{save-restriction} 来在我们做完之后恢复现场。
+
+下一步我们要调用 \mintinline{elisp}{save-match-data} ，就像 \mintinline{elisp}{save-excursion} 和 \mintinline{elisp}{save-restriction} ，它保存了一些信息，执行它的参数，然后恢复信息。这一次保存的信息是最后一次搜索的结果。每次查找动作执行时，查找的结果将会被保存到一些全局变量里（我们马上会看到）。每次搜索都会替换掉前面的结果。我们的函数将会执行一次搜索，但是如果出现了其他函数调用我们的函数的情况，我们不希望破坏全局的数据。
+
+下面调用 \mintinline{elisp}{widen} 。就像前面提到的，这会移除所有narrowing的效果。它使得整个buffer都可以被访问，因为我们需要找到整个buffer的记录戳，所以这是必须的。
+
+下面我们使用 \mintinline{elisp}{(goto-char (point-min))} 将光标移动到了buffer的开头，然后开始函数的主循环，也就是搜索整个buffer的记录戳并将其更新。函数 \mintinline{elisp}{point-min} 返回point的最小值，通常为1。唯一 \mintinline{elisp}{(point-min)} 不为1的情况就是使用了narrowing。因为我们调用了 \mintinline{elisp}{widen} ，所以narrowing不会生效，因此代码也可以写成 \mintinline{elisp}{(goto-char 1)} 。但是使用 \mintinline{elisp}{point-min} 是一种很好的实践）。
+
+主循环看起来是这样的：
+
+\begin{minted}{elisp}
+(while (search-forward "WRITESTAMP((" nil t)
+  ...)
+\end{minted}
+
+这是一个 \mintinline{elisp}{while} 循环，它跟其他语言中的 \mintinline{elisp}{while} 循环功能相似。第一个参数是每次循环时的判断表达式。如果表达式返回真，则其他参数被执行，循环继续。
+
+表达式 \mintinline{elisp}{(search-forward "WRITESTAMP((" nil t)} 将会从当前位置开始，搜索第一个匹配的字符串。 \mintinline{elisp}{nil} 表示将会一直搜索到buffer的结尾。稍后将介绍更多细节。 \mintinline{elisp}{t} 表示如果没发现匹配项， \mintinline{elisp}{search-foward} 将会简单的返回 \mintinline{elisp}{nil} 。（如果不设 \mintinline{elisp}{t} ， \mintinline{elisp}{search-forward} 在未找到匹配项时将会触发一个错误，终止当前的命令。）如果搜索成功了，point将会移动到匹配的字符串之后的第一个字符， \mintinline{elisp}{search-forward} 将会返回这个位置（可以通过使用 \mintinline{elisp}{match-beginning} 来找到搜索开始的位置，如图\ref{figure:after-searching-for-the-string-WRITESTAMP((}所示）。
+
+\begin{figure}[hbt!]
+  \includegraphics[width=\linewidth]{../resource/4-1.png}
+  \caption{在搜索了WRITESTAMP((之后}
+  \label{figure:after-searching-for-the-string-WRITESTAMP((}
+\end{figure}
+
+while的循环体是
+
+\begin{minted}{elisp}
+(let ((start (point)))
+\end{minted}
+
+这会创建一个临时变量 \mintinline{elisp}{start} ，用于保存point的位置，也就是WRITESTARMP((...)分隔符中日期字符串的开始位置。
+
+\mintinline{elisp}{start} 定义了之后， \mintinline{elisp}{let} 的 \mintinline{elisp}{body} 包含如下：
+
+\begin{minted}{elisp}
+(search-forward "))")
+(delete-region start (- (point) 2))
+(goto-char start)
+(insert-date)
+\end{minted}
+
+这里 \mintinline{elisp}{search-forward} 会把point放置到两个反括号的后面。我们仍然知道时间戳的开头位置，因为它已经保存到了 \mintinline{elisp}{start} 中，如图\ref{figure:after-searching-for-))}所示。
+
+\begin{figure}[hbt!]
+  \includegraphics[width=\linewidth]{../resource/4-2.png}
+  \caption{在搜索了”))” 之后}
+  \label{figure:after-searching-for-))}
+\end{figure}
+
+这一次，我们只提供了第一个参数作为搜索字符串。前面我们还看到了两个额外参数：搜索的范围，以及是否触发错误。当省略的时候，他们默认为 \mintinline{elisp}{nil} （不限制搜索范围）以及 \mintinline{elisp}{nil} （如果搜索失败触发错误）。
+
+在 \mintinline{elisp}{search-forward} 成功之后---如果失败了，则函数产生错误并且终止--- \mintinline{elisp}{delete-region} 将会删除记录戳中的日期，从 \mintinline{elisp}{start} 的位置开始到 \mintinline{elisp}{(- (point) 2)} 的位置（point左边两个字符）结束，结果如图\ref{figure:after-deleting-the-region-between-start-and-point}所示。
+
+\begin{figure}[hbt!]
+  \includegraphics[width=\linewidth]{../resource/4-3.png}
+  \caption{在删除了\mintinline{elisp}{start}和\mintinline{elisp}{(- (point) 2)}之间的区域之后。}
+  \label{figure:after-deleting-the-region-between-start-and-point}
+\end{figure}
+
+下一步， \mintinline{elisp}{(goto-char start)} 将会把光标移动到记录戳分隔符里里面，最后， \mintinline{elisp}{(insert-date)} 插入当前的日期。
+
+\mintinline{elisp}{while} 循环会在找到匹配项时一直循环下去。每次找到匹配项，光标都必须在匹配项的右面。否则，循环将只能一直搜索到第一项而不会进行下去。
+
+当 \mintinline{elisp}{while} 循环结束后， \mintinline{elisp}{save-match-data} 返回，恢复搜索的全局数据；然后 \mintinline{elisp}{save-restriction} 返回，恢复所有生效的narrowing；然后 \mintinline{elisp}{save-excursion} 返回，将point恢复到原始位置。
+
+\mintinline{elisp}{update-writestamps} 在 \mintinline{elisp}{save-excursion} 调用之后的最后一个表达式，是一个
+
+\begin{minted}{elisp}
+nil
+\end{minted}
+
+这是函数的返回值。Lisp函数的返回值就是函数体的最后一个表达式的值。（所有的Lisp函数都有一个返回值，但是至今为止我们所写的每个函数都没有返回有意义的返回值，而只是作为一种“副作用”存在。）本例中我们强制它返回 \mintinline{elisp}{nil} 。原因是 \mintinline{elisp}{local-write-file-hooks} 中的函数需要特殊处理。通常，钩子变量中的函数的返回值并不重要。但是对于 \mintinline{elisp}{local-write-file-hooks} （以及 \mintinline{elisp}{write-file-hooks} 和 \mintinline{elisp}{write-contents-hooks} ）中的函数来说，非空的返回值表示，“这个钩子函数接管了将buffer写入文件的工作”。如果返回非空值，则钩子变量中的其他函数将不会被执行，而Emacs自己的写文件的函数将不会被执行。既然 \mintinline{elisp}{update-writestamps} 没有接替将buffer写入文件的工作，我们需要它的返回值为 \mintinline{elisp}{nil} 。
+
+\subsection{归纳更一般的记录戳}
+\label{section:04-Generalizing-Writestamps}
+
+我们实现的记录戳工作了，但是仍然有一些问题。首先，我们的记录戳字符串“ \verb|WRITESTAMP((| ”和“ \verb|))| ”对于用户来说非常的缺乏美感并且不灵活。第二，用户可能并不希望使用 \mintinline{elisp}{insert-date} 来插入记录戳。
+
+这些问题的修正很简单。我们可以引入三个新的变量：一个就像 \mintinline{elisp}{insert-date-format} 和 \mintinline{elisp}{insert-time-format} 那样描述要使用的时间格式；另外两个用来描述将记录戳括起来的分隔符。
+
+\begin{minted}{elisp}
+(defvar writestamp-format "%C"
+  "*Format for writestamps (c.f. 'format-time-string').")
+
+(defvar writestamp-prefix "WRITESTAMP(("
+  "*Unique string identifying start of writestamp.")
+
+(defvar writestamp-suffix "))"
+  "*String that terminates a writestamp.")
+\end{minted}
+
+现在我们可以修改 \mintinline{elisp}{update-writestamps} 来使它更加灵活。
+
+\begin{minted}{elisp}
+(defun update-writestamps ()
+  "Find writestamps and replace them with the current time."
+  (save-excursion
+    (save-restriction
+      (save-match-data
+        (widen)
+        (goto-char (point-min))
+        (while (search-forward writestamp-prefix nil t)
+          (let ((start (point)))
+            (search-forward writestamp-suffix)
+            (delete-region start (match-beginning 0))
+            (goto-char start)
+            (insert (format-time-string writestamp-format
+                                        (current-time))))))))
+  nil)
+\end{minted}
+
+在这个版本的 \mintinline{elisp}{update-writestamps} 里，我们将” \verb|WRITESTAMP((| ”和“ \verb|))| ”替换成了 \mintinline{elisp}{writestamp-prefix} 和 \mintinline{elisp}{writestamp-suffix} ，并且将 \mintinline{elisp}{insert-date} 替换为了
+
+\begin{minted}{elisp}
+(insert (format-time-string writestamp-format
+                            (current-time)))
+\end{minted}
+
+我们还改变了 \mintinline{elisp}{delete-region} 的调用。前面它看起来是这样的：
+
+\begin{minted}{elisp}
+(delete-region start (- (point) 2))
+\end{minted}
+
+之前我们的记录戳的后缀被写死为“ \verb|))| ”，而它的长度为2。但是现在我们的后缀被储存在一个变量中，我们并不能提前知道它的长度。我们当然可以通过调用 \mintinline{elisp}{length} 来获得它：
+
+\begin{minted}{elisp}
+(delete-region start (- (point)
+                        (length writestamp-suffix)))
+\end{minted}
+
+但是一个更好的解决方案是使用 \mintinline{elisp}{match-beginning} 。记得我们在调用 \mintinline{elisp}{delete-region} 之前是
+
+\begin{minted}{elisp}
+(search-forward writestamp-suffix)
+\end{minted}
+
+不管 \mintinline{elisp}{writestamp-suffix} 是什么， \mintinline{elisp}{search-forward} 都会找到第一个匹配项，并且返回它之后的第一个位置。而关于匹配的其他额外信息，特别是匹配项的开始的位置，被存储在了Emacs的一个全局的匹配项变量里。访问这个数据需要通过函数 \mintinline{elisp}{match-beginning} 以及 \mintinline{elisp}{match-end} 。由于稍后可见的原因， \mintinline{elisp}{match-beginning} 需要一个参数0来告诉你最后一次搜索的匹配项的开始的位置。本例中，这也就是记录戳后缀的开始的位置，也就是记录戳里面日期的末尾，也就是要删除的范围的结尾：
+
+\begin{minted}{elisp}
+(delete-region start (match-beginning 0))
+\end{minted}
+
+\subsection{正则表达式}
+\label{section:04-Regular-Expressions}
+
+假设用户选择“Written:”和“.”作为 \mintinline{elisp}{writestamp-prefix} 和 \mintinline{elisp}{writestamp-suffix} 的值，那么记录戳看起来将会是这样的：“Written: 19 Aug 1996.”。这是一个很有可能的用户选择，但是字符串“Written:”并不像“WRITESTAMP((”这么特殊。换句话说，文件中很有可能包含其他“Written:”字符串而它并不是一个记录戳。当 \mintinline{elisp}{updatewritestamps} 搜索 \mintinline{elisp}{writestamp-prefix} 时，它将会找到其中一个，然后它会搜索后缀，删掉它们之间所有的东西。更糟糕的是，这种异常删除的发生几乎是不可察的，因为当文件保存之后它就可能发生。
+
+解决这个问题的一种方式是加强记录戳格式的限制，使错误的匹配更难发生。一种自然的可以做出的限制是将记录戳单独存于一行：换句话说，只有当 \mintinline{elisp}{writestamp-prefix} 作为一行的开始而 \mintinline{elisp}{writestamp-suffix} 作为一行的结束时，字符串才有可能是记录戳。
+
+这样
+
+\begin{minted}{elisp}
+(search-forward writestamp-prefix ...)
+\end{minted}
+
+就并不满足用来搜索记录戳了，因为这并不会只在行的开始搜索匹配项。
+
+这就是正则表达式出场的好时机了。正则表达式（regular expression）---简写为regexp或者regex---是一种类似 \mintinline{elisp}{search-forward} 的第一个参数那样的搜索模式。并不像通常的搜索模式，正则表达式有一些语法规则提供给我们更强大的搜索功能。例如，在正则表达式‘ \verb|^Written:| ’中，符号( \verb|^| )是一个特殊符号，表示“这个模式必须匹配行的开始”。表达式‘ \verb|^Written:| ’剩下的字符在正则中并没有什么特殊的含义，所以他们和普通的搜索模式所表达的意思一样。特殊的字符有时被称为元字符（metacharacters）或者（更有诗意的）魔法字符。
+
+许多UNIX程序使用了正则，这包括sed，grep，awk以及pert。不幸的是每个程序的正则都或多或少的不一样；但是在所有情况下，大多数字符是非“魔法”的（特别是字母和数字）并且可以被用来搜索他们自己；更长的正则可以由短一些的正则拼接而成。下面是Emacs中使用的正则表达式的语法。
+
+\begin{enumerate}
+  \item 点号（\verb|.|）匹配除换行符外的所有单个字符。
+  \item 反斜杠后面跟任何元字符则匹配该字符本身。例如， \verb|\.| 将匹配点号。而且反斜杠本身是一个元字符， \verb|\\| 将会匹配 \verb|\| 本身。
+  \item 中括号里的字符匹配任何括号里的字符。所以 \verb|[aeiou]| 匹配任何a或者e或者i或者o或者u。这个规则有一些例外---正则表达式的方括号语法有自己的“子语法”，如下：
+  \begin{enumerate}
+    \item 连续的字符，例如abcd，可以简写为 \verb|a-d| 。这个范围可以为任意长度，并且可以和其他单个字符混合。所以 \verb|[a-dmx-z]| 可以匹配任何a, b, c, d, m, x, y, 或者z。
+    \item 如果第一个字符是( \verb|^| )，那么表达式匹配任何不在方括号内的字符。所以 \verb|[^a-d]| 匹配除了a, b, c, 或者d之外的字符。
+    \item 要包括一个右中括号，它必须是第一个字符。所以 \verb|[]a]| 匹配 \verb|]| 或者a。同样的， \verb|[^]a]| 匹配任何除 \verb|]| 和a之外的字符。
+    \item 要包括一个中横线，它必须出现在一个不能被表意为范围的地方；例如，它可以是第一个或者最后一个字符，或者跟在某个范围的后面。所以 \verb|[a-e-z]| 匹配a, b, c, d, e，-，或者z。
+    \item 要包括一个( \verb|^| )，它必须出现在除第一个字符之外的地方。
+    \item 其他正则中的元字符，例如 \verb|*| 和 \verb|.| 在方括号中作为普通字符存在。
+  \end{enumerate}
+  \item 正则表达式x可能有以下后缀：
+  \begin{enumerate}
+    \item 星号 \verb|*| ，匹配0或多个x
+    \item 加号 \verb|+| ，匹配1或多个x
+    \item 问号 \verb|?| ，匹配0或1个x
+    所以 \verb|a*| 表示a, aa, aaa甚至空字符串（0个a）；\footnote{*在正则表达式中被计算机科学家称为“Kleene Closure”。}a+匹配a, aa, aaa,但是不能为空；\mintinline{text}{a?}匹配空字符串和a。可以注意到\mintinline{text}{x+}等同于 \mintinline{elisp}{xx*} 。
+  \end{enumerate}
+  \item 正则表达式 \verb|^x| 匹配任何行首x所匹配的值。
+   \verb|x$| 匹配任何行尾x匹配的值。
+   这表示 \verb|^x$| 匹配一行只包含x的值。而你也可以把x去掉； \verb|^$| 匹配不包含任何字符的行。
+  \item 两个正则表达式x和y被 \verb+\|+ 分割表示匹配任何x匹配的或者y匹配的值。所以 \verb+hello\|goodbye+ 匹配hello或者goodbye。
+  \item 正则表达式x被转义的括号所包裹--- \verb|\(| 和 \verb|\)| ---匹配任何x匹配的东西。这可以被用于分组复杂的表达式。所以 \verb|\(ab\)+| 匹配ab, abab, ababab, 等等。同样， \verb+\(ab\)|\(cd\)ef+ 匹配abef或者cdef。
+作为副作用，任何被括起来的子表达式匹配的文本被称为子匹配项（submatch）并且被储存在一个编号的记录器内。子匹配项根据 \verb|\(| 从左到右出现的位置而编号为1到9。所以如果用正则表达式 \verb|ab\(cd*e\)| 匹配文字abcddde，那么只会匹配到子匹配项cddde。如果使用 \verb=ab\(cd\|ef\(g+h\)\)j\(k*\)= 匹配文字abefgghjkk，那么第一个子匹配项是efggh，第二个是ggh，第三个是kk。
+  \item 反斜杠后面跟一个数字n表示匹配和第n个括起来的子表达式相同的文本。所以表达式 \verb|\(a+b\)\1| 匹配abab，aabaab，和aaabaaab，但是不匹配abaab（因为ab和aab不同）。
+  \item 有很多种方法可以匹配空字符串。
+  \begin{enumerate}
+    \item \verb|\`| 匹配在buffer开始处的空字符串。所以 \verb|\`hello| 匹配buffer开头处的hello，而不匹配任何其他的hello。
+    \item \verb|\'| 匹配buffer末尾处的空字符串。
+    \item \verb|\=| 匹配当前point位置处的空字符串。
+    \item \verb|\b| 匹配单词开始或结尾处的空字符串。所以 \verb|\bgnu\b \verb| 匹配词“gnu”但是不能匹配单词“interegnum”中的“gnu”。
+    \item \verb| \B|匹配任何除单词开始和结尾处的空字符串。所以 \verb|\Bword| 匹配“sword”中的“word”而不匹配“words”中的“word”。
+    \item \verb|\<| 只匹配单词开始处的空字符串。
+    \item \verb|\>| 值匹配单词结束处的空字符串。
+  \end{enumerate}
+\end{enumerate}
+
+如你所见，正则表达式在很多情况下使用反斜杠。Emacs Lisp字符串语法也如此。而由于在编写Emacs时正则表达式是使用Lisp字符串写的，这两种使用反斜杠的规则将会引起一些令人烦恼的结果。例如，正则表达式 \verb|ab\| cd|，当以Lisp字符串写出时，需要写成“ \verb|ab\\| cd|”。更奇怪的是当你想要使用正则表达式 \verb|\\| 匹配反斜杠 \verb|\| 时：你必须写成“ \verb|\\\\| ”。提示你输入正则表达式的Emacs命令（例如 \mintinline{elisp}{apropos} 和 \mintinline{elisp}{keeplines} ）允许你在输入时只写正则而不用写成Lisp字符串的形式。
+
+\subsection{正则引用}
+\label{section:04-Regexp-Quoting}
+
+现在我们知道了如何使用正则表达式，看起来搜索行首的 \mintinline{elisp}{writestamp-prefix} 只需要在它前面加一个（ \verb|^| ）而行尾的 \mintinline{elisp}{writestamp-suffix} 只需要在后面加一个 \verb|$| ，就像这样：
+
+\begin{minted}{elisp}
+(re-search-forward (concat "^"
+                           writestamp-prefix) ...) ; 错啦！
+
+(re-search-forward (concat writestamp-suffix
+                           "$") ...) ; 错啦！
+\end{minted}
+
+函数 \mintinline{elisp}{concat} 将它的参数合成一个单独字符串。函数 \mintinline{elisp}{re-search-forward} 是 \mintinline{elisp}{search-forward} 的正则表达式版本。
+
+这几乎是正确的。但是，它有一个常见的错误： \mintinline{elisp}{writestamp-prefix} 或者 \mintinline{elisp}{writestamp-suffix} 都可能包含元字符。实际上， \mintinline{elisp}{writestamp-suffix} 确实有，在我们的例子里即“ \verb|.| ”。因为点号匹配任何字符（除了换行符），这个表达式：
+
+\begin{minted}{elisp}
+(re-search-forward (concat writestamp-suffix
+                           "$") ...)
+\end{minted}
+
+等同于表达式：
+
+\begin{minted}{elisp}
+(re-search-forward ".$" ...)
+\end{minted}
+
+这会匹配任何行尾的字符，而我们只想要匹配点号（ \verb|.| ）。
+
+当像本例中那样构建一个正则表达式，而 \mintinline{elisp}{writestamp-prefix} 的内容却超出了程序员的控制时，移除字符串中包含的元字符的“魔力”而让他们只表达字面意思是必须的。Emacs为此提供了一个函数 \mintinline{elisp}{regexp-quote} ，它理解正则的语法然后将一个正则表达式字符串转换为对应的“非魔法”的字符串。例如 \mintinline{elisp}{(regexp-quote ".")} 会产生“ \verb|\\.| ”。你应该总是使用 \mintinline{elisp}{regexp-quote} 来移除作为变量提供的字符串中的魔力。
+
+我们现在知道了如何开始编写新版本的 \mintinline{elisp}{update-writestamps} ：
+
+\begin{minted}{elisp}
+(defun update-writestamps ()
+  "Find writestamps and replace them with the current time."
+  (save-excursion
+    (save-restriction
+      (save-match-data
+        (widen)
+        (goto-char (point-min))
+        (while (re-search-forward
+                (concat "^"
+                        (regexp-quote writestamp-prefix))
+                nil t)
+          ...))))
+  nil)
+\end{minted}
+
+\subsection{有限搜索}
+\label{section:04-Limited-Searching}
+
+让我们编写 \mintinline{elisp}{while} 循环的 \mintinline{elisp}{body} 来完成新版本的 \mintinline{elisp}{update-writestamp} 。在 \mintinline{elisp}{re-search-forward} 完成后，我们需要知道当前行是否以 \mintinline{elisp}{writestamp-suffix} 结束。但是我们不能简单的这么写
+
+\begin{minted}{elisp}
+(re-search-forward (concat (regexp-quote writestamp-suffix)
+                           "$"))
+\end{minted}
+
+因为这可能会匹配到非本行的匹配项。我们只对本行是否匹配感兴趣。
+
+我们的解决方式是只把搜索限制在本行。 \mintinline{elisp}{search-forward} 和 \mintinline{elisp}{re-search-forward} 的第二个可选参数，如果不是 \mintinline{elisp}{nil} 的话，是指搜索时不超过的位置。如果我们将当前行的末尾位置作为参数传入：
+
+\begin{minted}{elisp}
+(re-search-forward (concat (regexp-quote writestamp-suffix)
+                           "$")
+                   end-of-line-position)
+\end{minted}
+
+那么搜索就会限制到本行之内，这正是我们需要的。那么问题是我们如何得到 \mintinline{elisp}{end-of-line-position} 的值呢？我们可以简单的使用 \mintinline{elisp}{endf-of-line} 将光标移动到行尾，然后得到point的值。但是要记住在这样做之后我们需要把光标移动到它原来的地方。移动光标然后恢复场景的工作正是 \mintinline{elisp}{save-excursion} 所做的。所以我么可以这么写：
+
+\begin{minted}{elisp}
+(let ((end-of-line-position (save-excursion
+                              (end-of-line)
+                              (point))))
+  (re-search-forward (concat (regexp-quote writestamp-suffix)
+                             "$")
+                     end-of-line-position))
+\end{minted}
+
+这会创建一个临时变量 \mintinline{elisp}{end-of-line-position} 来限制 \mintinline{elisp}{re-search-forward} 的搜索范围；但是不使用这个变量更简单：
+
+\begin{minted}{elisp}
+(re-search-forward (concat (regexp-quote writestamp-suffix)
+                           (save-excursion
+                             (end-of-line)
+                             (point))))
+\end{minted}
+
+注意 \mintinline{elisp}{save-excursion} 表达式的返回值是它的最后一条语句(point)的值。
+
+所以 \mintinline{elisp}{update-writestamps} 可以被写成：
+
+\begin{minted}{elisp}
+(defun update-writestamps ()
+  "Find writestamps and replace them with the current time."
+  (save-excursion
+    (save-restriction
+      (save-match-data
+        (widen)
+        (goto-char (point-min))
+        (while (re-search-forward
+                (concat "^"
+                        (regexp-quote writestamp-prefix))
+                nil t)
+          (let ((start (point)))
+            (if (re-search-forward (concat (regexp-quote
+                                            writestamp-suffix)
+                                           "$")
+                                   (save-excursion
+                                     (end-of-line)
+                                     (point))
+                                   t)
+                (progn
+                  (delete-region start (match-beginning 0))
+                  (goto-char start)
+                  (insert (format-time-string writestamp-format
+                                              (current-time))))))))))
+  nil)
+\end{minted}
+
+\subsection{更强大的正则能力}
+\label{section:04-More-Regexp-Power}
+
+我们已经把我们最初的 \mintinline{elisp}{update-writestamps} 转换成了正则的形式，但是却并没有真正的展现出正则强大的能力。实际上，上面那长长的用于找到记录戳，检测同一行内的记录戳后缀，然后将其替换的代码可以被简化为下面的两个表达式：
+
+\begin{minted}{elisp}
+(re-search-forward (concat "^"
+                           (regexp-quote writestamp-prefix)
+                           "\\(.**\\)"
+                           (regexp-quote writestamp-suffix)
+                           "$"))
+(replace-match (format-time-string writestamp-format
+                                   (current-time))
+               t t nil 1)
+\end{minted}
+
+第一个表达式，使用下面的正则调用了 \mintinline{elisp}{re-search-forward} ：
+
+\begin{minted}{elisp}
+^prefix\(.*\)suffix$
+\end{minted}
+
+这里的 \mintinline{elisp}{prefix} 和 \mintinline{elisp}{suffix} 是 \mintinline{elisp}{regexp-quote} 版本的 \mintinline{elisp}{writestamp-prefix} 和 \mintinline{elisp}{writestamp-suffix} 。这个正则表达式匹配以记录戳前缀开始，跟着任何字符串（使用 \verb|\(...\)| 构建的子匹配项），以记录戳后缀结束的一行。
+
+第二个表达式调用了 \mintinline{elisp}{replace-match} ，它将会替换部分或者所有前一次搜索的匹配项。它的用法如下：
+
+\begin{minted}{elisp}
+(replace-match new-string
+               preserve-case
+               literal
+               base-string
+               subexpression)
+\end{minted}
+
+第一个参数是要插入的新字符串，本例中也就是 \mintinline{elisp}{format-time-string} 的返回值。剩下的参数都是可选参数，解释如下：
+
+\begin{description}
+  \item [ \mintinline{elisp}{preserve-case} ] 我们将它设为 \mintinline{elisp}{t} ，告诉 \mintinline{elisp}{replace-match} 从前往后匹配 \mintinline{elisp}{new-string} 。如果设为 \mintinline{elisp}{nil} ， \mintinline{elisp}{replace-match} 将会尝试进行智能匹配。
+  \item[ \mintinline{elisp}{literal} ] 我们使用 \mintinline{elisp}{t} 来表示“按照字面理解 \mintinline{elisp}{new-string} ”。如果使用 \mintinline{elisp}{nil} ，那么 \mintinline{elisp}{replace-match} 将会使用一些特殊的语法规则理解 \mintinline{elisp}{new-string} （可以使用 \mintinline{elisp}{describe-function} \mintinline{elisp}{replace-match} 来具体查看）。
+  \item[ \mintinline{elisp}{base-string} ] 我们使用 \mintinline{elisp}{nil} 来表示“更改当前buffer”。如果使用一个字符串，那么 \mintinline{elisp}{replace-match} 将会在那个字符串里执行替换。
+  \item[ \mintinline{elisp}{subexpression} ] 我们使用1表示“替换子匹配项1，而不是整个匹配的字符串”（这将包括前缀和后缀）。
+\end{description}
+
+所以在使用 \mintinline{elisp}{re-search-forward} 查找记录戳然后找到分隔符之间的“子匹配项”之后，我们调用 \mintinline{elisp}{replace-match} 将分隔符之间的文本删掉并且插入了一个根据 \mintinline{elisp}{writestamp-format} 生成的新字符串。
+
+作为对于 \mintinline{elisp}{update-writestamps} 的最终改进，我们可以看到如果我们这样写
+
+\begin{minted}{elisp}
+(while (re-search-forward (concat ...) ...)
+  (replace-match ...))
+\end{minted}
+
+那么 \mintinline{elisp}{concat} 函数在每次循环里都会调用，即使参数没有改变，每次都会生成一个新的字符串。这样效率很低。更好的方式是在循环之前计算出我们需要的字符串，然后存储在一个临时变量里。因此，最好的 \mintinline{elisp}{update-writestamps} 是这样的：
+
+\begin{minted}{elisp}
+(defun update-writestamps ()
+  "Find writestamps and replace them with the current time."
+  (save-excursion
+    (save-restriction
+      (save-match-data
+        (widen)
+        (goto-char (point-min))
+        (let ((regexp (concat "^"
+                              (regexp-quote writestamp-prefix)
+                              "\\(.*\\) "
+                              (regexp-quote writestamp-suffix)
+                              "$")))
+          (while (re-search-forward regexp nil t)
+            (replace-match (format-time-string writestamp-format
+                                               (current-time))
+                           t t nil 1))))))
+  nil)
+\end{minted}
+
+\section{修改戳}
+\label{section:04-Modifystamps}
+
+好的，时间戳（timestamps）挺有用，而记录戳（writestamps）也不错，但是修改戳（modifystamps）可能更有用。一个修改戳是一个记录着文件最后修改时间的记录戳，这可能和文件最后存储到磁盘上的时间不一样。例如，如果你访问了一个文件并且在没做任何修改的情况下将其保存在磁盘上，你就不应该更新修改戳。
+
+在本节，我们将大略的探索两种非常简单的方式来实现修改戳。
+
+\subsection{简单的方式\#{}1}
+\label{section:04-Simple-Approach-1}
+
+Emacs有一个称为 \mintinline{elisp}{first-change-hook} 的钩子变量。每当buffer自保存之后第一次被修改，变量中的函数将会被调用。使用这个钩子来实现修改戳只是把我们之前的 \mintinline{elisp}{update-writestamps} 函数从 \mintinline{elisp}{local-write-file-hooks} 变为 \mintinline{elisp}{first-change-hook} 。当然，我们还要把它的名字改为 \mintinline{elisp}{update-modifystamps} ，并且引入一些新的变量--- \mintinline{elisp}{modifystamp-format} ， \mintinline{elisp}{modifystamp-prefix} ，以及 \mintinline{elisp}{modifystamp-suffix} ---而不影响原来记录戳的那些变量。 \mintinline{elisp}{update-modifystamps} 需要使用这些新的变量。
+
+在此之前， \mintinline{elisp}{first-change-hook} 是一个全局变量，而我们需要一个buffer局部的。如果我们将 \mintinline{elisp}{update-modifystamps} 添加到 \mintinline{elisp}{first-change-hook} 而 \mintinline{elisp}{first-change-hook} 是全局的，那么任何buffer保存的时候都会触发这个方法。我们需要将它变为buffer局部的，而其他buffer则继续使用默认的全局变量。
+
+\begin{minted}{elisp}
+(make-local-hook 'first-change-hook)
+\end{minted}
+
+虽然可以使用 \mintinline{elisp}{make-localvariable} 或者 \mintinline{elisp}{make-variable-buffer-local} 来使普通变量变为buffer局部的（下面会看到），但是钩子变量必须使用 \mintinline{elisp}{make-local-hook} 。
+
+\begin{minted}{elisp}
+(defvar modifystamp-format "%C"
+  "*Format for modifystamps (c.f. 'format-time-string').")
+
+(defvar modifystamp-prefix "MODIFYSTAMP (("
+  "*String identifying start of modifystamp.")
+
+(defvar modifystamp-suffix "))"
+  "*String that terminates a modifystamp.")
+
+(defun update-modifystamps ()
+  "Find modifystamps and replace them with the current time."
+  (save-excursion
+    (save-restriction
+      (save-match-data
+        (widen)
+        (goto-char (point-min))
+        (let ((regexp (concat "^"
+                              (regexp-quote modifystamp-prefix)
+                              " \\(.*\\) "
+                              (regexp-quote modifystamp-suffix)
+                              "$")))
+          (while (re-search-forward regexp nil t)
+            (replace-match (format-time-string modifystamp-format
+                                               (current-time))
+                           t t nil 1))))))
+  nil)
+(add-hook 'first-change-hook 'update-modifystamps nil t)
+\end{minted}
+
+\mintinline{elisp}{add-hook} 中的 \mintinline{elisp}{nil} 参数只是一个占位符。我们只关注最后一个参数 \mintinline{elisp}{t} ，它表示“只更改 \mintinline{elisp}{first-changehook} 的buffer局部备份”。
+
+这种方式的问题是如果你在保存文件前对其进行了十处修改，那么修改戳会记录第一次的时间，而不是最后一次的时间。某些情况下这已经足够用了，但是我们还可以做得更好。
+
+\subsection{简单的方式\#{}2}
+\label{section:04-Simple-Approach-2}
+
+这一次我们再次使用 \mintinline{elisp}{local-write-file-hooks} ，但是我们只在 \mintinline{elisp}{buffer-modified-p} 返回 \mintinline{elisp}{true} 的时候才调用 \mintinline{elisp}{update-modifystamps} ，也就是说只在当前buffer被改动的情况下才调用它：
+
+\begin{minted}{elisp}
+(defun maybe-update-modifystamps ()
+  "Call 'update-modifystamps' if the buffer has been modified."
+  (if (buffer-modified-p)
+      (update-modifystamps)))
+(add-hook 'local-write-file-hooks 'maybe-update-modifystamps)
+\end{minted}
+
+现在我们有了跟方式\#1相反的问题：最后修改的时间一直到文件保存的时候才会计算，这可能比最后一次修改的时间晚很久。如果你在2:00的时候修改了文件，而在3:00的时候做了保存，那么修改戳将会把3:00作为最后保存的时间。这更接近了，但是并不完美。
+
+\subsection{聪明的方式}
+\label{section:04-Clever-Approach}
+
+理论上，我们可以在每次更改buffer之后调用 \mintinline{elisp}{update-modifystamps} ，但是实际中在每次按键之后都搜索整个文件并且对其进行修改是代价昂贵的一件事。但是每次buffer更改之后将时间记录下来就不那么难以接受。然后，当buffer保存到文件时，记录的时间就可以用来计算修改戳中的时间了。
+
+钩子变量 \mintinline{elisp}{after-change-functions} 包含着每次buffer更改时要调用的函数。首先我们让它变为 \mintinline{elisp}{buffer-local} 的：
+
+\begin{minted}{elisp}
+(make-local-hook 'after-change-functions)
+\end{minted}
+
+然后我们定义一个 \mintinline{elisp}{buffer-local} 的变量来保存这个buffer最后一次修改的时间：
+
+\begin{minted}{elisp}
+(defvar last-change-time nil
+  "Time of last buffer modification.")
+(make-variable-buffer-local 'last-change-time)
+\end{minted}
+
+函数 \mintinline{elisp}{make-variable-buffer-local} 使得它后面的变量在每个buffer都具有独立的、 \mintinline{elisp}{buffer-local} 的值。这根 \mintinline{elisp}{make-local-variable} 有些不同，其作用是使变量在当前buffer获得一个 \mintinline{elisp}{buffer-local} 的值，而让其他buffer共享一个相同的全局值。在这里，我们使用 \mintinline{elisp}{make-variable-buffer-local} 是因为所有buffer共享一个全局的 \mintinline{elisp}{last-change-time} 是没有意义的。
+
+现在我们需要一个函数来在每次buffer改变的时候修改 \mintinline{elisp}{last-change-time} 的值。让我们将其命名为 \mintinline{elisp}{remember-change-time} 并且将它添加到 \mintinline{elisp}{after-change-functions} 里：
+
+\begin{minted}{elisp}
+(add-hook 'after-change-functions 'remember-change-time nil t)
+\end{minted}
+
+\mintinline{elisp}{after-change-functions} 中的函数有三个参数来描述刚刚发生的改变（参照第\ref{chapter:07-Minor-Mode}章中的\nameref{section:07-Mode-Meat}）。但是 \mintinline{elisp}{remember-change-time} 并不关心刚才发生了什么更改；它只关心发生了更改这件事本身。所以我们可以选择忽略这些参数。
+
+\begin{minted}{elisp}
+(defun remember-change-time (&rest unused)
+  "Store the current time in 'last-change-time'."
+  (setq last-change-time (current-time)))
+\end{minted}
+
+关键字 \mintinline{elisp}{&rest} ，后面跟着一个参数名称，只能出现在函数的参数列表最后。它表示“将剩下的参数收集到一个列表里并且赋给最后的参数”（本例中为unused）。函数可能还有其他的参数，包括 \mintinline{elisp}{&optional} 的可选参数，但是这些都要出现在 \mintinline{elisp}{&rest} 的前面。在所有其他参数按照正常格式分配完成后， \mintinline{elisp}{&rest} 将其他剩下的参数放到一个列表里。所以如果一个函数这么定义
+
+\begin{minted}{elisp}
+(defun foo (a b &rest c)
+  ...)
+\end{minted}
+
+那么当 \mintinline{elisp}{(foo 1 2 3 4)} 调用时， \mintinline{elisp}{a} 将为 \mintinline{elisp}{1} ， \mintinline{elisp}{b} 为 \mintinline{elisp}{2} ， \mintinline{elisp}{c} 将会是列表 \mintinline{elisp}{(3 4)} 。
+
+在有些情况下， \mintinline{elisp}{&rest} 非常有用，甚至是必须的；但在这里我们只是出于懒惰（或者节约，如果你希望这么称呼的话），来规避给三个我们并不希望使用的参数命名。
+
+现在我们来修改 \mintinline{elisp}{update-modifystamps} ：它必须使用储存在 \mintinline{elisp}{last-change-time} 中的时间而不是使用( \mintinline{elisp}{current-time} )。从效率考虑，它还需要在执行完成后将 \mintinline{elisp}{last-change-time} 置为 \mintinline{elisp}{nil} ，这样可以避免以后当文件在未修改的情况下进行保存时对 \mintinline{elisp}{update-modifystamps} 的额外调用。
+
+\begin{minted}{elisp}
+(defun update-modifystamps ()
+  "Find modifystamps and replace them with the saved time."
+  (save-excursion
+    (save-restriction
+      (save-match-data
+        (widen)
+        (goto-char (point-min))
+        (let ((regexp (concat "^"
+                              (regexp-quote modifystamp-prefix)
+                              "\\(.*\\)"
+                              (regexp-quote modifystamp-suffix)
+                              "$")))
+          (while (re-search-forward regexp nil t)
+            (replace-match (format-time-string modifystamp-format
+                                               last-change-time)
+                           t t nil 1))))))
+  (setq last-change-time nil)
+  nil)
+\end{minted}
+
+最后，我们不希望在 \mintinline{elisp}{last-change-time} 为 \mintinline{elisp}{nil} 时调用 \mintinline{elisp}{update-modifystamps} ：
+
+\begin{minted}{elisp}
+(defun maybe-update-modifystamps ()
+  "Call 'update-modifystamps' if the buffer has been modified."
+  (if last-change-time ; 替换对于(buffer-modified-p)的检测
+      (update-modifystamps)))
+\end{minted}
+
+\mintinline{elisp}{maybe-update-modifystamps} 中仍然存在很大的问题。在阅读下一部分前，你能找出那是什么吗？
+
+\subsection{一个小Bug}
+\label{section:04-A-Subtle-Bug}
+
+缺陷是每次 \mintinline{elisp}{update-modifystamps} 重写修改戳时，会引起buffer的改变，这又会造成 \mintinline{elisp}{last-change-time} 的改变！这样只有第一次修改戳会被正确的修改。后续的修改戳会是一个与文件储存的时间相近的时间而不是最后一次修改的时间。
+
+一个绕过这个问题的方法是当执行 \mintinline{elisp}{update-modifystamps} 时暂时将 \mintinline{elisp}{after-change-functions} 置为 \mintinline{elisp}{nil} ：
+
+\begin{minted}{elisp}
+(add-hook 'local-write-file-hooks
+          '(lambda ()
+            (if last-change-time
+                (let ((after-change-functions nil))
+                  (update-modifystamps)))))
+\end{minted}
+
+\mintinline{elisp}{let} 创建了一个临时变量 \mintinline{elisp}{after-change-functions} ，用来在调用 \mintinline{elisp}{let} 体中的 \mintinline{elisp}{update-modifystamps} 时替代全局变量 \mintinline{elisp}{after-change-functions} 。当 \mintinline{elisp}{let} 退出后，临时变量 \mintinline{elisp}{after-change-functions} 就销毁了，而全局变量又再次发生作用。
+
+这个方法有一个缺点：如果 \mintinline{elisp}{after-change-functions} 中有其他的函数，那么在你调用 \mintinline{elisp}{update-modifystamps} 时它们也会暂时失效，而这并不是你希望看到的。
+
+一个更好的方法是在每次更新修改戳之前“截取” \mintinline{elisp}{last-change-time} 的值。这样，当更新修改戳造成 \mintinline{elisp}{last-change-time} 改变时，新的 \mintinline{elisp}{last-change-time} 的值将不会影响其他的修改戳，因为 \mintinline{elisp}{update-modifystamps} 并不会使用当前储存在 \mintinline{elisp}{last-change-time} 中的值。
+
+“截取” \mintinline{elisp}{last-change-time} 最简单的方式是将其作为参数传递给 \mintinline{elisp}{update-modifystamps} ：
+
+\begin{minted}{elisp}
+(add-hook 'local-write-file-hooks
+          '(lambda ()
+            (if last-change-time
+                (update-modifystamps last-change-time))))
+\end{minted}
+
+这需要修改 \mintinline{elisp}{update-modifystamps} ，使其具有一个参数，并且在调用 \mintinline{elisp}{format-time-string} 时使用它：
+
+\begin{minted}{elisp}
+(defun update-modifystamps (time)
+  "Find modifystamps and replace them with the given time."
+  (save-excursion
+    (save-restriction
+      (save-match-data
+        (widen)
+        (goto-char (point-min))
+        (let ((regexp (concat "^"
+                              (regexp-quote modifystamp-prefix)
+                              "\\(.*\\)"
+                              (regexp-quote modifystamp-suffix)
+                              "$")))
+          (while (re-search-forward regexp nil t)
+            (replace-match (format-time-string modifystamp-format
+                                               time)
+                           t t nil 1))))))
+  (setq last-change-time nil)
+  nil)
+\end{minted}
+
+你可能会觉得为了使修改戳工作，你写出了许多表达式，建立了很多变量，而这看起来很难维护。你是对的。所以在下一章，我们来看看如何在Lisp文件中封装相关的方法和变量。

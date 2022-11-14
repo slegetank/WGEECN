@@ -1,0 +1,14 @@
+# TeX
+
+*.aux
+*.idx
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+
+# Pygmentize
+
+*.pygtex
+*.pygstyle
